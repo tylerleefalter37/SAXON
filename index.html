@@ -1,0 +1,2729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>MANDALORIAN WARFORGE // 1,000 Heroic 128³ Voxel Collector</title>
+<style>
+  :root {
+    --bg-deep: #07090d;
+    --bg-panel: #10151f;
+    --bg-card: #161d2b;
+    --bg-elev: #1e2738;
+    --border: #2a364d;
+    --beskar: #c8d6e5;
+    --gold: #f5b041;
+    --amber: #ff7f50;
+    --cyan: #38bdf8;
+    --crimson: #ef4444;
+    --emerald: #22c55e;
+    --purple: #a855f7;
+    --text-main: #f1f5f9;
+    --text-dim: #94a3b8;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; padding: 0;
+    background: radial-gradient(circle at 50% 0%, #172030 0%, var(--bg-deep) 75%);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    user-select: none;
+  }
+
+  /* TOP HUD */
+  .hud-header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10, 14, 22, 0.96);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 12px;
+  }
+  .hud-top-row {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px;
+    max-width: 1440px; margin: 0 auto;
+  }
+  .brand-title {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 900; letter-spacing: 0.8px; font-size: 14px; color: var(--beskar);
+  }
+  .brand-badge {
+    background: linear-gradient(135deg, #b91c1c, #7f1d1d);
+    color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 800;
+    border: 1px solid #f87171;
+  }
+  .hud-stats {
+    display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+  }
+  .stat-pill {
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 5px 9px; border-radius: 6px; font-size: 11px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .stat-pill b { font-family: "Courier New", monospace; font-size: 13px; }
+  .val-gold { color: var(--gold); }
+  .val-cyan { color: var(--cyan); }
+  .val-emerald { color: var(--emerald); }
+  .val-purple { color: var(--purple); }
+
+  /* STREAMLINED 5-TAB NAVIGATION BAR (1 ROW x 5 COLUMNS) */
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    max-width: 1440px;
+    margin: 8px auto 0;
+  }
+  @media (max-width: 680px) {
+    .nav-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .nav-btn {
+    background: var(--bg-card);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 6px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-btn:hover { border-color: var(--cyan); color: var(--text-main); }
+  .nav-btn.active {
+    background: linear-gradient(180deg, #1e3a5f 0%, #13243b 100%);
+    color: #fff;
+    border-color: var(--cyan);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+  }
+  .nav-badge {
+    display: inline-block; background: var(--bg-elev); color: var(--gold);
+    padding: 1px 6px; border-radius: 99px; font-size: 10px; margin-left: 4px;
+  }
+
+  /* MAIN CONTAINER */
+  .main-wrap {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 12px;
+  }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  .section-bar {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+    gap: 10px; margin-bottom: 12px;
+    background: var(--bg-panel); border: 1px solid var(--border);
+    padding: 10px 14px; border-radius: 8px;
+  }
+  .section-title { font-size: 15px; font-weight: 800; color: var(--beskar); letter-spacing: 0.5px; }
+  .section-sub { font-size: 12px; color: var(--text-dim); }
+
+  /* CARDS & GRIDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+    gap: 10px;
+  }
+  .unit-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    position: relative;
+    transition: border-color 0.12s ease;
+  }
+  .unit-card:hover { border-color: #475569; }
+  .unit-thumb-wrap {
+    width: 100%; height: 152px;
+    background: radial-gradient(circle at 50% 55%, #24344d 0%, #090d14 90%);
+    border: 1px solid #222e42;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; position: relative; overflow: hidden;
+  }
+  .unit-thumb {
+    width: 138px; height: 138px;
+    image-rendering: pixelated;
+    object-fit: contain;
+  }
+  .tier-tag {
+    position: absolute; top: 6px; left: 6px;
+    padding: 2px 6px; border-radius: 4px;
+    font-size: 10px; font-weight: 900; letter-spacing: 0.5px;
+    background: rgba(0,0,0,0.8); border: 1px solid currentColor;
+  }
+  .dex-tag {
+    position: absolute; bottom: 5px; left: 6px;
+    padding: 2px 6px; border-radius: 4px;
+    font-size: 10px; font-weight: 800; font-family: "Courier New", monospace;
+    background: rgba(0,0,0,0.75); color: var(--gold); border: 1px solid #475569;
+  }
+  .finish-tag {
+    position: absolute; top: 6px; right: 6px;
+    padding: 2px 6px; border-radius: 4px;
+    font-size: 10px; font-weight: 700;
+    background: rgba(15, 23, 42, 0.88); color: var(--beskar);
+    border: 1px solid #334155;
+  }
+  .inspect-hint {
+    position: absolute; bottom: 5px; right: 6px;
+    font-size: 10px; color: var(--cyan); background: rgba(0,0,0,0.75);
+    padding: 2px 6px; border-radius: 4px;
+  }
+  .unit-title { font-size: 13px; font-weight: 800; color: #fff; line-height: 1.25; }
+  .unit-meta { font-size: 11px; color: var(--text-dim); display: flex; justify-content: space-between; }
+  .stat-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+    background: var(--bg-panel); padding: 5px; border-radius: 5px; font-size: 11px; text-align: center;
+  }
+  .hp-bar-outer {
+    width: 100%; height: 6px; background: #090d14; border-radius: 3px; overflow: hidden;
+  }
+  .hp-bar-inner { height: 100%; background: var(--emerald); transition: width 0.2s; }
+
+  /* BUTTONS & INPUTS */
+  .btn {
+    background: var(--bg-elev); color: var(--text-main);
+    border: 1px solid var(--border); border-radius: 5px;
+    padding: 6px 10px; font-size: 11px; font-weight: 700;
+    cursor: pointer; transition: all 0.12s;
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  }
+  .btn:hover:not(:disabled) { border-color: var(--cyan); color: #fff; }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-gold { background: linear-gradient(180deg, #d97706, #92400e); border-color: #f59e0b; color: #fff; }
+  .btn-cyan { background: linear-gradient(180deg, #0284c7, #075985); border-color: #38bdf8; color: #fff; }
+  .btn-emerald { background: linear-gradient(180deg, #16a34a, #14532d); border-color: #4ade80; color: #fff; }
+  .btn-crimson { background: linear-gradient(180deg, #dc2626, #7f1d1d); border-color: #f87171; color: #fff; }
+  .btn-purple { background: linear-gradient(180deg, #7e22ce, #4c1d95); border-color: #c084fc; color: #fff; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 5px; }
+
+  select, input[type="text"] {
+    background: var(--bg-deep); color: var(--text-main);
+    border: 1px solid var(--border); border-radius: 5px;
+    padding: 6px 8px; font-size: 11px;
+  }
+  label.chk-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--bg-deep); border: 1px solid var(--gold);
+    color: var(--gold); padding: 5px 10px; border-radius: 5px;
+    font-size: 11px; font-weight: 800; cursor: pointer;
+  }
+
+  /* SNIPE AUCTION SPOTLIGHT */
+  .snipe-spotlight {
+    background: linear-gradient(135deg, #131c2e 0%, #0d131f 100%);
+    border: 2px solid var(--cyan);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 16px;
+    align-items: center;
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.12);
+  }
+  @media (max-width: 640px) {
+    .snipe-spotlight { grid-template-columns: 1fr; }
+  }
+
+  /* ARENA LAYOUT */
+  .arena-grid {
+    display: grid; grid-template-columns: 1fr 310px 1fr; gap: 12px;
+  }
+  @media (max-width: 980px) {
+    .arena-grid { grid-template-columns: 1fr; }
+  }
+  .arena-side {
+    background: var(--bg-panel); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px;
+  }
+  .arena-center {
+    background: var(--bg-panel); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px;
+    display: flex; flex-direction: column; gap: 10px; align-items: center;
+  }
+  .dice-tray {
+    display: flex; gap: 14px; justify-content: center; align-items: center;
+    margin: 4px 0;
+  }
+  .die-box {
+    width: 52px; height: 52px; border-radius: 10px;
+    background: linear-gradient(145deg, #1e293b, #0f172a);
+    border: 2px solid var(--gold); color: var(--gold);
+    font-size: 25px; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .combat-log {
+    width: 100%; height: 180px; overflow-y: auto;
+    background: var(--bg-deep); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px; font-size: 11px;
+    font-family: "Courier New", monospace; line-height: 1.45;
+  }
+  .fighter-slot {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 10px; position: relative;
+  }
+  .fighter-slot.dead { opacity: 0.38; filter: grayscale(1); }
+
+  /* 3D INSPECTOR MODAL */
+  .modal-backdrop {
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(3, 6, 12, 0.88);
+    backdrop-filter: blur(6px);
+    display: none; align-items: center; justify-content: center;
+    padding: 12px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal-box {
+    background: var(--bg-panel); border: 1px solid var(--cyan);
+    border-radius: 10px; max-width: 860px; width: 100%;
+    padding: 14px; display: grid; grid-template-columns: 512px 1fr; gap: 14px;
+    box-shadow: 0 0 35px rgba(56, 189, 248, 0.2);
+  }
+  @media (max-width: 860px) {
+    .modal-box { grid-template-columns: 1fr; max-height: 94vh; overflow-y: auto; }
+  }
+  #inspect-canvas {
+    width: 100%; max-width: 512px; aspect-ratio: 1 / 1;
+    background: radial-gradient(circle at 50% 55%, #1e293b 0%, #06090f 85%);
+    border: 1px solid var(--border); border-radius: 8px;
+    cursor: grab; touch-action: none;
+  }
+  #inspect-canvas:active { cursor: grabbing; }
+
+  /* TOAST */
+  #toast-wrap {
+    position: fixed; bottom: 16px; right: 16px; z-index: 1200;
+    display: flex; flex-direction: column; gap: 6px; pointer-events: none;
+  }
+  .toast-msg {
+    background: rgba(15, 23, 42, 0.96); color: #fff;
+    border-left: 4px solid var(--gold); border-top: 1px solid var(--border);
+    border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    padding: 9px 14px; border-radius: 6px; font-size: 12px; font-weight: 600;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP HUD -->
+<header class="hud-header">
+  <div class="hud-top-row">
+    <div class="brand-title">
+      <span class="brand-badge">128³ HEROIC</span>
+      <span>MANDALORIAN WARFORGE // 1,000 COLLECTOR EDITION</span>
+    </div>
+    <div class="hud-stats">
+      <div class="stat-pill"><span>Imperial Credits:</span> <b class="val-gold" id="hud-funds">◈500</b></div>
+      <div class="stat-pill"><span>Beskar &amp; Tibanna:</span> <b class="val-cyan" id="hud-fuel">1,000</b></div>
+      <div class="stat-pill"><span>Covert Racks:</span> <b class="val-emerald" id="hud-fleet">0</b></div>
+      <div class="stat-pill"><span>1,000 Codex:</span> <b class="val-gold" id="hud-codex">0/1000</b></div>
+      <div class="stat-pill"><span>Creed Trials:</span> <b class="val-purple" id="hud-miles">0/150</b></div>
+      <button class="btn btn-cyan" onclick="UI.openCodeModal()">📡 Trade Codes</button>
+    </div>
+  </div>
+
+  <!-- STREAMLINED 5-TAB NAVIGATION BAR -->
+  <nav class="nav-grid" id="nav-grid">
+    <button class="nav-btn active" data-tab="tab-racks" onclick="UI.switchTab('tab-racks')">1. 🛡️ Covert Racks &amp; Armory <span class="nav-badge" id="rack-count">0</span></button>
+    <button class="nav-btn" data-tab="tab-boxes" onclick="UI.switchTab('tab-boxes')">2. 📦 Warforge Crates &amp; Depot</button>
+    <button class="nav-btn" data-tab="tab-auctions" onclick="UI.switchTab('tab-auctions')">3. 🔨 Auction House <span class="nav-badge" id="auc-timer">10s</span></button>
+    <button class="nav-btn" data-tab="tab-arena" onclick="UI.switchTab('tab-arena')">4. ⚔️ Battle &amp; Patrols</button>
+    <button class="nav-btn" data-tab="tab-command" onclick="UI.switchTab('tab-command')">5. 📜 High Command</button>
+  </nav>
+</header>
+
+<main class="main-wrap">
+
+  <!-- ======================================================================
+       TAB 1: COVERT RACKS, VAULT FILTER, ARMORERS & ARMORY TECH (MERGED 3+5+9+10)
+       ====================================================================== -->
+  <section id="tab-racks" class="tab-pane active">
+    <div class="section-bar">
+      <div>
+        <div class="section-title">1. COVERT RACKS (1,000 HEROIC-SCALE MANDALORIAN MINIATURES)</div>
+        <div class="section-sub">Each miniature is a 92-voxel-tall Heroic Character (`#0001–#1000`) with full *Kar'ta Beskar* anatomy. Lock favorites, send to your 5 Seller Auction lanes, or inspect at 512² 60 FPS.</div>
+      </div>
+      <div class="btn-row">
+        <label class="chk-pill">
+          <input type="checkbox" id="filter-vault-only" onchange="UI.renderRacks()" />
+          🔒 Show Vaulted Only (<span id="vault-inline-count">0</span>)
+        </label>
+        <select id="filter-div" onchange="UI.renderRacks()">
+          <option value="ALL">All 10 Heroic Classes</option>
+        </select>
+        <select id="filter-tier" onchange="UI.renderRacks()">
+          <option value="ALL">All 10 Rarity Tiers</option>
+        </select>
+        <select id="sort-racks" onchange="UI.renderRacks()">
+          <option value="VAL_DESC">Sort: Highest Value</option>
+          <option value="TIER_DESC">Sort: Highest Tier</option>
+          <option value="DEX_ASC">Sort: Collector #0001–#1000</option>
+          <option value="HP_ASC">Sort: Needs Repair</option>
+        </select>
+        <button class="btn btn-emerald" onclick="Game.repairAll()">🔧 Repair All</button>
+      </div>
+    </div>
+    <div class="card-grid" id="rack-list"></div>
+
+    <!-- MERGED TAB 9: ARMORY TECH UPGRADES -->
+    <div class="section-bar" style="margin-top:18px;">
+      <div>
+        <div class="section-title">⚙️ MANDALORIAN ARMORY TECH UPGRADES</div>
+        <div class="section-sub">Permanently upgrade Covert Payout Yield (+5%/lvl), Beskar Supply Efficiency (-2%/lvl, max 70%), Arena ATK (+4%/lvl), and Capture Nets (+2%/lvl).</div>
+      </div>
+    </div>
+    <div class="card-grid" id="tech-list"></div>
+
+    <!-- MERGED TAB 5: ARMORERS & TACTICIANS ROSTER -->
+    <div class="section-bar" style="margin-top:18px;">
+      <div>
+        <div class="section-title">🎖️ COVERT ARMORERS &amp; TACTICIANS ROSTER (<span id="pilot-count">0</span>)</div>
+        <div class="section-sub">Recruited Commanders who grant % buffs to YIELD, SPEED, SUPPLY efficiency, and ARMOR durability when assigned to a miniature above.</div>
+      </div>
+    </div>
+    <div class="card-grid" id="pilot-list"></div>
+  </section>
+
+  <!-- ======================================================================
+       TAB 2: WARFORGE CRATES & SUPPLY DEPOT
+       ====================================================================== -->
+  <section id="tab-boxes" class="tab-pane">
+    <div class="section-bar">
+      <div>
+        <div class="section-title">2. GREAT FORGE BESKAR CRATES &amp; TIBANNA SUPPLY DEPOT</div>
+        <div class="section-sub">Unbox Heroic-Scale 128³ Mandalorian Miniatures (`#0001–#1000`) in 1x / 5x / 10x batches, recruit Master Armorers, or replenish Upkeep Supply.</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-cyan" onclick="Game.buyFuel(500)">⚡ +500 Supply (◈125)</button>
+        <button class="btn btn-cyan" onclick="Game.buyFuel(2500)">⚡ +2,500 Supply (◈625)</button>
+        <button class="btn btn-cyan" onclick="Game.buyFuel(10000)">⚡ +10,000 Supply (◈2,500)</button>
+      </div>
+    </div>
+    <div class="card-grid" id="warbox-list"></div>
+
+    <div class="section-bar" style="margin-top:16px;">
+      <div>
+        <div class="section-title">COVERT ARMORER &amp; TACTICIAN RECRUITMENT PODS</div>
+        <div class="section-sub">Recruit specialized Mandalorian Commanders for your Covert Racks.</div>
+      </div>
+    </div>
+    <div class="card-grid" id="pilotbox-list"></div>
+  </section>
+
+  <!-- ======================================================================
+       TAB 3: AUCTION HOUSE (1-LANE DISCOUNT BUYER + 5-LANE PLAYER SELLER)
+       ====================================================================== -->
+  <section id="tab-auctions" class="tab-pane">
+    <div class="section-bar">
+      <div>
+        <div class="section-title">3A. 🎯 1-LANE BARGAIN SNIPE AUCTION (BUY LOW // ◈1 INCREMENTS // 10.0s TIMER)</div>
+        <div class="section-sub">Single-item clearance lane for zero lag! Starts at 12%–20% of true market value. Bid in ◈1 ($1) increments to snipe miniatures and flip them below for massive profit!</div>
+      </div>
+    </div>
+    <div id="buyer-auction-slot"></div>
+
+    <div class="section-bar">
+      <div>
+        <div class="section-title">3B. 💰 YOUR 5-LANE SYNDICATE SELLER AUCTIONS (SELL HIGH // 2x–20x BID WARS!)</div>
+        <div class="section-sub">List up to 5 of your own miniatures! 20.0s timer | 40% opening bid | 10% NPC bid chance/tick | 1.5% chance for 2x–20x [BID WAR] Spike! | &lt;=1.0s overtime resets to 2.0s.</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-gold" onclick="Game.autoFillSellerLanes()">🔨 Auto-List Unvaulted Idle Units</button>
+      </div>
+    </div>
+    <div class="card-grid" id="seller-auction-list"></div>
+  </section>
+
+  <!-- ======================================================================
+       TAB 4: TABLETOP WARGAME ARENA & OUTER RIM SECTOR PATROLS (MERGED 4+6)
+       ====================================================================== -->
+  <section id="tab-arena" class="tab-pane">
+    <div class="section-bar">
+      <div>
+        <div class="section-title">4A. ⚔️ 1v1 / 3v3 / 5v5 TABLETOP WARGAME ARENA</div>
+        <div class="section-sub">2D6 Dice Combat + 5 Tactical Orders + 3-Way Counter Triangle (+45% DMG). Win 55% of enemy army value + 45% base chance to capture an enemy miniature!</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-cyan" onclick="Arena.startMatch(1)">⚔️ Start 1v1 Duel</button>
+        <button class="btn btn-gold" onclick="Arena.startMatch(3)">⚔️ Start 3v3 Skirmish</button>
+        <button class="btn btn-crimson" onclick="Arena.startMatch(5)">⚔️ Start 5v5 Grand Battle</button>
+      </div>
+    </div>
+
+    <div class="arena-grid">
+      <div class="arena-side">
+        <div class="section-title" style="margin-bottom:8px;">🛡️ YOUR COVERT STRIKE TEAM</div>
+        <div id="arena-player-team"></div>
+      </div>
+
+      <div class="arena-center">
+        <div style="font-size:12px; font-weight:800; color:var(--gold); text-align:center;" id="arena-status-banner">
+          Select 1v1, 3v3, or 5v5 above to deploy your strongest Covert miniatures!
+        </div>
+        <div class="dice-tray">
+          <div class="die-box" id="die-1">6</div>
+          <div class="die-box" id="die-2">6</div>
+        </div>
+        <div style="font-size:11px; color:var(--text-dim); text-align:center;">
+          <b>Counter Triangle (+45% DMG):</b><br/>
+          Group A (Spear/Heavy/Armorer) &gt; Group B (Darksaber/Gunslinger/Jetpack) &gt; Group C (Sniper/WhistlingBird/Assassin/Remnant) &gt; Group A
+        </div>
+        <div class="btn-row" style="justify-content:center; width:100%;">
+          <button class="btn btn-crimson" onclick="Arena.issueOrder('CHARGE')">🗡️ Jetpack Charge (+30%)</button>
+          <button class="btn btn-cyan" onclick="Arena.issueOrder('VOLLEY')">🔫 Blaster Volley (Pierce)</button>
+          <button class="btn btn-purple" onclick="Arena.issueOrder('ARCANE')">🐉 Whistling Birds (Splash)</button>
+          <button class="btn btn-gold" onclick="Arena.issueOrder('WALL')">🛡️ Beskar Shield Wall</button>
+          <button class="btn btn-emerald" onclick="Arena.issueOrder('RALLY')">🚩 Darksaber Rally (+HP)</button>
+        </div>
+        <div class="combat-log" id="arena-log"></div>
+      </div>
+
+      <div class="arena-side">
+        <div class="section-title" style="margin-bottom:8px; color:var(--crimson);">🎯 IMPERIAL REMNANT &amp; SYNDICATE HOST</div>
+        <div id="arena-enemy-team"></div>
+      </div>
+    </div>
+
+    <!-- MERGED TAB 6: OUTER RIM SECTOR PATROLS -->
+    <div class="section-bar" style="margin-top:18px;">
+      <div>
+        <div class="section-title">4B. 🎯 OUTER RIM SECTOR PATROLS (PASSIVE BOUNTY DISPATCH)</div>
+        <div class="section-sub">Assign Covert Hunters to patrol iconic Mandalorian sectors for recurring Imperial Credit payouts.</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-emerald" onclick="Game.assignAllIdleToPatrol()">🚀 Dispatch All Ready Hunters</button>
+        <button class="btn btn-crimson" onclick="Game.recallAllPatrols()">🛑 Recall All Hunters</button>
+      </div>
+    </div>
+    <div class="card-grid" id="sector-list"></div>
+  </section>
+
+  <!-- ======================================================================
+       TAB 5: HIGH COMMAND (AUTOMATIONS, 6 COMMISSIONS & 150 MILESTONES)
+       ====================================================================== -->
+  <section id="tab-command" class="tab-pane">
+    <div class="section-bar">
+      <div>
+        <div class="section-title">5. COVERT HIGH COMMAND: AUTOMATIONS &amp; GUILD COMMISSIONS</div>
+        <div class="section-sub">Toggle Covert Automations, fulfill 6 rotating Guild Client Commissions (Credits + Free Voxel Miniature), and claim 150 Creed Milestones.</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" id="tog-automarch" onclick="Game.toggleAuto('autoMarch')">🤖 Auto-March: OFF</button>
+        <button class="btn" id="tog-autorepair" onclick="Game.toggleAuto('autoRepair')">🔧 Auto-Repair (&lt;45%): OFF</button>
+        <button class="btn" id="tog-autosupply" onclick="Game.toggleAuto('autoSupply')">⚡ Auto-Supply (&lt;500): OFF</button>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin: 10px 0 8px;">📜 6 ROTATING GUILD CLIENT COMMISSIONS (PAYS CREDITS + FREE MINIATURE)</div>
+    <div class="card-grid" id="commission-list"></div>
+
+    <div class="section-bar" style="margin-top:16px;">
+      <div>
+        <div class="section-title">🏆 THE 150 TRIALS OF THE MANDALORIAN CREED (MILESTONES)</div>
+        <div class="section-sub">Organized into 6 Thematic Books of 25 Trials each. Claim completed trials for Imperial Credits &amp; Beskar Supply caches.</div>
+      </div>
+      <div class="btn-row">
+        <select id="mile-book-filter" onchange="UI.renderMilestones()">
+          <option value="ALL">All 6 Books (150 Trials)</option>
+          <option value="0">Book I: Way of the Foundling (1-25)</option>
+          <option value="1">Book II: Secrets of the Great Forge (26-50)</option>
+          <option value="2">Book III: Blood of the Arena (51-75)</option>
+          <option value="3">Book IV: Guild Ledger &amp; Fortune (76-100)</option>
+          <option value="4">Book V: Syndicate Auctioneer &amp; Crates (101-125)</option>
+          <option value="5">Book VI: Legend of the Mand'alor (126-150)</option>
+        </select>
+        <button class="btn btn-gold" onclick="Game.claimAllMilestones()">✨ Claim All Ready Trials</button>
+      </div>
+    </div>
+    <div class="card-grid" id="milestone-list"></div>
+  </section>
+
+</main>
+
+<!-- 512x512 60 FPS 3D VOXEL INSPECTOR MODAL -->
+<div class="modal-backdrop" id="inspect-modal">
+  <div class="modal-box">
+    <div>
+      <canvas id="inspect-canvas" width="512" height="512"></canvas>
+      <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:11px; color:var(--text-dim);">
+        <span>🖱️ Drag to Orbit 92-Voxel-Tall Heroic Sculpt</span>
+        <span id="inspect-vox-stats">128³ Sparse Voxel Kernel</span>
+      </div>
+    </div>
+    <div style="display:flex; flex-direction:column; justify-content:space-between; gap:10px;">
+      <div>
+        <div class="section-title" id="insp-name" style="font-size:18px;">Miniature Name</div>
+        <div id="insp-sub" style="font-size:12px; color:var(--gold); margin:4px 0 10px;">Class &amp; Finish</div>
+        <div id="insp-details" style="font-size:12px; line-height:1.6; background:var(--bg-deep); padding:10px; border-radius:6px; border:1px solid var(--border);"></div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div class="btn-row">
+          <button class="btn btn-cyan" onclick="Inspector.toggleSpin()">🔄 Toggle Auto-Turntable</button>
+          <button class="btn btn-gold" onclick="Inspector.zoom(0.35)">➕ Zoom In</button>
+          <button class="btn btn-gold" onclick="Inspector.zoom(-0.35)">➖ Zoom Out</button>
+          <button class="btn" onclick="Inspector.resetCam()">🎯 Reset Camera</button>
+        </div>
+        <div style="background:var(--bg-deep); padding:8px; border-radius:6px; border:1px solid var(--border); font-size:11px;">
+          <div><b>Base36 Collector Code:</b> <code id="insp-code" style="color:var(--cyan);">WF-000</code></div>
+        </div>
+        <button class="btn btn-crimson" style="padding:10px;" onclick="Inspector.close()">✖ Close 3D Inspector</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BASE36 TRADE CODE MODAL -->
+<div class="modal-backdrop" id="code-modal">
+  <div class="modal-box" style="grid-template-columns: 1fr; max-width: 520px;">
+    <div>
+      <div class="section-title">📡 HOLONET BASE36 TRADE CODE TRANSCEIVER</div>
+      <div class="section-sub" style="margin:6px 0 12px;">
+        Import any Collector Miniature Code (<code>WF-XXXX</code> encoding Collector `#0001–#1000`) or Commander Code (<code>CMD-XXXX</code>).
+      </div>
+      <div style="display:flex; gap:8px; margin-bottom:12px;">
+        <input type="text" id="trade-code-input" placeholder="Paste WF-... or CMD-... code here" style="flex:1; font-size:13px;" />
+        <button class="btn btn-emerald" onclick="Game.importTradeCode()">📥 Import Code</button>
+      </div>
+      <button class="btn btn-crimson" onclick="document.getElementById('code-modal').classList.remove('open')">Close Transceiver</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-wrap"></div>
+
+<script>
+/* ============================================================================
+   1. EXACT 1,000 COLLECTOR MINIATURE MATRIX (10 CLASSES x 10 CLANS x 10 TIERS)
+   ============================================================================ */
+// 10 Rarity Tiers paired with 10 Iconic Beskar Material Finishes (10)
+const TIERS = [
+  { id: 0, code: 'T1',  name: 'Foundling Initiate',       finish: 'Raw Durasteel',         val: 15,     hp: 110,  atk: 15,  color: '#94a3b8', palShift: [115, 125, 138], emissive: [56, 189, 248] },
+  { id: 1, code: 'T2',  name: 'Covert Bounty Tracker',    finish: 'Weathered Beskar',      val: 45,     hp: 165,  atk: 24,  color: '#64748b', palShift: [158, 170, 184], emissive: [245, 158, 11] },
+  { id: 2, code: 'T3',  name: 'Outer Rim Enforcer',       finish: 'Pure Beskar Silver',    val: 135,    hp: 250,  atk: 38,  color: '#22c55e', palShift: [212, 224, 238], emissive: [56, 189, 248] },
+  { id: 3, code: 'T4',  name: 'Journeyman Protector',     finish: 'Nevarro Lava Forged',   val: 420,    hp: 390,  atk: 60,  color: '#10b981', palShift: [188, 76, 52],   emissive: [255, 110, 30] },
+  { id: 4, code: 'T5',  name: 'Shrieking Hawk Veteran',   finish: 'Nite Owl Cobalt',       val: 1300,   hp: 620,  atk: 95,  color: '#38bdf8', palShift: [55, 122, 210],  emissive: [125, 211, 252] },
+  { id: 5, code: 'T6',  name: 'Super Commando Captain',   finish: 'Armorer Gold Leaf',     val: 4200,   hp: 1020, atk: 150, color: '#0ea5e9', palShift: [230, 180, 58],  emissive: [253, 224, 71] },
+  { id: 6, code: 'T7',  name: 'House Vizsla Champion',    finish: 'Crimson Supercommando', val: 13500,  hp: 1680, atk: 245, color: '#a855f7', palShift: [200, 42, 52],   emissive: [255, 75, 75] },
+  { id: 7, code: 'T8',  name: 'Darksaber Honor Guard',    finish: 'Mythosaur Bone',        val: 42000,  hp: 2800, atk: 405, color: '#d946ef', palShift: [222, 212, 186], emissive: [74, 222, 128] },
+  { id: 8, code: 'T9',  name: 'Great Forge High Armorer', finish: 'Beskar Damascus',       val: 110000, hp: 4700, atk: 660, color: '#f59e0b', palShift: [152, 188, 220], emissive: [192, 132, 252] },
+  { id: 9, code: 'T10', name: 'Mythic Mand\'alor Host',   finish: 'Darksaber Obsidian',    val: 250000, hp: 8000, atk: 1120,color: '#ef4444', palShift: [42, 48, 62],    emissive: [255, 255, 255] }
+];
+
+// 10 Iconic Mandalorian Clans & Houses (10)
+const FACTIONS = [
+  { id: 0, name: 'Clan Mudhorn',          accent: [217, 119, 6],  cape: [120, 65, 25] },
+  { id: 1, name: 'Children of the Watch', accent: [56, 189, 248], cape: [30, 58, 95] },
+  { id: 2, name: 'Clan Kryze Nite Owls',  accent: [37, 99, 235],  cape: [28, 45, 88] },
+  { id: 3, name: 'House Vizsla',          accent: [220, 38, 38],  cape: [95, 22, 28] },
+  { id: 4, name: 'Clan Wren',             accent: [234, 179, 8],  cape: [110, 85, 20] },
+  { id: 5, name: 'Concord Dawn Protectors',accent:[22, 163, 74],  cape: [24, 72, 42] },
+  { id: 6, name: 'Clan Rook',             accent: [168, 85, 247], cape: [68, 32, 98] },
+  { id: 7, name: 'Clan Eldar',            accent: [20, 184, 166], cape: [22, 78, 74] },
+  { id: 8, name: 'Clan Saxon',            accent: [244, 63, 94],  cape: [88, 20, 38] },
+  { id: 9, name: 'Heirs of Mand\'alor',   accent: [245, 158, 11], cape: [45, 45, 55] }
+];
+
+// 10 Ultra-Detailed Heroic Character Archetypes (10 x 10 x 10 = 1,000 Collector Miniatures)
+const ARCHETYPES = [
+  { id: 0, key: 'DARKSABER_CHAMP', group: 'B', range: 25, helm: 'crest',  weapon: 'darksaber', cape: true,  jetpack: true,  plinth: 'ruins', name: 'Darksaber Mand\'alor Champion' },
+  { id: 1, key: 'AMBAN_SNIPER',    group: 'C', range: 95, helm: 'tvisor', weapon: 'amban',     cape: true,  jetpack: false, plinth: 'dune',  name: 'Amban Phase-Pulse Sniper' },
+  { id: 2, key: 'PAZ_JUGGERNAUT',  group: 'A', range: 55, helm: 'heavy',  weapon: 'rotary',    cape: false, jetpack: true,  plinth: 'lava',  name: 'Heavy Repeater Juggernaut' },
+  { id: 3, key: 'NITE_GUNSLINGER', group: 'B', range: 45, helm: 'owl',    weapon: 'dual',      cape: false, jetpack: true,  plinth: 'ruins', name: 'Nite Owl Dual-Westar Gunslinger' },
+  { id: 4, key: 'BESKAR_SPEARMAN', group: 'A', range: 20, helm: 'tvisor', weapon: 'spear',     cape: true,  jetpack: true,  plinth: 'lava',  name: 'Beskar Vibro-Spear Duelist' },
+  { id: 5, key: 'FORGE_ARMORER',   group: 'A', range: 30, helm: 'horns',  weapon: 'hammer',    cape: true,  jetpack: false, plinth: 'anvil', name: 'Great Forge High Armorer' },
+  { id: 6, key: 'WHISTLING_PYRO',  group: 'C', range: 40, helm: 'tvisor', weapon: 'pyro',      cape: true,  jetpack: true,  plinth: 'lava',  name: 'Whistling Bird Flame-Enforcer' },
+  { id: 7, key: 'HAWK_INTERCEPT',  group: 'B', range: 65, helm: 'owl',    weapon: 'carbine',   cape: false, jetpack: 'fly', plinth: 'air',   name: 'Shrieking Hawk Flight Interceptor' },
+  { id: 8, key: 'SHADOW_ASSASSIN', group: 'C', range: 35, helm: 'spikes', weapon: 'blades',    cape: true,  jetpack: false, plinth: 'smoke', name: 'Shadow Covert Vibro-Assassin' },
+  { id: 9, key: 'REMNANT_COMMANDO',group: 'C', range: 75, helm: 'spikes', weapon: 'eweb',      cape: true,  jetpack: true,  plinth: 'ruins', name: 'Supercommando Siege Gunner' }
+];
+
+// 6 Outer Rim Sector Patrols
+const SECTORS = [
+  { id: 0, name: 'Nevarro Lava Flats',         minTier: 0, cycleSec: 12, baseReward: 32,   fuelCost: 4,  desc: 'Clear Remnant scout patrols around the covert lava tunnels.' },
+  { id: 1, name: 'Tatooine Dune Sea Wastes',   minTier: 1, cycleSec: 16, baseReward: 95,   fuelCost: 8,  desc: 'Hunt syndicate bounties across the Jundland canyon ridges.' },
+  { id: 2, name: 'Trask Moon Black Docks',     minTier: 2, cycleSec: 20, baseReward: 260,  fuelCost: 14, desc: 'Board Imperial Gozanti freighters and seize weapons crates.' },
+  { id: 3, name: 'Morak Rhydonium Refinery',   minTier: 4, cycleSec: 24, baseReward: 840,  fuelCost: 24, desc: 'Ambush heavily armored Remnant juggernaut transports.' },
+  { id: 4, name: 'Concord Dawn Shattered Ring',minTier: 6, cycleSec: 28, baseReward: 2900, fuelCost: 40, desc: 'Defend ancient Protectorate orbital vaults from warlords.' },
+  { id: 5, name: 'Mandalore Great Forge Ruins',minTier: 8, cycleSec: 34, baseReward: 9500, fuelCost: 65, desc: 'Reclaim the Living Waters and purge Beskar-armored Praetorians.' }
+];
+
+/* ============================================================================
+   2. ULTRA-DETAILED 128³ HEROIC CHARACTER VOXEL ENGINE
+   ============================================================================ */
+class VoxelWarforgeEngine {
+  constructor(canvas) {
+    this.width = 512; this.height = 512;
+    this.canvas = canvas || document.createElement('canvas');
+    this.canvas.width = 512; this.canvas.height = 512;
+    this.ctx = this.canvas.getContext('2d');
+
+    this.thumbCanvas = document.createElement('canvas');
+    this.thumbCanvas.width = 128; this.thumbCanvas.height = 128;
+    this.thumbCtx = this.thumbCanvas.getContext('2d');
+    this.thumbCtx.imageSmoothingEnabled = false;
+
+    this.DIM = 128;
+    this.grid = new Uint8Array(128 * 128 * 128);
+    this.stampGrid = new Uint16Array(128 * 128 * 128);
+    this.currentStamp = 1;
+
+    this.occupiedList = new Int32Array(320000);
+    this.occupiedCount = 0;
+
+    const MAX_SURF = 200000;
+    this.surfX = new Int16Array(MAX_SURF);
+    this.surfY = new Int16Array(MAX_SURF);
+    this.surfZ = new Int16Array(MAX_SURF);
+    this.surfColTop = new Uint32Array(MAX_SURF);
+    this.surfColLeft = new Uint32Array(MAX_SURF);
+    this.surfColRight = new Uint32Array(MAX_SURF);
+    this.surfCount = 0;
+
+    this.zBuf = new Float32Array(512 * 512);
+    this.imgData = this.ctx.createImageData(512, 512);
+    this.pixels = new Uint32Array(this.imgData.data.buffer);
+
+    this.paletteRGB = new Uint32Array(256);
+    this.materialPriority = new Uint32Array(256);
+    this.isEmissive = new Uint8Array(256);
+
+    this.yaw = 0.48; this.pitch = 0.26; this.scale = 3.95; this.seed = 1600;
+  }
+
+  clearGrid() {
+    this.currentStamp++;
+    if (this.currentStamp >= 65530) {
+      this.stampGrid.fill(0);
+      this.currentStamp = 1;
+    }
+    this.occupiedCount = 0;
+    this.surfCount = 0;
+  }
+
+  packRGB(r, g, b) {
+    const cr = Math.max(0, Math.min(255, r | 0));
+    const cg = Math.max(0, Math.min(255, g | 0));
+    const cb = Math.max(0, Math.min(255, b | 0));
+    return (255 << 24) | (cb << 16) | (cg << 8) | cr;
+  }
+
+  setupPalette(unit) {
+    const tData = TIERS[unit.tier] || TIERS[0];
+    const fac = FACTIONS[unit.faction] || FACTIONS[0];
+    this.isEmissive.fill(0);
+    this.materialPriority.fill(1);
+
+    const fillRamp = (startIdx, count, r, g, b, prio, emis = 0) => {
+      for (let i = 0; i < count; i++) {
+        const t = count > 1 ? (i / (count - 1)) : 0.5;
+        const shade = 0.62 + t * 0.58;
+        this.paletteRGB[startIdx + i] = this.packRGB(r * shade, g * shade, b * shade);
+        this.materialPriority[startIdx + i] = prio;
+        this.isEmissive[startIdx + i] = emis;
+      }
+    };
+
+    // 1..15: Plinth Rim Obsidian
+    fillRamp(1, 15, 34, 40, 50, 1, 0);
+    // 16..31: Plinth Stone / Basalt / Dune Terrain
+    fillRamp(16, 16, 76, 70, 64, 2, 0);
+    // 32..47: Primary Beskar Armor Finish
+    fillRamp(32, 16, tData.palShift[0], tData.palShift[1], tData.palShift[2], 6, 0);
+    // 48..63: Clan Accent Plating (Pauldrons, Trim, Knee Poleyns)
+    fillRamp(48, 16, fac.accent[0], fac.accent[1], fac.accent[2], 7, 0);
+    // 64..79: Flightsuit Charcoal & T-Visor Pitch Black
+    fillRamp(64, 16, 22, 26, 34, 5, 0);
+    // 80..95: Weapon Gunmetal & Barrel Steel
+    fillRamp(80, 16, 62, 70, 82, 7, 0);
+    // 96..111: Forged Gold / Kar'ta Beskar Trim / Buckles
+    fillRamp(96, 16, 238, 184, 52, 8, 0);
+    // 112..127: Cuirbouilli Leather Bandolier, Belt & Holsters
+    fillRamp(112, 16, 114, 72, 42, 6, 0);
+    // 128..143: Emissive Plasma / Darksaber Edge / Whistling Bird Glow
+    fillRamp(128, 16, tData.emissive[0], tData.emissive[1], tData.emissive[2], 10, 1);
+    // 144..159: Woven Cape & Kama Cloth
+    fillRamp(144, 16, fac.cape[0], fac.cape[1], fac.cape[2], 4, 0);
+    // 160..175: Flame / Lava / Thruster Fire Glow
+    fillRamp(160, 16, 255, 105, 25, 10, 1);
+    // 176..191: Thermal Smoke / Exhaust Cloud
+    fillRamp(176, 16, 165, 175, 188, 3, 0);
+  }
+
+  setVoxel(x, y, z, colIdx) {
+    if (x < 2 || x >= 126 || y < 2 || y >= 124 || z < 2 || z >= 126 || colIdx <= 0) return;
+    const idx = (y << 14) | (z << 7) | x;
+    const stamp = this.stampGrid[idx];
+    if (stamp !== this.currentStamp) {
+      this.stampGrid[idx] = this.currentStamp;
+      this.grid[idx] = colIdx;
+      if (this.occupiedCount < 319990) {
+        this.occupiedList[this.occupiedCount++] = idx;
+      }
+    } else {
+      const oldCol = this.grid[idx];
+      if (this.materialPriority[colIdx] >= this.materialPriority[oldCol]) {
+        this.grid[idx] = colIdx;
+      }
+    }
+  }
+
+  getVoxel(x, y, z) {
+    if (x < 0 || x >= 128 || y < 0 || y >= 128 || z < 0 || z >= 128) return 0;
+    const idx = (y << 14) | (z << 7) | x;
+    return this.stampGrid[idx] === this.currentStamp ? this.grid[idx] : 0;
+  }
+
+  fillShellBox(x0, y0, z0, x1, y1, z1, baseCol, span = 8) {
+    const ax0 = Math.max(2, Math.min(x0, x1) | 0);
+    const ax1 = Math.min(125, Math.max(x0, x1) | 0);
+    const ay0 = Math.max(2, Math.min(y0, y1) | 0);
+    const ay1 = Math.min(123, Math.max(y0, y1) | 0);
+    const az0 = Math.max(2, Math.min(z0, z1) | 0);
+    const az1 = Math.min(125, Math.max(z0, z1) | 0);
+
+    for (let y = ay0; y <= ay1; y++) {
+      const yEdge = (y === ay0 || y === ay1);
+      for (let z = az0; z <= az1; z++) {
+        const zEdge = (z === az0 || z === az1);
+        for (let x = ax0; x <= ax1; x++) {
+          if (yEdge || zEdge || x === ax0 || x === ax1) {
+            const c = baseCol + (((x + y + z) * 3) % span);
+            this.setVoxel(x, y, z, c);
+          }
+        }
+      }
+    }
+  }
+
+  fillShellCylinder(cx, y0, cz, r, h, baseCol, span = 8) {
+    const ir = Math.ceil(r);
+    const r2 = r * r;
+    const innerR2 = Math.max(0, (r - 1.45) * (r - 1.45));
+    const ay0 = y0 | 0;
+    const ay1 = (y0 + h) | 0;
+    for (let y = ay0; y <= ay1; y++) {
+      const yCap = (y === ay0 || y === ay1);
+      for (let dz = -ir; dz <= ir; dz++) {
+        for (let dx = -ir; dx <= ir; dx++) {
+          const d2 = dx * dx + dz * dz;
+          if (d2 <= r2 && (yCap || d2 >= innerR2)) {
+            const c = baseCol + ((Math.abs(dx + dz + y)) % span);
+            this.setVoxel((cx + dx) | 0, y, (cz + dz) | 0, c);
+          }
+        }
+      }
+    }
+  }
+
+  fillEllipsoid(cx, cy, cz, rx, ry, rz, baseCol, span = 8) {
+    const irx = Math.ceil(rx), iry = Math.ceil(ry), irz = Math.ceil(rz);
+    for (let dy = -iry; dy <= iry; dy++) {
+      for (let dz = -irz; dz <= irz; dz++) {
+        for (let dx = -irx; dx <= irx; dx++) {
+          const d = (dx * dx) / (rx * rx) + (dy * dy) / (ry * ry) + (dz * dz) / (rz * rz);
+          if (d <= 1.0 && d >= 0.58) {
+            const c = baseCol + (Math.abs(dx + dy + dz) % span);
+            this.setVoxel((cx + dx) | 0, (cy + dy) | 0, (cz + dz) | 0, c);
+          }
+        }
+      }
+    }
+  }
+
+  drawRod(x1, y1, z1, x2, y2, z2, r, colIdx) {
+    const dx = x2 - x1, dy = y2 - y1, dz = z2 - z1;
+    const steps = Math.max(1, Math.ceil(Math.sqrt(dx * dx + dy * dy + dz * dz) * 1.6));
+    const ir = Math.max(0, Math.floor(r));
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const cx = (x1 + dx * t) | 0;
+      const cy = (y1 + dy * t) | 0;
+      const cz = (z1 + dz * t) | 0;
+      for (let oy = -ir; oy <= ir; oy++) {
+        for (let oz = -ir; oz <= ir; oz++) {
+          for (let ox = -ir; ox <= ir; ox++) {
+            if (ox * ox + oy * oy + oz * oz <= r * r + 0.45) {
+              this.setVoxel(cx + ox, cy + oy, cz + oz, colIdx);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Build Heroic Display Plinth (Y = 5..18)
+  buildHeroicPlinth(plinthType) {
+    // Beveled collector base ring
+    this.fillShellCylinder(64, 5, 64, 38, 5, 1, 10);
+    this.fillShellCylinder(64, 10, 64, 34, 5, 16, 12);
+    this.fillShellCylinder(64, 15, 64, 31, 3, 18, 12);
+    // Gold collector rim plaque on front (+Z)
+    this.fillShellBox(52, 6, 98, 76, 10, 102, 98, 8);
+
+    if (plinthType === 'lava') {
+      // Glowing Nevarro lava river channel & basalt rocks
+      this.fillShellBox(44, 16, 42, 84, 18, 86, 162, 10);
+      this.fillShellBox(38, 16, 48, 56, 20, 80, 18, 10);
+      this.fillShellBox(70, 16, 48, 88, 20, 80, 18, 10);
+    } else if (plinthType === 'anvil') {
+      // Great Forge Sacred Beskar Anvil & Brazier in front-side
+      this.fillShellBox(76, 18, 68, 92, 28, 80, 82, 10);
+      this.fillShellBox(72, 28, 66, 96, 33, 82, 98, 10);
+      this.fillShellCylinder(42, 18, 74, 7, 10, 82, 8);
+      this.fillShellCylinder(42, 28, 74, 6, 5, 162, 8);
+    } else if (plinthType === 'smoke') {
+      // Billowing 3D thermal smoke clouds around boots
+      for (let i = 0; i < 12; i++) {
+        const ang = (i / 12) * Math.PI * 2;
+        const sx = (64 + Math.cos(ang) * 20) | 0;
+        const sz = (64 + Math.sin(ang) * 20) | 0;
+        this.fillEllipsoid(sx, 20 + (i % 3) * 3, sz, 7, 5, 7, 176, 10);
+      }
+    } else if (plinthType === 'air') {
+      // Twin Jetpack Rocket Exhaust Plumes lifting the warrior!
+      this.fillShellCylinder(58, 16, 56, 5, 16, 160, 12);
+      this.fillShellCylinder(70, 16, 56, 5, 16, 160, 12);
+      this.fillEllipsoid(58, 18, 56, 9, 4, 9, 176, 10);
+      this.fillEllipsoid(70, 18, 56, 9, 4, 9, 176, 10);
+    } else {
+      // Shattered Sundari Ruins & Remnant Droid Trophy
+      this.fillShellBox(40, 17, 44, 58, 21, 78, 20, 10);
+      this.fillShellCylinder(80, 18, 76, 6, 6, 82, 8);
+      this.setVoxel(80, 21, 82, 164); // Crushed droid photoreceptor
+    }
+  }
+
+  // Build 92-Voxel-Tall Heroic Scale Mandalorian Character
+  buildUnitModel(unit) {
+    this.clearGrid();
+    this.setupPalette(unit);
+
+    const arch = ARCHETYPES[unit.division] || ARCHETYPES[0];
+    this.buildHeroicPlinth(arch.plinth);
+
+    const flyOffset = arch.jetpack === 'fly' ? 12 : 0;
+    const by = 18 + flyOffset; // Base foot height
+
+    // 1. ARMORED BOOTS, PLEATED GAITERS & SHIN GREAVES (by .. by+20)
+    const lx = 55, rx = 73, lz = 64, rz = 62;
+    // Left & Right Armored Boots
+    this.fillShellBox(lx - 5, by, lz - 5, lx + 5, by + 6, lz + 9, 64, 10);
+    this.fillShellBox(lx - 4, by + 2, lz + 4, lx + 4, by + 6, lz + 10, 34, 10); // Toe plate
+    this.fillShellBox(rx - 5, by, rz - 5, rx + 5, by + 6, rz + 9, 64, 10);
+    this.fillShellBox(rx - 4, by + 2, rz + 4, rx + 4, by + 6, rz + 10, 34, 10);
+
+    // Shin Flightsuit + Beskar Greaves + Center Ridge
+    this.fillShellCylinder(lx, by + 6, lz, 4.5, 15, 64, 10);
+    this.fillShellCylinder(rx, by + 6, rz, 4.5, 15, 64, 10);
+    this.fillShellBox(lx - 4, by + 7, lz + 1, lx + 4, by + 20, lz + 6, 32, 12);
+    this.fillShellBox(rx - 4, by + 7, rz + 1, rx + 4, by + 20, rz + 6, 32, 12);
+    // Vertical center ridge on greaves
+    this.fillShellBox(lx - 1, by + 8, lz + 6, lx + 1, by + 19, lz + 7, 48, 10);
+    this.fillShellBox(rx - 1, by + 8, rz + 6, rx + 1, by + 19, rz + 7, 48, 10);
+
+    // 2. KNEE POLEYNS WITH DART LAUNCHERS (by+20 .. by+25)
+    this.fillShellBox(lx - 5, by + 20, lz + 2, lx + 5, by + 25, lz + 8, 48, 12);
+    this.fillShellBox(rx - 5, by + 20, rz + 2, rx + 5, by + 25, rz + 8, 48, 12);
+    // Knee rocket-dart tubes on outer edges
+    this.setVoxel(lx - 6, by + 22, lz + 5, 98);
+    this.setVoxel(lx - 6, by + 23, lz + 6, 132);
+    this.setVoxel(rx + 6, by + 22, rz + 5, 98);
+    this.setVoxel(rx + 6, by + 23, rz + 6, 132);
+
+    // 3. THIGH CUISSES, HIP TASSETS & CODPIECE (by+25 .. by+40)
+    this.fillShellCylinder(lx + 1, by + 25, lz, 5.2, 13, 64, 10);
+    this.fillShellCylinder(rx - 1, by + 25, rz, 5.2, 13, 64, 10);
+    // Beskar Thigh Plates with raised rectangular ridge
+    this.fillShellBox(lx - 4, by + 26, lz + 2, lx + 5, by + 37, lz + 7, 34, 12);
+    this.fillShellBox(rx - 5, by + 26, rz + 2, rx + 4, by + 37, rz + 7, 34, 12);
+    this.fillShellBox(lx, by + 27, lz + 7, lx + 1, by + 36, lz + 8, 98, 8);
+    this.fillShellBox(rx - 1, by + 27, rz + 7, rx, by + 36, rz + 8, 98, 8);
+
+    // Pelvis, Codpiece & Hip Tassets
+    const py = by + 37;
+    this.fillShellBox(51, py, 57, 77, py + 7, 69, 64, 10);
+    this.fillShellBox(58, py, 68, 70, py + 6, 72, 34, 12); // Codpiece
+    this.fillShellBox(47, py - 3, 58, 51, py + 5, 68, 48, 10); // Left Tasset
+    this.fillShellBox(77, py - 3, 58, 81, py + 5, 68, 48, 10); // Right Tasset
+
+    // 4. LEATHER UTILITY BELT, AMMO POUCHES & THERMAL DETONATORS (py+6 .. py+10)
+    const beltY = py + 6;
+    this.fillShellBox(49, beltY, 56, 79, beltY + 4, 71, 112, 12);
+    this.fillShellBox(60, beltY, 71, 68, beltY + 4, 73, 98, 10); // Gold Mythosaur Buckle
+    // Individual Thermal Detonators & Tibanna Cartridges on belt
+    for (let bx = 52; bx <= 76; bx += 6) {
+      if (bx === 64) continue;
+      this.fillShellBox(bx - 1, beltY + 1, 71, bx + 1, beltY + 3, 73, 82, 8);
+      this.setVoxel(bx, beltY + 2, 74, 134); // Glowing detonator indicator
+    }
+
+    // 5. TORSO FLAK VEST, BREASTPLATES & KAR'TA BESKAR IRON HEART (beltY+4 .. beltY+26)
+    const ty0 = beltY + 4;
+    const ty1 = ty0 + 22;
+    this.fillShellBox(50, ty0, 56, 78, ty1, 70, 64, 12); // Dark Flak Vest
+    // Abdominal Plate
+    this.fillShellBox(54, ty0 + 2, 69, 74, ty0 + 8, 72, 32, 12);
+    // Left & Right Symmetrical Beskar Breastplates
+    this.fillShellBox(51, ty0 + 10, 69, 61, ty1 - 2, 74, 34, 12);
+    this.fillShellBox(67, ty0 + 10, 69, 77, ty1 - 2, 74, 34, 12);
+    // THE KAR'TA BESKAR (Hexagonal Iron Heart Diamond at center of chest!)
+    this.fillShellBox(62, ty0 + 12, 70, 66, ty0 + 18, 74, 98, 10);
+    this.setVoxel(64, ty0 + 15, 75, 134);
+
+    // Diagonal Leather Bandolier with Silver Tibanna Charges
+    for (let s = 0; s <= 18; s++) {
+      const bx = 52 + s;
+      const byBand = ty1 - 2 - s;
+      this.fillShellBox(bx, byBand, 72, bx + 2, byBand + 2, 75, 114, 8);
+      if (s % 4 === 0) {
+        this.fillShellBox(bx, byBand, 75, bx + 2, byBand + 1, 76, 98, 6);
+      }
+    }
+
+    // 6. 3D SINE-WAVE FLOWING CAPE OR Z-6 JETPACK ON BACK (-Z)
+    if (arch.cape) {
+      for (let cy = by + 8; cy <= ty1 - 1; cy++) {
+        const t = (ty1 - cy) / (ty1 - by);
+        const flare = Math.round(t * 10);
+        const wave = Math.round(Math.sin(cy * 0.25) * 2.5);
+        for (let cx = 48 - flare; cx <= 80 + flare; cx++) {
+          const fold = Math.round(Math.cos((cx - 64) * 0.35) * 2);
+          const cz = 53 - Math.round(t * 8) + wave + fold;
+          this.setVoxel(cx, cy, cz, 144 + ((cx + cy) % 12));
+          this.setVoxel(cx, cy, cz + 1, 144 + ((cx + cy) % 12));
+        }
+      }
+    }
+    if (arch.jetpack) {
+      // Z-6 Jetpack with Dual Fuel Tanks, Thruster Bells & Warhead Cone
+      this.fillShellBox(54, ty0 + 4, 47, 74, ty1 - 1, 56, 34, 12);
+      this.fillShellCylinder(57, ty0 + 2, 50, 4, 18, 48, 10);
+      this.fillShellCylinder(71, ty0 + 2, 50, 4, 18, 48, 10);
+      this.fillShellCylinder(64, ty1 - 1, 51, 3, 9, 98, 10); // Top Warhead
+      this.setVoxel(57, ty0, 50, 164); // Left thruster glow
+      this.setVoxel(71, ty0, 50, 164); // Right thruster glow
+    }
+
+    // 7. SCULPTED PAULDRONS, ARMS & 5-GROOVED WHISTLING BIRD GAUNTLETS
+    const pSize = arch.helm === 'heavy' ? 9 : 7;
+    // Left & Right Pauldrons with raised center ridge
+    this.fillEllipsoid(44, ty1 - 4, 63, pSize, 7, 8, 48, 12);
+    this.fillEllipsoid(84, ty1 - 4, 63, pSize, 7, 8, 48, 12);
+    this.fillShellBox(44 - pSize, ty1 - 5, 61, 44 - pSize + 2, ty1 - 1, 65, 98, 8); // Clan Crest
+    this.fillShellBox(84 + pSize - 2, ty1 - 5, 61, 84 + pSize, ty1 - 1, 65, 98, 8);
+
+    // Upper Arms & Articulated Gauntlets
+    this.drawRod(44, ty1 - 6, 63, 39, ty0 + 4, 68, 4.0, 64);
+    this.drawRod(84, ty1 - 6, 63, 89, ty0 + 4, 68, 4.0, 64);
+    // Left Gauntlet (5-grooved Whistling Bird launcher + Flamethrower housing)
+    this.fillShellBox(35, ty0 + 1, 65, 43, ty0 + 11, 76, 34, 12);
+    this.fillShellBox(36, ty0 + 8, 68, 42, ty0 + 13, 75, 98, 10); // Whistling bird micro-tubes
+    for (let g = 69; g <= 74; g += 2) this.setVoxel(39, ty0 + 13, g, 134);
+    // Right Gauntlet
+    this.fillShellBox(85, ty0 + 1, 65, 93, ty0 + 11, 76, 34, 12);
+
+    // 8. HEROIC MANDALORIAN HELMET, MANDIBLES, T-VISOR & CRESTS (ty1+1 .. ty1+22)
+    const hy0 = ty1 + 1;
+    // Neck seal
+    this.fillShellCylinder(64, ty1 - 1, 63, 5.5, 4, 64, 8);
+    // Lower Helmet Cylinder + Rounded Dome Crown
+    this.fillShellCylinder(64, hy0 + 2, 63, 10.5, 11, 32, 14);
+    this.fillEllipsoid(64, hy0 + 13, 63, 10.8, 8.5, 11.2, 34, 14);
+    // Mohawk Dome Ridge
+    this.fillShellBox(62, hy0 + 14, 54, 66, hy0 + 22, 71, 48, 10);
+    // Brow Groove & Cheek Mandibles
+    this.fillShellBox(55, hy0 + 11, 71, 73, hy0 + 13, 75, 48, 10);
+    this.fillShellBox(54, hy0 + 3, 69, 59, hy0 + 9, 74, 48, 10);
+    this.fillShellBox(69, hy0 + 3, 69, 74, hy0 + 9, 74, 48, 10);
+
+    // Iconic Pitch-Black T-Visor (or Nite Owl Angled Visor)
+    for (let vx = 56; vx <= 72; vx++) {
+      const owlDip = (arch.helm === 'owl' && (vx < 60 || vx > 68)) ? -1 : 0;
+      this.setVoxel(vx, hy0 + 10 + owlDip, 73, 64);
+      this.setVoxel(vx, hy0 + 9 + owlDip, 73, 64);
+      this.setVoxel(vx, hy0 + 10 + owlDip, 74, 64);
+    }
+    for (let vy = hy0 + 3; vy <= hy0 + 10; vy++) {
+      this.fillShellBox(62, vy, 73, 66, vy, 75, 64, 4);
+    }
+
+    // Ear Caps & Articulated Rangefinder Stalk
+    this.fillShellBox(52, hy0 + 6, 61, 54, hy0 + 13, 65, 98, 8);
+    this.fillShellBox(74, hy0 + 6, 61, 76, hy0 + 13, 65, 98, 8);
+    this.drawRod(75, hy0 + 12, 63, 75, hy0 + 23, 63, 1.1, 82);
+    this.fillShellBox(71, hy0 + 22, 62, 76, hy0 + 24, 66, 98, 8);
+    this.setVoxel(72, hy0 + 23, 67, 134); // Rangefinder HUD optic
+
+    // Special Helmet Crowns (Armorer Gold Horns / Mauldalorian Spikes / Mand'alor Crest)
+    if (arch.helm === 'horns') {
+      const hPts = [[-6, 6], [-3, 8], [0, 9], [3, 8], [6, 6]];
+      for (const [hx, hz] of hPts) {
+        this.drawRod(64 + hx, hy0 + 16, 63 + hz, 64 + hx * 1.3, hy0 + 23, 63 + hz + 2, 1.4, 98);
+      }
+    } else if (arch.helm === 'spikes') {
+      const sPts = [[-7, 4], [-4, 6], [0, 7], [4, 6], [7, 4], [-5, 0], [5, 0]];
+      for (const [sx, sz] of sPts) {
+        this.drawRod(64 + sx, hy0 + 17, 63 + sz, 64 + sx * 1.2, hy0 + 24, 63 + sz, 1.3, 98);
+      }
+    } else if (arch.helm === 'crest') {
+      this.fillShellBox(61, hy0 + 16, 52, 67, hy0 + 25, 73, 98, 10);
+    }
+
+    // 9. SIGNATURE HEROIC WEAPON SYSTEMS (10 LOADOUTS)
+    const wxR = 89, wyR = ty0 + 4, wzR = 74;
+    const wxL = 39, wyL = ty0 + 4, wzL = 74;
+
+    if (arch.weapon === 'darksaber') {
+      // Crackling White-Edged Black Obsidian Darksaber Blade!
+      this.drawRod(wxR, wyR - 2, wzR, wxR, wyR + 6, wzR + 4, 2.0, 98); // Hilt & Crossguard
+      this.drawRod(wxR, wyR + 6, wzR + 4, wxR - 6, wyR + 46, wzR + 22, 2.3, 134); // Glowing white plasma aura
+      this.drawRod(wxR, wyR + 6, wzR + 3, wxR - 6, wyR + 44, wzR + 21, 1.4, 64);  // Void-black core
+    } else if (arch.weapon === 'amban') {
+      // Iconic Forked Amban Phase-Pulse Sniper Rifle
+      this.drawRod(wxR, wyR - 8, wzR - 10, wxR, wyR + 2, wzR + 28, 2.0, 114); // Wooden stock & receiver
+      this.drawRod(wxR, wyR + 2, wzR + 4, wxR, wyR + 6, wzR + 44, 1.4, 82);   // Long barrel
+      this.drawRod(wxR, wyR + 5, wzR + 12, wxR, wyR + 5, wzR + 22, 1.5, 98);  // Optic scope
+      // Two-prong disintegrator tuning fork tip
+      this.drawRod(wxR - 2, wyR + 6, wzR + 44, wxR - 2, wyR + 7, wzR + 50, 1.0, 132);
+      this.drawRod(wxR + 2, wyR + 6, wzR + 44, wxR + 2, wyR + 7, wzR + 50, 1.0, 132);
+    } else if (arch.weapon === 'rotary') {
+      // Paz-Pattern Heavy Rotary Blaster Cannon + Ammo Belt
+      this.fillShellCylinder(64, wyR - 4, wzR + 10, 6, 22, 82, 10);
+      this.drawRod(52, wyR - 2, wzR + 6, 84, wyR - 4, wzR + 28, 4.2, 82);
+      this.fillShellCylinder(84, wyR - 4, wzR + 28, 4.5, 6, 162, 10); // Glowing hot rotary muzzle
+    } else if (arch.weapon === 'dual') {
+      // Dual Westar-35 Pistols with Plasma Muzzle Bolts
+      this.drawRod(wxL, wyL, wzL, wxL, wyL + 2, wzL + 16, 1.8, 82);
+      this.drawRod(wxR, wyR, wzR, wxR, wyR + 2, wzR + 16, 1.8, 82);
+      this.fillShellCylinder(wxL, wyL + 2, wzL + 18, 2.5, 4, 132, 6);
+      this.fillShellCylinder(wxR, wyR + 2, wzR + 18, 2.5, 4, 132, 6);
+    } else if (arch.weapon === 'spear') {
+      // Pure Beskar Vibro-Spear + Left Arm Energy Buckler Shield
+      this.drawRod(wxR + 2, by + 2, wzR - 8, wxR + 2, by + 88, wzR + 12, 1.6, 36);
+      this.drawRod(wxR + 2, by + 82, wzR + 10, wxR + 2, by + 95, wzR + 14, 2.2, 132);
+      // Glowing circular energy shield on left gauntlet
+      this.fillShellCylinder(wxL - 4, wyL - 2, wzL + 4, 10, 2, 130, 8);
+    } else if (arch.weapon === 'hammer') {
+      // Great Forge Beskar Hammer + Glowing Tongs
+      this.drawRod(wxR, wyR - 6, wzR, wxR, wyR + 22, wzR + 8, 1.8, 98);
+      this.fillShellBox(wxR - 6, wyR + 20, wzR + 2, wxR + 6, wyR + 27, wzR + 14, 98, 10);
+      this.drawRod(wxL, wyL, wzL, wxL - 2, wyL + 16, wzL + 12, 1.5, 82);
+      this.fillShellBox(wxL - 5, wyL + 15, wzL + 12, wxL + 1, wyL + 19, wzL + 18, 162, 8); // Heated Beskar ingot
+    } else if (arch.weapon === 'pyro') {
+      // 3D Gauntlet Flamethrower Plume + Spiraling Whistling Birds
+      for (let f = 1; f <= 10; f++) {
+        this.fillEllipsoid(wxL, wyL + f * 1.2, wzL + f * 3, 2 + f * 0.7, 2 + f * 0.6, 3, 160, 12);
+      }
+      for (let w = 0; w < 6; w++) {
+        const ang = (w / 6) * Math.PI * 2;
+        const bx = (64 + Math.cos(ang) * 34) | 0;
+        const byW = (ty0 + 18 + Math.sin(ang) * 18) | 0;
+        this.fillShellBox(bx - 2, byW - 2, 84, bx + 2, byW + 2, 89, 132, 6);
+      }
+    } else if (arch.weapon === 'blades') {
+      // Dual Wrist Vibro-Blades with Energy Edge
+      this.drawRod(wxL, wyL + 2, wzL + 2, wxL - 4, wyL + 16, wzL + 22, 1.8, 36);
+      this.drawRod(wxR, wyR + 2, wzR + 2, wxR + 4, wyR + 16, wzR + 22, 1.8, 36);
+      this.drawRod(wxL, wyL + 3, wzL + 3, wxL - 4, wyL + 17, wzL + 23, 1.0, 134);
+      this.drawRod(wxR, wyR + 3, wzR + 3, wxR + 4, wyR + 17, wzR + 23, 1.0, 134);
+    } else {
+      // Heavy Blaster Carbine / E-Web Assault Blaster
+      this.drawRod(wxR, wyR, wzR - 4, wxR, wyR + 3, wzR + 26, 2.4, 82);
+      this.fillShellBox(wxR - 2, wyR - 3, wzR + 6, wxR + 2, wyR + 4, wzR + 16, 48, 8);
+      this.setVoxel(wxR, wyR + 3, wzR + 27, 164);
+    }
+
+    this.bakeSurfaceVoxels();
+  }
+
+  bakeSurfaceVoxels() {
+    this.surfCount = 0;
+    const maxS = 199990;
+
+    for (let i = 0; i < this.occupiedCount; i++) {
+      const idx = this.occupiedList[i];
+      if (this.stampGrid[idx] !== this.currentStamp) continue;
+      const colIdx = this.grid[idx];
+      if (colIdx === 0) continue;
+
+      const x = idx & 127;
+      const z = (idx >> 7) & 127;
+      const y = (idx >> 14) & 127;
+
+      const nX0 = this.getVoxel(x - 1, y, z);
+      const nX1 = this.getVoxel(x + 1, y, z);
+      const nY0 = this.getVoxel(x, y - 1, z);
+      const nY1 = this.getVoxel(x, y + 1, z);
+      const nZ0 = this.getVoxel(x, y, z - 1);
+      const nZ1 = this.getVoxel(x, y, z + 1);
+
+      if (nX0 && nX1 && nY0 && nY1 && nZ0 && nZ1) continue;
+
+      const baseRGB = this.paletteRGB[colIdx];
+      const r = baseRGB & 255;
+      const g = (baseRGB >> 8) & 255;
+      const b = (baseRGB >> 16) & 255;
+
+      if (this.isEmissive[colIdx]) {
+        const emCol = this.packRGB(Math.min(255, r * 1.28), Math.min(255, g * 1.28), Math.min(255, b * 1.28));
+        this.surfX[this.surfCount] = x;
+        this.surfY[this.surfCount] = y;
+        this.surfZ[this.surfCount] = z;
+        this.surfColTop[this.surfCount] = emCol;
+        this.surfColLeft[this.surfCount] = emCol;
+        this.surfColRight[this.surfCount] = emCol;
+        this.surfCount++;
+        if (this.surfCount >= maxS) break;
+        continue;
+      }
+
+      let ao = 1.0;
+      if (this.getVoxel(x + 1, y + 1, z)) ao -= 0.08;
+      if (this.getVoxel(x - 1, y + 1, z)) ao -= 0.08;
+      if (this.getVoxel(x, y + 1, z + 1)) ao -= 0.08;
+      if (this.getVoxel(x, y + 1, z - 1)) ao -= 0.08;
+
+      let shadow = 1.0;
+      for (let s = 1; s <= 10; s++) {
+        if (this.getVoxel(x + s, y + (s << 1), z + s)) {
+          shadow = 0.72;
+          break;
+        }
+      }
+
+      const fTop = Math.min(1.32, 1.14 * ao * shadow);
+      const fLeft = Math.min(1.22, 0.88 * ao * shadow);
+      const fRight = Math.min(1.12, 0.70 * ao * shadow);
+
+      this.surfX[this.surfCount] = x;
+      this.surfY[this.surfCount] = y;
+      this.surfZ[this.surfCount] = z;
+      this.surfColTop[this.surfCount] = this.packRGB(r * fTop, g * fTop, b * fTop);
+      this.surfColLeft[this.surfCount] = this.packRGB(r * fLeft, g * fLeft, b * fLeft);
+      this.surfColRight[this.surfCount] = this.packRGB(r * fRight, g * fRight, b * fRight);
+      this.surfCount++;
+      if (this.surfCount >= maxS) break;
+    }
+  }
+
+  render(targetCanvas) {
+    this.zBuf.fill(-999999);
+    this.pixels.fill(0);
+
+    const cosY = Math.cos(this.yaw), sinY = Math.sin(this.yaw);
+    const cosP = Math.cos(this.pitch), sinP = Math.sin(this.pitch);
+    const sc = this.scale;
+
+    for (let i = 0; i < this.surfCount; i++) {
+      const vx = this.surfX[i] - 64;
+      const vy = this.surfY[i] - 58;
+      const vz = this.surfZ[i] - 64;
+
+      const rx = vx * cosY - vz * sinY;
+      const rz = vx * sinY + vz * cosY;
+      const ry = vy * cosP - rz * sinP;
+      const depth = vy * sinP + rz * cosP;
+
+      const sx = (256 + rx * sc) | 0;
+      const sy = (268 - ry * sc) | 0;
+
+      if (sx < 4 || sx >= 507 || sy < 4 || sy >= 507) continue;
+
+      const cTop = this.surfColTop[i];
+      const cLeft = this.surfColLeft[i];
+      const cRight = this.surfColRight[i];
+
+      for (let dy = 0; dy < 4; dy++) {
+        const py = sy + dy;
+        const rowOff = py << 9;
+        const col = dy === 0 ? cTop : (dy < 3 ? cLeft : cRight);
+        for (let dx = 0; dx < 4; dx++) {
+          const idx = rowOff + sx + dx;
+          if (depth > this.zBuf[idx]) {
+            this.zBuf[idx] = depth;
+            this.pixels[idx] = col;
+          }
+        }
+      }
+    }
+
+    const outCanvas = targetCanvas || this.canvas;
+    const outCtx = outCanvas.getContext('2d');
+    outCtx.putImageData(this.imgData, 0, 0);
+  }
+
+  renderThumbnail(unit) {
+    this.yaw = 0.46;
+    this.pitch = 0.24;
+    this.scale = 3.95;
+    this.buildUnitModel(unit);
+    this.render(this.canvas);
+    this.thumbCtx.clearRect(0, 0, 128, 128);
+    this.thumbCtx.drawImage(this.canvas, 0, 0, 512, 512, 0, 0, 128, 128);
+    return this.thumbCanvas.toDataURL('image/webp', 0.85);
+  }
+}
+
+const VoxelEngine = new VoxelWarforgeEngine();
+
+/* ============================================================================
+   3. UNIVERSAL GAME STATE & 1,000-COLLECTOR BASE36 CODEC
+   ============================================================================ */
+const State = {
+  funds: 500,
+  fuelReserve: 1000,
+  fleet: [],
+  pilots: [],
+  codexUnlocked: {}, // Tracks #0001..#1000
+  buyerAuction: null,
+  buyerTimer: 10.0,
+  sellerLanes: [null, null, null, null, null], // 5 player-selling lanes
+  commissions: [],
+  claimedMilestones: {},
+  autoMarch: false,
+  autoRepair: false,
+  autoSupply: false,
+  tech: {
+    yieldLvl: 0,
+    supplyLvl: 0,
+    combatLvl: 0,
+    salvageLvl: 0
+  },
+  stats: {
+    lifetimeCredits: 500,
+    arenaWins: 0,
+    unitsCaptured: 0,
+    cratesOpened: 0,
+    auctionsWon: 0,
+    auctionsSold: 0
+  }
+};
+
+// Base36 Codec for 1,000 Collector Miniatures (#0001 to #1000)
+const TradeCodec = {
+  getCollectorNumber(u) {
+    // 1..1000 = tier(0..9)*100 + faction(0..9)*10 + division(0..9) + 1
+    return (u.tier * 100) + (u.faction * 10) + (u.division % 10) + 1;
+  },
+  formatDex(num) {
+    return '#' + String(num).padStart(4, '0');
+  },
+  encodeUnit(u) {
+    const dex = this.getCollectorNumber(u);
+    return `WF-${dex.toString(36).toUpperCase().padStart(3, '0')}`;
+  },
+  decodeUnit(code) {
+    const clean = code.trim().toUpperCase();
+    if (!clean.startsWith('WF-')) return null;
+    const dex = parseInt(clean.slice(3), 36);
+    if (isNaN(dex) || dex < 1 || dex > 1000) return null;
+    const idx = dex - 1;
+    const division = idx % 10;
+    const faction = Math.floor(idx / 10) % 10;
+    const tier = Math.floor(idx / 100) % 10;
+    return { tier, faction, division };
+  },
+  encodePilot(p) {
+    const packed = ((p.tier * 100 + p.yieldBuff) * 100 + p.speedBuff) * 100 + p.armorBuff;
+    return `CMD-${packed.toString(36).toUpperCase()}`;
+  },
+  decodePilot(code) {
+    const clean = code.trim().toUpperCase();
+    if (!clean.startsWith('CMD-')) return null;
+    const num = parseInt(clean.slice(4), 36);
+    if (isNaN(num) || num <= 0) return null;
+    const armorBuff = Math.min(50, num % 100);
+    const r1 = Math.floor(num / 100);
+    const speedBuff = Math.min(50, r1 % 100);
+    const r2 = Math.floor(r1 / 100);
+    const yieldBuff = Math.min(80, r2 % 100);
+    const tier = Math.max(0, Math.min(3, Math.floor(r2 / 100)));
+    return { tier, yieldBuff, speedBuff, supplyBuff: Math.round(speedBuff * 0.7), armorBuff };
+  }
+};
+
+/* ============================================================================
+   4. CORE GAMEPLAY & DUAL AUCTION LOGIC (BUY LOW 1-LANE / SELL HIGH 5-LANES)
+   ============================================================================ */
+let NEXT_ID = 1;
+
+const Game = {
+  createUnit(opts = {}, skipImage = false) {
+    const tier = opts.tier !== undefined ? (opts.tier % 10) : 0;
+    const division = opts.division !== undefined ? (opts.division % 10) : ((Math.random() * 10) | 0);
+    const faction = opts.faction !== undefined ? (opts.faction % 10) : ((Math.random() * 10) | 0);
+
+    const tData = TIERS[tier];
+    const arch = ARCHETYPES[division];
+    const facData = FACTIONS[faction];
+
+    const unit = {
+      id: 'U' + (NEXT_ID++),
+      name: `${facData.name} ${arch.name}`,
+      tier,
+      division,
+      faction,
+      finish: tier,
+      value: tData.val,
+      hp: tData.hp,
+      maxHp: tData.hp,
+      atk: tData.atk,
+      range: arch.range,
+      group: arch.group,
+      pilotId: null,
+      sectorId: null,
+      patrolProg: 0,
+      vaulted: false,
+      imgData: null
+    };
+    unit.dexNum = TradeCodec.getCollectorNumber(unit);
+
+    if (!skipImage) {
+      unit.imgData = VoxelEngine.renderThumbnail(unit);
+    }
+    return unit;
+  },
+
+  addUnitToFleet(u) {
+    if (!u.imgData) u.imgData = VoxelEngine.renderThumbnail(u);
+    State.codexUnlocked[u.dexNum] = true;
+    State.fleet.push(u);
+  },
+
+  createPilot(tier = 0) {
+    const titles = ['Foundling Armorer', 'Journeyman Tactician', 'Covert Forge-Master', 'Mand\'alor Strategist'];
+    const names = ['Karga-7', 'Vizsla-Prime', 'Kryze-Vex', 'Rook-Kast', 'Saxon-9', 'Fett-Kote', 'Wren-Solus', 'Djarin-Beskar'];
+    const mult = tier + 1;
+    return {
+      id: 'P' + (NEXT_ID++),
+      name: `${names[(Math.random() * names.length) | 0]} (${titles[tier]})`,
+      tier,
+      yieldBuff: 6 * mult + ((Math.random() * 6) | 0),
+      speedBuff: 5 * mult + ((Math.random() * 5) | 0),
+      supplyBuff: 4 * mult + ((Math.random() * 5) | 0),
+      armorBuff: 7 * mult + ((Math.random() * 6) | 0),
+      assignedUnitId: null
+    };
+  },
+
+  // 1-LANE DISCOUNTED BUYER AUCTION (10s timer, 12%-20% start price, ◈1 increments)
+  spawnBuyerAuction() {
+    const maxUnlockedTier = Math.min(9, Math.max(2, Math.floor(Math.log10(Math.max(50, State.stats.lifetimeCredits)))));
+    const tier = (Math.random() * (maxUnlockedTier + 1)) | 0;
+    const unit = this.createUnit({ tier }, false);
+    const discountStart = Math.max(1, Math.round(unit.value * (0.12 + Math.random() * 0.08)));
+
+    State.buyerAuction = {
+      unit,
+      currentBid: discountStart,
+      highBidder: 'Outer Rim Scrapper'
+    };
+    State.buyerTimer = 10.0;
+  },
+
+  bidOnBuyerAuction() {
+    const b = State.buyerAuction;
+    if (!b) return;
+    const nextBid = b.currentBid + 1; // Strictly $1 / ◈1 increment!
+    if (State.funds < nextBid) return UI.toast(`Need ◈${nextBid.toLocaleString()} Credits to bid!`);
+    b.currentBid = nextBid;
+    b.highBidder = 'YOU';
+    UI.renderAuctions();
+  },
+
+  // 5-LANE PLAYER SELLER AUCTIONS (20s timer, 40% start, 10% bid/tick, 1.5% 2x-20x BID WAR Spike, <=1.0s overtime -> 2.0s)
+  sendUnitToSellerAuction(unitId) {
+    const idx = State.fleet.findIndex(x => x.id === unitId);
+    if (idx === -1) return;
+    const u = State.fleet[idx];
+    if (u.vaulted) return UI.toast('Unlock miniature from Vault before auctioning!');
+
+    const freeLane = State.sellerLanes.findIndex(x => x === null);
+    if (freeLane === -1) return UI.toast('All 5 Seller Auction lanes are currently full!');
+
+    if (u.pilotId) {
+      const p = State.pilots.find(x => x.id === u.pilotId);
+      if (p) p.assignedUnitId = null;
+      u.pilotId = null;
+    }
+    u.sectorId = null;
+    State.fleet.splice(idx, 1);
+
+    const startBid = Math.max(5, Math.round(u.value * 0.40));
+    State.sellerLanes[freeLane] = {
+      lane: freeLane,
+      unit: u,
+      timer: 20.0,
+      currentBid: startBid,
+      highBidder: 'Guild Opening Reserve',
+      bidCount: 1,
+      spikeNotice: ''
+    };
+
+    UI.toast(`Listed ${u.name} in Seller Lane #${freeLane + 1} (Opening Bid: ◈${startBid.toLocaleString()})!`);
+    UI.renderAllActive();
+  },
+
+  autoFillSellerLanes() {
+    let listed = 0;
+    for (let lane = 0; lane < 5; lane++) {
+      if (State.sellerLanes[lane] !== null) continue;
+      const candidate = State.fleet.find(u => !u.vaulted && u.sectorId === null);
+      if (!candidate) break;
+      this.sendUnitToSellerAuction(candidate.id);
+      listed++;
+    }
+    if (listed === 0) UI.toast('No unvaulted idle units available (or all 5 lanes active).');
+  },
+
+  // Warforge Crates
+  openWarbox(boxTier, count) {
+    const prices = [20, 200, 2000, 15000];
+    const totalCost = prices[boxTier] * count;
+    if (State.funds < totalCost) return UI.toast(`Need ◈${totalCost.toLocaleString()} Credits!`);
+    State.funds -= totalCost;
+
+    const minTiers = [0, 1, 3, 5];
+    const maxTiers = [2, 4, 7, 9];
+    let bestUnit = null;
+
+    for (let i = 0; i < count; i++) {
+      const r = Math.random();
+      let t = minTiers[boxTier];
+      if (r > 0.90) t = maxTiers[boxTier];
+      else if (r > 0.50) t = Math.min(9, minTiers[boxTier] + 1);
+      const u = this.createUnit({ tier: t }, false);
+      this.addUnitToFleet(u);
+      State.stats.cratesOpened++;
+      if (!bestUnit || u.value > bestUnit.value) bestUnit = u;
+    }
+
+    UI.toast(`Unboxed ${count}x Crate(s)! Best: ${TradeCodec.formatDex(bestUnit.dexNum)} ${bestUnit.name}`);
+    UI.renderAllActive();
+  },
+
+  recruitPilotBox(tier) {
+    const costs = [60, 350, 1800, 9500];
+    if (State.funds < costs[tier]) return UI.toast(`Need ◈${costs[tier].toLocaleString()} Credits!`);
+    State.funds -= costs[tier];
+    const p = this.createPilot(tier);
+    State.pilots.push(p);
+    UI.toast(`Recruited ${p.name}!`);
+    UI.renderAllActive();
+  },
+
+  buyFuel(amt) {
+    const cost = Math.round(amt * 0.25);
+    if (State.funds < cost) return UI.toast(`Need ◈${cost.toLocaleString()} Credits for Supply!`);
+    State.funds -= cost;
+    State.fuelReserve += amt;
+    UI.toast(`Purchased +${amt.toLocaleString()} Beskar & Tibanna Supply.`);
+    UI.renderHUD();
+  },
+
+  repairUnit(id) {
+    const u = State.fleet.find(x => x.id === id);
+    if (!u || u.hp >= u.maxHp) return;
+    const cost = Math.max(2, Math.round((u.maxHp - u.hp) * 0.12));
+    if (State.funds < cost) return UI.toast(`Need ◈${cost} Credits to repair armor.`);
+    State.funds -= cost;
+    u.hp = u.maxHp;
+    UI.renderAllActive();
+  },
+
+  repairAll() {
+    let total = 0;
+    for (let i = 0; i < State.fleet.length; i++) {
+      const u = State.fleet[i];
+      if (u.hp < u.maxHp) {
+        const c = Math.max(2, Math.round((u.maxHp - u.hp) * 0.12));
+        if (State.funds >= c) {
+          State.funds -= c;
+          u.hp = u.maxHp;
+          total += c;
+        }
+      }
+    }
+    UI.toast(total > 0 ? `Repaired Covert Armor for ◈${total.toLocaleString()}.` : 'All hunters at 100% Integrity.');
+    UI.renderAllActive();
+  },
+
+  toggleVault(id) {
+    const u = State.fleet.find(x => x.id === id);
+    if (!u) return;
+    u.vaulted = !u.vaulted;
+    UI.toast(u.vaulted ? `🔒 Locked ${u.name} in Vault.` : `🔓 Unlocked ${u.name}.`);
+    UI.renderAllActive();
+  },
+
+  disbandUnit(id) {
+    const idx = State.fleet.findIndex(x => x.id === id);
+    if (idx === -1) return;
+    const u = State.fleet[idx];
+    if (u.vaulted) return UI.toast('Unlock from Vault before salvaging!');
+    if (u.pilotId) {
+      const p = State.pilots.find(x => x.id === u.pilotId);
+      if (p) p.assignedUnitId = null;
+    }
+    const salvage = Math.round(u.value * 0.65);
+    State.funds += salvage;
+    State.stats.lifetimeCredits += salvage;
+    State.fleet.splice(idx, 1);
+    UI.toast(`Salvaged miniature for ◈${salvage.toLocaleString()} Credits (Tip: Auction in Tab 3 for higher profit!).`);
+    UI.renderAllActive();
+  },
+
+  assignPilot(unitId, pilotId) {
+    const u = State.fleet.find(x => x.id === unitId);
+    if (!u) return;
+    if (u.pilotId) {
+      const oldP = State.pilots.find(x => x.id === u.pilotId);
+      if (oldP) oldP.assignedUnitId = null;
+    }
+    if (!pilotId) {
+      u.pilotId = null;
+    } else {
+      const newP = State.pilots.find(x => x.id === pilotId);
+      if (newP) {
+        if (newP.assignedUnitId) {
+          const prevU = State.fleet.find(x => x.id === newP.assignedUnitId);
+          if (prevU) prevU.pilotId = null;
+        }
+        newP.assignedUnitId = u.id;
+        u.pilotId = newP.id;
+      }
+    }
+    UI.renderAllActive();
+  },
+
+  assignSector(unitId, sectorId) {
+    const u = State.fleet.find(x => x.id === unitId);
+    if (!u) return;
+    if (sectorId === null || sectorId === '') {
+      u.sectorId = null;
+      u.patrolProg = 0;
+    } else {
+      const sec = SECTORS[sectorId];
+      if (u.tier < sec.minTier) return UI.toast(`Requires ${TIERS[sec.minTier].code}+ for ${sec.name}!`);
+      u.sectorId = sec.id;
+      u.patrolProg = 0;
+    }
+    UI.renderAllActive();
+  },
+
+  assignAllIdleToPatrol() {
+    let count = 0;
+    for (let i = 0; i < State.fleet.length; i++) {
+      const u = State.fleet[i];
+      if (u.sectorId === null && u.hp > u.maxHp * 0.25) {
+        let bestSec = 0;
+        for (let s = 0; s < SECTORS.length; s++) {
+          if (u.tier >= SECTORS[s].minTier) bestSec = s;
+        }
+        u.sectorId = bestSec;
+        count++;
+      }
+    }
+    UI.toast(`Dispatched ${count} Covert Hunters to Outer Rim Patrols.`);
+    UI.renderAllActive();
+  },
+
+  recallAllPatrols() {
+    for (let i = 0; i < State.fleet.length; i++) {
+      State.fleet[i].sectorId = null;
+      State.fleet[i].patrolProg = 0;
+    }
+    UI.toast('All Covert Hunters recalled from patrol.');
+    UI.renderAllActive();
+  },
+
+  // 6 Rotating Guild Commissions
+  initCommissions() {
+    State.commissions = [];
+    for (let i = 0; i < 6; i++) {
+      State.commissions.push(this.generateCommission(i));
+    }
+  },
+
+  generateCommission(slotIdx) {
+    const clients = ['The Armorer', 'Greef Karga', 'Bo-Katan Kryze', 'Paz Vizsla', 'Fennec Shand', 'Covert Quartermaster'];
+    const client = clients[slotIdx % clients.length];
+    const type = slotIdx % 6;
+    const targetDiv = (Math.random() * 10) | 0;
+    const targetClan = (Math.random() * 10) | 0;
+    const rewardTier = Math.min(6, Math.floor(slotIdx / 2) + 1);
+    const cashReward = TIERS[rewardTier].val * 2;
+
+    if (type === 0) {
+      return {
+        id: 'C' + (NEXT_ID++), client, type: 'DIVISION', targetDiv,
+        title: `${client}: Deploy ${ARCHETYPES[targetDiv].name}`,
+        desc: `Have at least 1 ${ARCHETYPES[targetDiv].name} in your Covert Racks.`,
+        cashReward, rewardTier
+      };
+    } else if (type === 1) {
+      return {
+        id: 'C' + (NEXT_ID++), client, type: 'CLAN', targetClan,
+        title: `${client}: ${FACTIONS[targetClan].name} Alliance`,
+        desc: `Own any miniature belonging to ${FACTIONS[targetClan].name}.`,
+        cashReward, rewardTier
+      };
+    } else if (type === 2) {
+      const targetWins = State.stats.arenaWins + 1;
+      return {
+        id: 'C' + (NEXT_ID++), client, type: 'ARENA_WIN', targetWins,
+        title: `${client}: Remnant Arena Purge`,
+        desc: `Reach ${targetWins} total victories in the Tabletop Wargame Arena.`,
+        cashReward, rewardTier
+      };
+    } else if (type === 3) {
+      const targetSold = State.stats.auctionsSold + 1;
+      return {
+        id: 'C' + (NEXT_ID++), client, type: 'AUCTION_SELL', targetSold,
+        title: `${client}: Syndicate Collector Liquidation`,
+        desc: `Sell ${targetSold} total miniature(s) in your 5-Lane Seller Auction House.`,
+        cashReward, rewardTier
+      };
+    } else if (type === 4) {
+      const targetCrates = State.stats.cratesOpened + 2;
+      return {
+        id: 'C' + (NEXT_ID++), client, type: 'CRATES', targetCrates,
+        title: `${client}: Beskar Supply Uncrating`,
+        desc: `Reach ${targetCrates} total Warforge Crates opened.`,
+        cashReward, rewardTier
+      };
+    } else {
+      return {
+        id: 'C' + (NEXT_ID++), client, type: 'TIER_CHECK', minTier: 2,
+        title: `${client}: Elite ${TIERS[2].code}+ Force Inspection`,
+        desc: `Field any miniature of ${TIERS[2].code} (${TIERS[2].name}) or higher.`,
+        cashReward, rewardTier
+      };
+    }
+  },
+
+  isCommissionReady(c) {
+    if (c.type === 'DIVISION') return State.fleet.some(u => u.division === c.targetDiv);
+    if (c.type === 'CLAN') return State.fleet.some(u => u.faction === c.targetClan);
+    if (c.type === 'ARENA_WIN') return State.stats.arenaWins >= c.targetWins;
+    if (c.type === 'AUCTION_SELL') return State.stats.auctionsSold >= c.targetSold;
+    if (c.type === 'CRATES') return State.stats.cratesOpened >= c.targetCrates;
+    if (c.type === 'TIER_CHECK') return State.fleet.some(u => u.tier >= c.minTier);
+    return false;
+  },
+
+  claimCommission(idx) {
+    const c = State.commissions[idx];
+    if (!c || !this.isCommissionReady(c)) return UI.toast('Commission requirements not yet met!');
+    State.funds += c.cashReward;
+    State.stats.lifetimeCredits += c.cashReward;
+    const freeUnit = this.createUnit({ tier: c.rewardTier }, false);
+    this.addUnitToFleet(freeUnit);
+    State.commissions[idx] = this.generateCommission(idx);
+    UI.toast(`Commission Complete! +◈${c.cashReward.toLocaleString()} + Free ${freeUnit.name}!`);
+    UI.renderAllActive();
+  },
+
+  // 150 Creed Milestones
+  getMilestones() {
+    if (this._cachedMilestones) return this._cachedMilestones;
+    const list = [];
+    const books = [
+      { id: 0, name: 'Book I: Way of the Foundling',     metric: () => Object.keys(State.codexUnlocked).length, scale: i => i * 2, unit: 'Codex Unlocked' },
+      { id: 1, name: 'Book II: Secrets of the Forge',    metric: () => State.fleet.reduce((m, u) => Math.max(m, u.tier + 1), 0) * 3 + State.fleet.length, scale: i => i * 2, unit: 'Forge Score' },
+      { id: 2, name: 'Book III: Blood of the Arena',     metric: () => State.stats.arenaWins, scale: i => i, unit: 'Arena Wins' },
+      { id: 3, name: 'Book IV: Guild Ledger & Fortune',  metric: () => State.stats.lifetimeCredits, scale: i => Math.round(250 * Math.pow(1.35, i)), unit: 'Lifetime Credits' },
+      { id: 4, name: 'Book V: Syndicate Auctioneer',     metric: () => State.stats.cratesOpened + (State.stats.auctionsWon + State.stats.auctionsSold) * 2, scale: i => i * 2, unit: 'Deals & Crates' },
+      { id: 5, name: 'Book VI: Legend of the Mand\'alor',metric: () => State.tech.yieldLvl + State.tech.supplyLvl + State.pilots.length + State.fleet.filter(u => u.vaulted).length, scale: i => i, unit: 'Command Rank' }
+    ];
+
+    let mId = 1;
+    for (let b = 0; b < 6; b++) {
+      for (let step = 1; step <= 25; step++) {
+        const target = books[b].scale(step);
+        const rewardCredits = Math.round(45 * step * (b + 1));
+        const rewardFuel = 40 * step;
+        list.push({
+          id: mId++,
+          bookId: b,
+          bookName: books[b].name,
+          title: `Trial #${mId - 1}: ${books[b].name.split(':')[1]} ${step}`,
+          target,
+          unitLabel: books[b].unit,
+          getMetric: books[b].metric,
+          rewardCredits,
+          rewardFuel
+        });
+      }
+    }
+    this._cachedMilestones = list;
+    return list;
+  },
+
+  claimMilestone(id) {
+    if (State.claimedMilestones[id]) return;
+    const m = this.getMilestones().find(x => x.id === id);
+    if (!m || m.getMetric() < m.target) return;
+    State.claimedMilestones[id] = true;
+    State.funds += m.rewardCredits;
+    State.stats.lifetimeCredits += m.rewardCredits;
+    State.fuelReserve += m.rewardFuel;
+    UI.toast(`Creed Trial #${id} Claimed! +◈${m.rewardCredits.toLocaleString()} & +${m.rewardFuel} Supply!`);
+    UI.renderAllActive();
+  },
+
+  claimAllMilestones() {
+    const miles = this.getMilestones();
+    let count = 0, creds = 0;
+    for (let i = 0; i < miles.length; i++) {
+      const m = miles[i];
+      if (!State.claimedMilestones[m.id] && m.getMetric() >= m.target) {
+        State.claimedMilestones[m.id] = true;
+        State.funds += m.rewardCredits;
+        State.stats.lifetimeCredits += m.rewardCredits;
+        State.fuelReserve += m.rewardFuel;
+        count++;
+        creds += m.rewardCredits;
+      }
+    }
+    UI.toast(count > 0 ? `Claimed ${count} Creed Trials for +◈${creds.toLocaleString()}!` : 'No new Trials ready to claim yet.');
+    UI.renderAllActive();
+  },
+
+  toggleAuto(key) {
+    State[key] = !State[key];
+    UI.renderCommand();
+  },
+
+  upgradeTech(key) {
+    const lvl = State.tech[key];
+    if (key === 'supplyLvl' && lvl >= 35) return UI.toast('Supply Efficiency already at max 70% reduction!');
+    const cost = Math.round(120 * Math.pow(1.45, lvl));
+    if (State.funds < cost) return UI.toast(`Need ◈${cost.toLocaleString()} Credits!`);
+    State.funds -= cost;
+    State.tech[key]++;
+    UI.toast('Armory Tech Upgraded!');
+    UI.renderAllActive();
+  },
+
+  importTradeCode() {
+    const raw = document.getElementById('trade-code-input').value.trim();
+    if (!raw) return;
+    if (raw.toUpperCase().startsWith('WF-')) {
+      const decoded = TradeCodec.decodeUnit(raw);
+      if (!decoded) return UI.toast('Invalid WF-XXX Collector Code!');
+      const cost = Math.round(TIERS[decoded.tier].val * 0.5);
+      if (State.funds < cost) return UI.toast(`Need ◈${cost.toLocaleString()} Beskar Replication Fee!`);
+      State.funds -= cost;
+      const u = this.createUnit(decoded, false);
+      this.addUnitToFleet(u);
+      UI.toast(`Replicated ${TradeCodec.formatDex(u.dexNum)} ${u.name}!`);
+      document.getElementById('code-modal').classList.remove('open');
+      UI.renderAllActive();
+    } else if (raw.toUpperCase().startsWith('CMD-')) {
+      const decoded = TradeCodec.decodePilot(raw);
+      if (!decoded) return UI.toast('Invalid CMD-XXXX Commander Code!');
+      const cost = 150 * (decoded.tier + 1);
+      if (State.funds < cost) return UI.toast(`Need ◈${cost} Recruitment Fee!`);
+      State.funds -= cost;
+      const p = this.createPilot(decoded.tier);
+      Object.assign(p, decoded);
+      State.pilots.push(p);
+      UI.toast(`Imported Commander ${p.name}!`);
+      document.getElementById('code-modal').classList.remove('open');
+      UI.renderAllActive();
+    } else {
+      UI.toast('Code must start with WF- or CMD-');
+    }
+  }
+};
+
+/* ============================================================================
+   5. 1v1 / 3v3 / 5v5 TABLETOP WARGAME ARENA ENGINE
+   ============================================================================ */
+const Arena = {
+  active: false,
+  mode: 3,
+  playerTeam: [],
+  enemyTeam: [],
+  turnIndex: 0,
+  logLines: [],
+
+  log(msg) {
+    this.logLines.unshift(msg);
+    if (this.logLines.length > 45) this.logLines.pop();
+    const el = document.getElementById('arena-log');
+    if (el) el.innerHTML = this.logLines.join('<br/>');
+  },
+
+  startMatch(count) {
+    if (State.fleet.length === 0) return UI.toast('Recruit or snipe at least 1 miniature first!');
+    this.mode = count;
+    this.active = true;
+    this.logLines = [];
+
+    const sorted = [...State.fleet].sort((a, b) => b.value - a.value);
+    this.playerTeam = [];
+    for (let i = 0; i < count; i++) {
+      const src = sorted[i % sorted.length];
+      this.playerTeam.push({
+        ...src,
+        slotId: 'P' + i,
+        curHp: src.hp,
+        maxHp: src.maxHp,
+        fortified: false
+      });
+    }
+
+    this.enemyTeam = [];
+    for (let i = 0; i < count; i++) {
+      const refTier = this.playerTeam[i].tier;
+      const eUnit = Game.createUnit({ tier: refTier }, false);
+      this.enemyTeam.push({
+        ...eUnit,
+        slotId: 'E' + i,
+        curHp: Math.round(eUnit.maxHp * 0.92),
+        maxHp: Math.round(eUnit.maxHp * 0.92),
+        fortified: false
+      });
+    }
+
+    this.turnIndex = 0;
+    this.log(`⚔️ [${count}v${count} TABLETOP SKIRMISH STARTED] Choose a Tactical Order!`);
+    UI.renderArena();
+  },
+
+  roll2D6() {
+    const d1 = 1 + ((Math.random() * 6) | 0);
+    const d2 = 1 + ((Math.random() * 6) | 0);
+    const el1 = document.getElementById('die-1');
+    const el2 = document.getElementById('die-2');
+    if (el1) el1.textContent = d1;
+    if (el2) el2.textContent = d2;
+    return { d1, d2, sum: d1 + d2 };
+  },
+
+  hasCounterAdvantage(attGroup, defGroup) {
+    return (attGroup === 'A' && defGroup === 'B') ||
+           (attGroup === 'B' && defGroup === 'C') ||
+           (attGroup === 'C' && defGroup === 'A');
+  },
+
+  issueOrder(orderKey) {
+    if (!this.active) return UI.toast('Start a 1v1, 3v3, or 5v5 battle above first!');
+    const alivePlayers = this.playerTeam.filter(u => u.curHp > 0);
+    const aliveEnemies = this.enemyTeam.filter(u => u.curHp > 0);
+    if (!alivePlayers.length || !aliveEnemies.length) return;
+
+    const actor = alivePlayers[this.turnIndex % alivePlayers.length];
+    const target = aliveEnemies[0];
+    const dice = this.roll2D6();
+
+    const techMult = 1 + State.tech.combatLvl * 0.04;
+    let baseDmg = actor.atk * techMult * (0.75 + dice.sum * 0.06);
+
+    const countered = this.hasCounterAdvantage(actor.group, target.group);
+    if (countered) baseDmg *= 1.45;
+
+    if (orderKey === 'RALLY') {
+      const heal = Math.round(actor.maxHp * 0.34 + dice.sum * 4);
+      actor.curHp = Math.min(actor.maxHp, actor.curHp + heal);
+      actor.fortified = true;
+      this.log(`🚩 [2D6=${dice.sum}] ${actor.name} sounds Darksaber Rally! +${heal} HP & Fortified.`);
+    } else {
+      let mult = 1.0, ignoreSave = false;
+      if (orderKey === 'CHARGE') mult = 1.30;
+      if (orderKey === 'VOLLEY') { mult = 1.05; ignoreSave = true; }
+      if (orderKey === 'ARCANE') { mult = 1.25; ignoreSave = true; }
+      if (orderKey === 'WALL') { mult = 0.85; actor.fortified = true; }
+
+      let finalDmg = Math.round(baseDmg * mult);
+      if (!ignoreSave && target.fortified) finalDmg = Math.round(finalDmg * 0.55);
+      target.curHp = Math.max(0, target.curHp - finalDmg);
+
+      this.log(`🎲 [2D6=${dice.sum}] ${actor.name} uses ${orderKey} on ${target.name} for ${finalDmg} DMG!${countered ? ' [COUNTER +45%!]' : ''}`);
+
+      if (orderKey === 'ARCANE' && aliveEnemies.length > 1) {
+        const splashTarget = aliveEnemies[1];
+        const splashDmg = Math.round(finalDmg * 0.45);
+        splashTarget.curHp = Math.max(0, splashTarget.curHp - splashDmg);
+        this.log(`🐉 Whistling Birds splash hits ${splashTarget.name} for ${splashDmg} DMG!`);
+      }
+    }
+
+    if (this.checkBattleEnd()) return;
+
+    const remEnemies = this.enemyTeam.filter(u => u.curHp > 0);
+    const remPlayers = this.playerTeam.filter(u => u.curHp > 0);
+    if (remEnemies.length && remPlayers.length) {
+      const eActor = remEnemies[this.turnIndex % remEnemies.length];
+      const eTarget = remPlayers[0];
+      const eDice = this.roll2D6();
+      let eDmg = Math.round(eActor.atk * (0.7 + eDice.sum * 0.05));
+      if (this.hasCounterAdvantage(eActor.group, eTarget.group)) eDmg = Math.round(eDmg * 1.45);
+      if (eTarget.fortified) {
+        eDmg = Math.round(eDmg * 0.55);
+        eTarget.fortified = false;
+      }
+      eTarget.curHp = Math.max(0, eTarget.curHp - eDmg);
+      this.log(`💥 Enemy ${eActor.name} strikes ${eTarget.name} for ${eDmg} DMG!`);
+    }
+
+    this.turnIndex++;
+    this.checkBattleEnd();
+    UI.renderArena();
+  },
+
+  checkBattleEnd() {
+    const alivePlayers = this.playerTeam.filter(u => u.curHp > 0);
+    const aliveEnemies = this.enemyTeam.filter(u => u.curHp > 0);
+
+    if (aliveEnemies.length === 0) {
+      this.active = false;
+      State.stats.arenaWins++;
+      const totalEnemyVal = this.enemyTeam.reduce((s, u) => s + u.value, 0);
+      const payout = Math.round(totalEnemyVal * 0.55 * (1 + State.tech.yieldLvl * 0.05));
+      State.funds += payout;
+      State.stats.lifetimeCredits += payout;
+
+      const capChance = 0.45 + State.tech.salvageLvl * 0.02;
+      let capMsg = '';
+      if (Math.random() < capChance) {
+        const captured = this.enemyTeam[(Math.random() * this.enemyTeam.length) | 0];
+        const newUnit = Game.createUnit({
+          tier: captured.tier,
+          division: captured.division,
+          faction: captured.faction
+        }, false);
+        Game.addUnitToFleet(newUnit);
+        State.stats.unitsCaptured++;
+        capMsg = ` + CAPTURED ${TradeCodec.formatDex(newUnit.dexNum)} ${newUnit.name}!`;
+      }
+
+      this.log(`🏆 VICTORY! Earned ◈${payout.toLocaleString()} Spoils${capMsg}`);
+      UI.toast(`Arena Victory! +◈${payout.toLocaleString()}${capMsg}`);
+      UI.renderAllActive();
+      return true;
+    }
+
+    if (alivePlayers.length === 0) {
+      this.active = false;
+      this.log(`💀 DEFEAT! Your strike team retreated to the Covert.`);
+      UI.toast('Strike team defeated! Re-condition armor and strike again.');
+      UI.renderArena();
+      return true;
+    }
+    return false;
+  }
+};
+
+/* ============================================================================
+   6. 512x512 60 FPS 3D VOXEL INSPECTOR MODAL CONTROLLER
+   ============================================================================ */
+const Inspector = {
+  openUnit: null,
+  spinning: true,
+  dragging: false,
+  lastX: 0,
+  lastY: 0,
+  rafId: null,
+
+  open(sourceType, idOrIdx) {
+    let u = null;
+    if (sourceType === 'FLEET') u = State.fleet.find(x => x.id === idOrIdx);
+    else if (sourceType === 'BUYER') u = State.buyerAuction?.unit;
+    else if (sourceType === 'SELLER') u = State.sellerLanes[idOrIdx]?.unit;
+    if (!u) return;
+
+    this.openUnit = u;
+    VoxelEngine.yaw = 0.46;
+    VoxelEngine.pitch = 0.24;
+    VoxelEngine.scale = 3.95;
+    VoxelEngine.buildUnitModel(u);
+
+    const tData = TIERS[u.tier];
+    const arch = ARCHETYPES[u.division];
+    const dexStr = TradeCodec.formatDex(u.dexNum);
+    document.getElementById('insp-name').textContent = `${dexStr} ${u.name}`;
+    document.getElementById('insp-sub').textContent = `${tData.code} ${tData.name} • ${tData.finish} • ${arch.name}`;
+    document.getElementById('insp-code').textContent = TradeCodec.encodeUnit(u);
+    document.getElementById('inspect-vox-stats').textContent = `Surface Voxels: ${VoxelEngine.surfCount.toLocaleString()} / 92-Voxel Heroic Scale`;
+
+    document.getElementById('insp-details').innerHTML = [
+      `<div><b>Collector Edition Index:</b> <span class="val-gold">${dexStr} / #1000</span></div>`,
+      `<div><b>Guide Valuation:</b> <span class="val-gold">◈${u.value.toLocaleString()}</span></div>`,
+      `<div><b>Beskar Armor Integrity:</b> ${u.hp} / ${u.maxHp} HP</div>`,
+      `<div><b>Combat Telemetry:</b> ${u.atk} ATK | Range ${u.range}m | Counter Group <b>${u.group}</b></div>`,
+      `<div><b>Anatomical Features:</b> Hexagonal <i>Kar'ta Beskar</i> Iron Heart, 5-Grooved Whistling Bird Gauntlet, ${arch.helm.toUpperCase()} Visor</div>`
+    ].join('');
+
+    document.getElementById('inspect-modal').classList.add('open');
+    this.startLoop();
+  },
+
+  close() {
+    document.getElementById('inspect-modal').classList.remove('open');
+    if (this.rafId) cancelAnimationFrame(this.rafId);
+    this.rafId = null;
+    this.openUnit = null;
+  },
+
+  toggleSpin() { this.spinning = !this.spinning; },
+  zoom(delta) { VoxelEngine.scale = Math.max(2.0, Math.min(6.5, VoxelEngine.scale + delta)); },
+  resetCam() { VoxelEngine.yaw = 0.46; VoxelEngine.pitch = 0.24; VoxelEngine.scale = 3.95; },
+
+  startLoop() {
+    if (this.rafId) cancelAnimationFrame(this.rafId);
+    const canvas = document.getElementById('inspect-canvas');
+    const step = () => {
+      if (!this.openUnit) return;
+      if (this.spinning && !this.dragging) {
+        VoxelEngine.yaw += 0.012;
+      }
+      VoxelEngine.render(canvas);
+      this.rafId = requestAnimationFrame(step);
+    };
+    this.rafId = requestAnimationFrame(step);
+  },
+
+  bindEvents() {
+    const c = document.getElementById('inspect-canvas');
+    const down = (x, y) => { this.dragging = true; this.lastX = x; this.lastY = y; };
+    const move = (x, y) => {
+      if (!this.dragging) return;
+      VoxelEngine.yaw += (x - this.lastX) * 0.01;
+      VoxelEngine.pitch = Math.max(-0.5, Math.min(1.0, VoxelEngine.pitch + (y - this.lastY) * 0.01));
+      this.lastX = x; this.lastY = y;
+    };
+    const up = () => { this.dragging = false; };
+
+    c.addEventListener('mousedown', e => down(e.clientX, e.clientY));
+    window.addEventListener('mousemove', e => move(e.clientX, e.clientY));
+    window.addEventListener('mouseup', up);
+
+    c.addEventListener('touchstart', e => {
+      if (e.touches.length === 1) down(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    c.addEventListener('touchmove', e => {
+      if (e.touches.length === 1) move(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    c.addEventListener('touchend', up);
+  }
+};
+
+/* ============================================================================
+   7. CRASH-PROOF 5-TAB UI RENDERER (ZERO `innerHTML +=` INSIDE LOOPS)
+   ============================================================================ */
+const UI = {
+  activeTab: 'tab-racks',
+
+  switchTab(tabId) {
+    this.activeTab = tabId;
+    const btns = document.querySelectorAll('.nav-btn');
+    for (let i = 0; i < btns.length; i++) {
+      btns[i].classList.toggle('active', btns[i].dataset.tab === tabId);
+    }
+    const panes = document.querySelectorAll('.tab-pane');
+    for (let i = 0; i < panes.length; i++) {
+      panes[i].classList.toggle('active', panes[i].id === tabId);
+    }
+    this.renderAllActive();
+  },
+
+  toast(msg) {
+    const wrap = document.getElementById('toast-wrap');
+    const div = document.createElement('div');
+    div.className = 'toast-msg';
+    div.textContent = msg;
+    wrap.appendChild(div);
+    setTimeout(() => div.remove(), 3200);
+  },
+
+  openCodeModal() {
+    document.getElementById('code-modal').classList.add('open');
+  },
+
+  renderHUD() {
+    document.getElementById('hud-funds').textContent = '◈' + Math.floor(State.funds).toLocaleString();
+    document.getElementById('hud-fuel').textContent = Math.floor(State.fuelReserve).toLocaleString();
+    document.getElementById('hud-fleet').textContent = State.fleet.length;
+    document.getElementById('hud-codex').textContent = `${Object.keys(State.codexUnlocked).length}/1000`;
+    document.getElementById('hud-miles').textContent = `${Object.keys(State.claimedMilestones).length}/150`;
+
+    document.getElementById('auc-timer').textContent = State.buyerTimer.toFixed(0) + 's';
+    document.getElementById('rack-count').textContent = State.fleet.length;
+    const vCount = State.fleet.filter(u => u.vaulted).length;
+    const vSpan = document.getElementById('vault-inline-count');
+    if (vSpan) vSpan.textContent = vCount;
+    const pSpan = document.getElementById('pilot-count');
+    if (pSpan) pSpan.textContent = State.pilots.length;
+  },
+
+  renderAllActive() {
+    this.renderHUD();
+    if (this.activeTab === 'tab-racks') {
+      this.renderRacks();
+      this.renderTech();
+      this.renderPilots();
+    } else if (this.activeTab === 'tab-boxes') {
+      this.renderBoxes();
+    } else if (this.activeTab === 'tab-auctions') {
+      this.renderAuctions();
+    } else if (this.activeTab === 'tab-arena') {
+      this.renderArena();
+      this.renderPatrols();
+    } else if (this.activeTab === 'tab-command') {
+      this.renderCommand();
+    }
+  },
+
+  // TAB 1: Covert Racks + Vault Filter + Tech + Pilots
+  renderRacks() {
+    const vaultOnly = document.getElementById('filter-vault-only').checked;
+    const divFilter = document.getElementById('filter-div').value;
+    const tierFilter = document.getElementById('filter-tier').value;
+    const sortMode = document.getElementById('sort-racks').value;
+
+    let list = State.fleet.filter(u => {
+      if (vaultOnly && !u.vaulted) return false;
+      if (divFilter !== 'ALL' && u.division !== parseInt(divFilter, 10)) return false;
+      if (tierFilter !== 'ALL' && u.tier !== parseInt(tierFilter, 10)) return false;
+      return true;
+    });
+
+    list.sort((a, b) => {
+      if (sortMode === 'VAL_DESC') return b.value - a.value;
+      if (sortMode === 'TIER_DESC') return b.tier - a.tier || b.value - a.value;
+      if (sortMode === 'DEX_ASC') return a.dexNum - b.dexNum;
+      if (sortMode === 'HP_ASC') return (a.hp / a.maxHp) - (b.hp / b.maxHp);
+      return 0;
+    });
+
+    const html = [];
+    for (let i = 0; i < list.length; i++) {
+      const u = list[i];
+      const t = TIERS[u.tier];
+      const d = ARCHETYPES[u.division];
+      const hpPct = Math.round((u.hp / u.maxHp) * 100);
+      const dexStr = TradeCodec.formatDex(u.dexNum);
+
+      const pilotOpts = ['<option value="">-- No Commander --</option>'];
+      for (let p = 0; p < State.pilots.length; p++) {
+        const pil = State.pilots[p];
+        const sel = u.pilotId === pil.id ? 'selected' : '';
+        pilotOpts.push(`<option value="${pil.id}" ${sel}>${pil.name} (+${pil.yieldBuff}% YLD)</option>`);
+      }
+
+      const secOpts = ['<option value="">-- Idle in Covert --</option>'];
+      for (let s = 0; s < SECTORS.length; s++) {
+        const sec = SECTORS[s];
+        const sel = u.sectorId === sec.id ? 'selected' : '';
+        secOpts.push(`<option value="${sec.id}" ${sel}>Patrol: ${sec.name} (◈${sec.baseReward})</option>`);
+      }
+
+      html.push(`
+        <div class="unit-card" style="${u.vaulted ? 'border-color:var(--gold);' : ''}">
+          <div class="unit-thumb-wrap" onclick="Inspector.open('FLEET', '${u.id}')">
+            <img class="unit-thumb" src="${u.imgData}" alt="${u.name}" />
+            <span class="tier-tag" style="color:${t.color};">${t.code}</span>
+            <span class="finish-tag">${t.finish}</span>
+            <span class="dex-tag">${dexStr}</span>
+            <span class="inspect-hint">🔍 512² 3D</span>
+          </div>
+          <div class="unit-title">${u.name}</div>
+          <div class="unit-meta">
+            <span>${d.name}</span>
+            <span class="val-gold">◈${u.value.toLocaleString()}</span>
+          </div>
+          <div class="stat-row">
+            <div>HP <b>${hpPct}%</b></div>
+            <div>ATK <b>${u.atk}</b></div>
+            <div>Grp <b>${u.group} (${u.range}m)</b></div>
+          </div>
+          <div class="hp-bar-outer"><div class="hp-bar-inner" style="width:${hpPct}%;"></div></div>
+          <select onchange="Game.assignPilot('${u.id}', this.value)">${pilotOpts.join('')}</select>
+          <select onchange="Game.assignSector('${u.id}', this.value)">${secOpts.join('')}</select>
+          <div class="btn-row">
+            <button class="btn btn-gold" style="flex:1;" onclick="Game.sendUnitToSellerAuction('${u.id}')">🔨 Auction Off</button>
+            <button class="btn btn-cyan" onclick="Game.toggleVault('${u.id}')">${u.vaulted ? '🔒' : '🔓'}</button>
+            <button class="btn btn-emerald" onclick="Game.repairUnit('${u.id}')">🔧</button>
+            <button class="btn btn-crimson" onclick="Game.disbandUnit('${u.id}')">♻️</button>
+          </div>
+        </div>
+      `);
+    }
+    document.getElementById('rack-list').innerHTML = html.length ? html.join('') : '<div class="section-sub">No miniatures match current filter. Snipe discounted units in Tab 3 (Auction House) or unbox Crates in Tab 2!</div>';
+  },
+
+  renderTech() {
+    const items = [
+      { key: 'yieldLvl',   name: 'Guild Bounty Payout Yield',     desc: '+5% Imperial Credit Payout per level on Patrols & Arena Spoils.', cur: `+${State.tech.yieldLvl * 5}%` },
+      { key: 'supplyLvl',  name: 'Beskar & Tibanna Recycling',    desc: '-2% Upkeep Supply consumption per level (Max 70% at Lvl 35).',   cur: `-${Math.min(70, State.tech.supplyLvl * 2)}%` },
+      { key: 'combatLvl',  name: 'Mandalorian Supercommando Arms',desc: '+4% Tabletop Wargame Arena Attack Power per level.',             cur: `+${State.tech.combatLvl * 4}%` },
+      { key: 'salvageLvl', name: 'Grav-Charge Capture Nets',      desc: '+2% chance to capture defeated enemy miniatures in the Arena.',   cur: `${45 + State.tech.salvageLvl * 2}%` }
+    ];
+    const html = [];
+    for (let i = 0; i < items.length; i++) {
+      const it = items[i];
+      const lvl = State.tech[it.key];
+      const cost = Math.round(120 * Math.pow(1.45, lvl));
+      html.push(`
+        <div class="unit-card">
+          <div class="unit-title">${it.name} (Lvl ${lvl})</div>
+          <div style="font-size:11px;color:var(--text-dim);">${it.desc}</div>
+          <div class="unit-meta"><span>Current Bonus: <b class="val-emerald">${it.cur}</b></span></div>
+          <button class="btn btn-gold" onclick="Game.upgradeTech('${it.key}')">⬆️ Upgrade (◈${cost.toLocaleString()})</button>
+        </div>
+      `);
+    }
+    document.getElementById('tech-list').innerHTML = html.join('');
+  },
+
+  renderPilots() {
+    const html = [];
+    for (let i = 0; i < State.pilots.length; i++) {
+      const p = State.pilots[i];
+      const code = TradeCodec.encodePilot(p);
+      html.push(`
+        <div class="unit-card">
+          <div class="unit-title">${p.name}</div>
+          <div class="stat-row" style="grid-template-columns: repeat(2, 1fr);">
+            <div>YIELD <b class="val-gold">+${p.yieldBuff}%</b></div>
+            <div>SPEED <b class="val-cyan">+${p.speedBuff}%</b></div>
+            <div>SUPPLY <b class="val-emerald">-${p.supplyBuff}%</b></div>
+            <div>ARMOR <b class="val-purple">+${p.armorBuff}%</b></div>
+          </div>
+          <div class="unit-meta">
+            <span>Status: ${p.assignedUnitId ? 'Assigned to Hunter' : 'Ready in Covert'}</span>
+            <code>${code}</code>
+          </div>
+        </div>
+      `);
+    }
+    document.getElementById('pilot-list').innerHTML = html.length ? html.join('') : '<div class="section-sub">No Commanders recruited yet. Recruit Armorers & Tacticians in Tab 2!</div>';
+  },
+
+  // TAB 2: Warforge Crates & Pilot Pods
+  renderBoxes() {
+    const boxes = [
+      { tier: 0, name: 'Foundling Munitions Crate', cost: 20,    tiers: 'T1 - T3 (#0001–#0300)', color: '#94a3b8' },
+      { tier: 1, name: 'Covert Beskar Warbox',      cost: 200,   tiers: 'T2 - T5 (#0101–#0500)', color: '#38bdf8' },
+      { tier: 2, name: 'Imperial Remnant Vault Box',cost: 2000,  tiers: 'T4 - T8 (#0301–#0800)', color: '#a855f7' },
+      { tier: 3, name: 'Mythic Mand\'alor Reliquary',cost:15000, tiers: 'T6 - T10 (#0501–#1000)',color: '#f59e0b' }
+    ];
+    const html = [];
+    for (let i = 0; i < boxes.length; i++) {
+      const b = boxes[i];
+      html.push(`
+        <div class="unit-card" style="border-color:${b.color};">
+          <div class="unit-title" style="color:${b.color};">${b.name}</div>
+          <div class="unit-meta"><span>Collector Pool: <b>${b.tiers}</b></span></div>
+          <div class="btn-row" style="margin-top:6px;">
+            <button class="btn btn-gold" style="flex:1;" onclick="Game.openWarbox(${b.tier}, 1)">1x (◈${b.cost.toLocaleString()})</button>
+            <button class="btn btn-cyan" style="flex:1;" onclick="Game.openWarbox(${b.tier}, 5)">5x (◈${(b.cost*5).toLocaleString()})</button>
+            <button class="btn btn-purple" style="flex:1;" onclick="Game.openWarbox(${b.tier}, 10)">10x (◈${(b.cost*10).toLocaleString()})</button>
+          </div>
+        </div>
+      `);
+    }
+    document.getElementById('warbox-list').innerHTML = html.join('');
+
+    const pBoxes = [
+      { tier: 0, name: 'Initiate Armorer Pod', cost: 60,   desc: '+6% to +12% Covert Buffs' },
+      { tier: 1, name: 'Journeyman Tactician', cost: 350,  desc: '+12% to +20% Covert Buffs' },
+      { tier: 2, name: 'Master Forgesmith',    cost: 1800, desc: '+18% to +30% Covert Buffs' },
+      { tier: 3, name: 'Mand\'alor War-Council',cost:9500, desc: '+25% to +42% Covert Buffs' }
+    ];
+    const pHtml = [];
+    for (let i = 0; i < pBoxes.length; i++) {
+      const pb = pBoxes[i];
+      pHtml.push(`
+        <div class="unit-card">
+          <div class="unit-title">${pb.name}</div>
+          <div class="unit-meta"><span>${pb.desc}</span></div>
+          <button class="btn btn-emerald" onclick="Game.recruitPilotBox(${pb.tier})">Recruit (◈${pb.cost.toLocaleString()})</button>
+        </div>
+      `);
+    }
+    document.getElementById('pilotbox-list').innerHTML = pHtml.join('');
+  },
+
+  // TAB 3: DUAL AUCTION HOUSE (1-LANE BUYER SNIPE + 5-LANE PLAYER SELLER)
+  renderAuctions() {
+    // 3A. 1-Lane Discounted Buyer Snipe Auction
+    const b = State.buyerAuction;
+    if (b) {
+      const u = b.unit;
+      const t = TIERS[u.tier];
+      const dexStr = TradeCodec.formatDex(u.dexNum);
+      const estProfit = Math.max(0, u.value - (b.currentBid + 1));
+      document.getElementById('buyer-auction-slot').innerHTML = `
+        <div class="snipe-spotlight">
+          <div class="unit-thumb-wrap" style="height:160px;" onclick="Inspector.open('BUYER', 0)">
+            <img class="unit-thumb" src="${u.imgData}" alt="${u.name}" />
+            <span class="tier-tag" style="color:${t.color};">${t.code}</span>
+            <span class="dex-tag">${dexStr}</span>
+            <span class="inspect-hint">🔍 512² 3D</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+              <div class="unit-title" style="font-size:16px;">${dexStr} ${u.name} (${t.finish})</div>
+              <span style="background:#0284c7; color:#fff; padding:4px 10px; border-radius:6px; font-weight:900; font-size:13px;">
+                ⏱️ ${State.buyerTimer.toFixed(1)}s Remaining
+              </span>
+            </div>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:8px; background:var(--bg-panel); padding:10px; border-radius:6px;">
+              <div>True Valuation: <b class="val-gold">◈${u.value.toLocaleString()}</b></div>
+              <div>Current Bid: <b class="val-cyan">◈${b.currentBid.toLocaleString()}</b></div>
+              <div>Est. Flip Margin: <b class="val-emerald">+◈${estProfit.toLocaleString()}</b></div>
+              <div>High Bidder: <b style="color:${b.highBidder === 'YOU' ? 'var(--emerald)' : 'var(--crimson)'};">${b.highBidder}</b></div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-emerald" style="font-size:13px; padding:10px 18px;" onclick="Game.bidOnBuyerAuction()">
+                ⚡ Bid +◈1 (Total: ◈${(b.currentBid + 1).toLocaleString()})
+              </button>
+              <button class="btn btn-cyan" onclick="Inspector.open('BUYER', 0)">🔍 Inspect 3D Diorama</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 3B. 5-Lane Player Seller Auctions
+    const sHtml = [];
+    for (let i = 0; i < 5; i++) {
+      const slot = State.sellerLanes[i];
+      if (!slot) {
+        sHtml.push(`
+          <div class="unit-card" style="border-style:dashed; justify-content:center; align-items:center; min-height:240px; text-align:center;">
+            <div class="unit-title" style="color:var(--text-dim);">Seller Lane #${i + 1} — Open</div>
+            <div style="font-size:11px; color:var(--text-dim); margin:6px 0;">
+              Click <b>"🔨 Auction Off"</b> on any miniature in Covert Racks (Tab 1) or click Auto-List above!
+            </div>
+          </div>
+        `);
+      } else {
+        const u = slot.unit;
+        const t = TIERS[u.tier];
+        const dexStr = TradeCodec.formatDex(u.dexNum);
+        const pctOfVal = Math.round((slot.currentBid / u.value) * 100);
+        sHtml.push(`
+          <div class="unit-card" style="border-color:var(--gold);">
+            <div class="unit-thumb-wrap" onclick="Inspector.open('SELLER', ${i})">
+              <img class="unit-thumb" src="${u.imgData}" alt="${u.name}" />
+              <span class="tier-tag" style="color:${t.color};">${t.code}</span>
+              <span class="dex-tag">${dexStr}</span>
+              <span class="finish-tag">⏱️ ${slot.timer.toFixed(1)}s</span>
+            </div>
+            <div class="unit-title">${u.name}</div>
+            <div class="unit-meta">
+              <span>Guide Val: ◈${u.value.toLocaleString()}</span>
+              <span>Bids: <b>${slot.bidCount}</b></span>
+            </div>
+            <div style="background:var(--bg-panel); padding:7px; border-radius:5px; font-size:11px;">
+              <div>Live Offer: <b class="val-gold" style="font-size:14px;">◈${slot.currentBid.toLocaleString()}</b> (${pctOfVal}%)</div>
+              <div>High Bidder: <b class="val-cyan">${slot.highBidder}</b></div>
+              ${slot.spikeNotice ? `<div style="color:var(--amber); font-weight:900; margin-top:3px;">${slot.spikeNotice}</div>` : ''}
+            </div>
+          </div>
+        `);
+      }
+    }
+    document.getElementById('seller-auction-list').innerHTML = sHtml.join('');
+  },
+
+  // TAB 4: Tabletop Wargame Arena + Sector Patrols
+  renderArena() {
+    const pHtml = [];
+    for (let i = 0; i < Arena.playerTeam.length; i++) {
+      const u = Arena.playerTeam[i];
+      const hpPct = Math.round((u.curHp / u.maxHp) * 100);
+      pHtml.push(`
+        <div class="fighter-slot ${u.curHp <= 0 ? 'dead' : ''}">
+          <img src="${u.imgData}" style="width:48px;height:48px;image-rendering:pixelated;border-radius:4px;border:1px solid #334155;" />
+          <div style="flex:1;">
+            <div style="font-size:12px;font-weight:800;">${TradeCodec.formatDex(u.dexNum)} ${u.name} ${u.fortified ? '🛡️' : ''}</div>
+            <div style="font-size:11px;color:var(--text-dim);">ATK ${u.atk} | Group ${u.group} | HP ${u.curHp}/${u.maxHp}</div>
+            <div class="hp-bar-outer" style="margin-top:4px;"><div class="hp-bar-inner" style="width:${hpPct}%;"></div></div>
+          </div>
+        </div>
+      `);
+    }
+    document.getElementById('arena-player-team').innerHTML = pHtml.length ? pHtml.join('') : '<div class="section-sub">Click 1v1, 3v3, or 5v5 above to deploy.</div>';
+
+    const eHtml = [];
+    for (let i = 0; i < Arena.enemyTeam.length; i++) {
+      const u = Arena.enemyTeam[i];
+      const hpPct = Math.round((u.curHp / u.maxHp) * 100);
+      eHtml.push(`
+        <div class="fighter-slot ${u.curHp <= 0 ? 'dead' : ''}">
+          <img src="${u.imgData}" style="width:48px;height:48px;image-rendering:pixelated;border-radius:4px;border:1px solid #334155;" />
+          <div style="flex:1;">
+            <div style="font-size:12px;font-weight:800;color:#fca5a5;">${TradeCodec.formatDex(u.dexNum)} ${u.name}</div>
+            <div style="font-size:11px;color:var(--text-dim);">ATK ${u.atk} | Group ${u.group} | HP ${u.curHp}/${u.maxHp}</div>
+            <div class="hp-bar-outer" style="margin-top:4px;"><div class="hp-bar-inner" style="width:${hpPct}%;background:var(--crimson);"></div></div>
+          </div>
+        </div>
+      `);
+    }
+    document.getElementById('arena-enemy-team').innerHTML = eHtml.length ? eHtml.join('') : '<div class="section-sub">Awaiting Remnant deployment...</div>';
+  },
+
+  renderPatrols() {
+    const html = [];
+    for (let i = 0; i < SECTORS.length; i++) {
+      const s = SECTORS[i];
+      const assigned = State.fleet.filter(u => u.sectorId === s.id);
+      html.push(`
+        <div class="unit-card">
+          <div class="unit-title">🎯 ${s.name}</div>
+          <div class="unit-meta">
+            <span>Min Tier: <b>${TIERS[s.minTier].code}</b></span>
+            <span>Cycle: <b>${s.cycleSec}s</b></span>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim);">${s.desc}</div>
+          <div class="stat-row">
+            <div>Base <b class="val-gold">◈${s.baseReward}</b></div>
+            <div>Upkeep <b class="val-cyan">${s.fuelCost} Sup</b></div>
+            <div>Hunters <b class="val-emerald">${assigned.length}</b></div>
+          </div>
+        </div>
+      `);
+    }
+    document.getElementById('sector-list').innerHTML = html.join('');
+  },
+
+  // TAB 5: High Command (Automations, 6 Commissions, 150 Milestones)
+  renderCommand() {
+    document.getElementById('tog-automarch').textContent = `🤖 Auto-March: ${State.autoMarch ? 'ON' : 'OFF'}`;
+    document.getElementById('tog-automarch').className = `btn ${State.autoMarch ? 'btn-emerald' : ''}`;
+    document.getElementById('tog-autorepair').textContent = `🔧 Auto-Repair (<45%): ${State.autoRepair ? 'ON' : 'OFF'}`;
+    document.getElementById('tog-autorepair').className = `btn ${State.autoRepair ? 'btn-emerald' : ''}`;
+    document.getElementById('tog-autosupply').textContent = `⚡ Auto-Supply (<500): ${State.autoSupply ? 'ON' : 'OFF'}`;
+    document.getElementById('tog-autosupply').className = `btn ${State.autoSupply ? 'btn-emerald' : ''}`;
+
+    const cHtml = [];
+    for (let i = 0; i < State.commissions.length; i++) {
+      const c = State.commissions[i];
+      const ready = Game.isCommissionReady(c);
+      cHtml.push(`
+        <div class="unit-card" style="border-color:${ready ? 'var(--emerald)' : 'var(--border)'};">
+          <div class="unit-title">${c.title}</div>
+          <div style="font-size:11px;color:var(--text-dim);">${c.desc}</div>
+          <div class="unit-meta">
+            <span>Bounty: <b class="val-gold">◈${c.cashReward.toLocaleString()}</b></span>
+            <span>+ Free <b>${TIERS[c.rewardTier].code} Miniature</b></span>
+          </div>
+          <button class="btn ${ready ? 'btn-emerald' : ''}" onclick="Game.claimCommission(${i})">
+            ${ready ? '✅ Complete Commission' : '⏳ In Progress'}
+          </button>
+        </div>
+      `);
+    }
+    document.getElementById('commission-list').innerHTML = cHtml.join('');
+    this.renderMilestones();
+  },
+
+  renderMilestones() {
+    const bookFilter = document.getElementById('mile-book-filter').value;
+    const all = Game.getMilestones();
+    const html = [];
+    for (let i = 0; i < all.length; i++) {
+      const m = all[i];
+      if (bookFilter !== 'ALL' && m.bookId !== parseInt(bookFilter, 10)) continue;
+      const cur = m.getMetric();
+      const done = cur >= m.target;
+      const claimed = !!State.claimedMilestones[m.id];
+      const pct = Math.min(100, Math.round((cur / m.target) * 100));
+
+      html.push(`
+        <div class="unit-card" style="opacity:${claimed ? 0.55 : 1}; border-color:${done && !claimed ? 'var(--gold)' : 'var(--border)'};">
+          <div style="font-size:10px;color:var(--cyan);font-weight:700;">${m.bookName}</div>
+          <div class="unit-title">${m.title}</div>
+          <div class="unit-meta">
+            <span>${Math.min(cur, m.target).toLocaleString()} / ${m.target.toLocaleString()} ${m.unitLabel}</span>
+            <span class="val-gold">+◈${m.rewardCredits.toLocaleString()}</span>
+          </div>
+          <div class="hp-bar-outer"><div class="hp-bar-inner" style="width:${pct}%;background:${claimed ? 'var(--cyan)' : 'var(--gold)'};"></div></div>
+          <button class="btn ${done && !claimed ? 'btn-gold' : ''}" ${(!done || claimed) ? 'disabled' : ''} onclick="Game.claimMilestone(${m.id})">
+            ${claimed ? '✓ Trial Claimed' : (done ? '🏆 Claim Reward' : 'Locked')}
+          </button>
+        </div>
+      `);
+    }
+    document.getElementById('milestone-list').innerHTML = html.join('');
+  }
+};
+
+/* ============================================================================
+   8. MASTER SIMULATION TICK (0.2s INTERVAL) & INITIALIZATION
+   ============================================================================ */
+function populateFilterDropdowns() {
+  const divSel = document.getElementById('filter-div');
+  const dHtml = ['<option value="ALL">All 10 Heroic Classes</option>'];
+  for (let i = 0; i < ARCHETYPES.length; i++) {
+    dHtml.push(`<option value="${i}">${i}. ${ARCHETYPES[i].name}</option>`);
+  }
+  divSel.innerHTML = dHtml.join('');
+
+  const tierSel = document.getElementById('filter-tier');
+  const tHtml = ['<option value="ALL">All 10 Rarity Tiers</option>'];
+  for (let i = 0; i < TIERS.length; i++) {
+    tHtml.push(`<option value="${i}">${TIERS[i].code} - ${TIERS[i].name} (${TIERS[i].finish})</option>`);
+  }
+  tierSel.innerHTML = tHtml.join('');
+}
+
+const SYNDICATE_BIDDERS = ['Pyke Collector', 'Hutt Cartel Envoy', 'Crimson Dawn Broker', 'Corellian Museum', 'Nevarro Guildmaster', 'Coruscant Noble'];
+
+function gameTick() {
+  const dt = 0.2;
+
+  // 1. 1-Lane Bargain Buyer Auction (10.0s countdown, gentle rival $1 bids so player can snipe for profit)
+  if (State.buyerAuction) {
+    State.buyerTimer -= dt;
+    // Small 4% chance per tick for rival to bump by ◈1, only if still under 35% of value
+    if (State.buyerAuction.highBidder === 'YOU' &&
+        State.buyerAuction.currentBid < State.buyerAuction.unit.value * 0.35 &&
+        Math.random() < 0.04) {
+      State.buyerAuction.currentBid += 1;
+      State.buyerAuction.highBidder = 'Rival Bargain Hunter';
+    }
+    if (State.buyerTimer <= 0) {
+      const b = State.buyerAuction;
+      if (b.highBidder === 'YOU' && State.funds >= b.currentBid) {
+        State.funds -= b.currentBid;
+        Game.addUnitToFleet(b.unit);
+        State.stats.auctionsWon++;
+        UI.toast(`🎯 Sniped ${TradeCodec.formatDex(b.unit.dexNum)} ${b.unit.name} for only ◈${b.currentBid.toLocaleString()} (Val: ◈${b.unit.value.toLocaleString()})!`);
+        if (UI.activeTab === 'tab-racks') UI.renderRacks();
+      }
+      Game.spawnBuyerAuction();
+    }
+  }
+
+  // 2. 5-Lane Player Seller Auctions (20.0s timer, 40% start, 10% bid/tick, 1.5% 2x-20x BID WAR Spike, <=1.0s overtime -> 2.0s)
+  for (let i = 0; i < 5; i++) {
+    const s = State.sellerLanes[i];
+    if (!s) continue;
+    s.timer -= dt;
+
+    // 10% chance per tick for NPC collectors to bid up your miniature
+    if (Math.random() < 0.10) {
+      let mult = 1.12 + Math.random() * 0.08;
+      if (Math.random() < 0.015) {
+        const spike = 2 + ((Math.random() * 19) | 0);
+        mult = spike;
+        s.spikeNotice = `🔥 ${spike}x [BID WAR] SPIKE!`;
+        UI.toast(`🔥 ${spike}x [BID WAR] SPIKE on your ${s.unit.name} in Lane #${i + 1}!`);
+      }
+      s.currentBid = Math.max(s.currentBid + 2, Math.round(s.currentBid * mult));
+      s.highBidder = SYNDICATE_BIDDERS[(Math.random() * SYNDICATE_BIDDERS.length) | 0];
+      s.bidCount++;
+
+      if (s.timer <= 1.0) {
+        s.timer = 2.0; // Overtime reset to 2.0s
+        s.spikeNotice = '⏱️ OVERTIME BID WAR (2.0s)!';
+      }
+    }
+
+    if (s.timer <= 0) {
+      const payout = s.currentBid;
+      State.funds += payout;
+      State.stats.lifetimeCredits += payout;
+      State.stats.auctionsSold++;
+      UI.toast(`💰 Sold ${TradeCodec.formatDex(s.unit.dexNum)} ${s.unit.name} in Lane #${i + 1} for ◈${payout.toLocaleString()}!`);
+      State.sellerLanes[i] = null;
+    }
+  }
+
+  if (UI.activeTab === 'tab-auctions') UI.renderAuctions();
+
+  // 3. High Command Automations
+  if (State.autoSupply && State.fuelReserve < 500 && State.funds >= 125) {
+    Game.buyFuel(500);
+  }
+  if (State.autoRepair) {
+    for (let i = 0; i < State.fleet.length; i++) {
+      const u = State.fleet[i];
+      if (u.hp / u.maxHp < 0.45) Game.repairUnit(u.id);
+    }
+  }
+  if (State.autoMarch) {
+    for (let i = 0; i < State.fleet.length; i++) {
+      const u = State.fleet[i];
+      if (u.sectorId === null && u.hp > u.maxHp * 0.3) {
+        let best = 0;
+        for (let s = 0; s < SECTORS.length; s++) {
+          if (u.tier >= SECTORS[s].minTier) best = s;
+        }
+        u.sectorId = best;
+      }
+    }
+  }
+
+  // 4. Active Sector Patrols Loop
+  const supplyDiscount = Math.min(0.70, State.tech.supplyLvl * 0.02);
+  const yieldBonus = 1 + State.tech.yieldLvl * 0.05;
+
+  for (let i = 0; i < State.fleet.length; i++) {
+    const u = State.fleet[i];
+    if (u.sectorId === null || u.hp <= 0) continue;
+    const sec = SECTORS[u.sectorId];
+    const pil = u.pilotId ? State.pilots.find(x => x.id === u.pilotId) : null;
+    const speedMult = 1 + (pil ? pil.speedBuff * 0.01 : 0);
+
+    u.patrolProg += dt * speedMult;
+    if (u.patrolProg >= sec.cycleSec) {
+      u.patrolProg = 0;
+      const pSupBuff = pil ? pil.supplyBuff * 0.01 : 0;
+      const fuelNeeded = Math.max(1, Math.round(sec.fuelCost * (1 - supplyDiscount) * (1 - pSupBuff)));
+      if (State.fuelReserve >= fuelNeeded) {
+        State.fuelReserve -= fuelNeeded;
+        const pYldBuff = 1 + (pil ? pil.yieldBuff * 0.01 : 0);
+        const tierMult = 1 + u.tier * 0.45;
+        const payout = Math.round(sec.baseReward * tierMult * yieldBonus * pYldBuff);
+        State.funds += payout;
+        State.stats.lifetimeCredits += payout;
+        const wear = Math.max(1, Math.round(4 * (1 - (pil ? pil.armorBuff * 0.01 : 0))));
+        u.hp = Math.max(0, u.hp - wear);
+      } else {
+        u.sectorId = null;
+      }
+    }
+  }
+
+  UI.renderHUD();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  populateFilterDropdowns();
+  Inspector.bindEvents();
+
+  // Seed 3 Iconic Heroic Scale Starters (#0001, #0115, #0232)
+  Game.addUnitToFleet(Game.createUnit({ tier: 0, faction: 0, division: 0 }, false)); // Darksaber Champion
+  Game.addUnitToFleet(Game.createUnit({ tier: 1, faction: 1, division: 5 }, false)); // Great Forge Armorer
+  Game.addUnitToFleet(Game.createUnit({ tier: 2, faction: 3, division: 2 }, false)); // Paz Heavy Repeater Juggernaut
+  State.pilots.push(Game.createPilot(0));
+
+  Game.spawnBuyerAuction();
+  Game.initCommissions();
+  UI.renderAllActive();
+
+  setInterval(gameTick, 200);
+});
+</script>
+</body>
+</html>
