@@ -3,41 +3,84 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>MANDALORIAN WARFORGE // 1,000 Heroic 128³ Voxel Collector</title>
+<title>MANDALORIAN WARFORGE // Holonet Tactical Collector</title>
 <style>
   :root {
-    --bg-deep: #07090d;
-    --bg-panel: #10151f;
-    --bg-card: #161d2b;
-    --bg-elev: #1e2738;
-    --border: #2a364d;
-    --beskar: #c8d6e5;
-    --gold: #f5b041;
-    --amber: #ff7f50;
-    --cyan: #38bdf8;
-    --crimson: #ef4444;
-    --emerald: #22c55e;
-    --purple: #a855f7;
-    --text-main: #f1f5f9;
-    --text-dim: #94a3b8;
+    --bg-void: #04060a;
+    --bg-deep: #080c14;
+    --bg-panel: rgba(12, 19, 31, 0.88);
+    --bg-card: rgba(18, 27, 43, 0.90);
+    --bg-elev: #1c2940;
+    --border: #263854;
+    --border-bright: #38bdf8;
+    --beskar: #d8e4f0;
+    --gold: #ffb703;
+    --amber: #fb8500;
+    --cyan: #00e5ff;
+    --crimson: #ff2a54;
+    --emerald: #00f59b;
+    --purple: #b565f7;
+    --text-main: #f0f6fc;
+    --text-dim: #8b9eb7;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
     margin: 0; padding: 0;
-    background: radial-gradient(circle at 50% 0%, #172030 0%, var(--bg-deep) 75%);
+    background-color: var(--bg-void);
+    background-image:
+      radial-gradient(circle at 50% 18%, rgba(0, 229, 255, 0.08) 0%, transparent 60%),
+      radial-gradient(circle at 50% 85%, rgba(255, 183, 3, 0.05) 0%, transparent 60%),
+      linear-gradient(180deg, #050811 0%, #090e18 50%, #04060b 100%);
     color: var(--text-main);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
     user-select: none;
+    position: relative;
   }
 
-  /* TOP HUD */
+  /* SUBTLE STAR WARS HOLONET SCANLINE OVERLAY */
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 229, 255, 0.018) 0px,
+      rgba(0, 229, 255, 0.018) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* GIANT BACKGROUND MYTHOSAUR SKULL EMBLEM */
+  .mythosaur-bg {
+    position: fixed;
+    top: 54%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(86vw, 760px);
+    height: min(86vw, 760px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.13;
+    filter: drop-shadow(0 0 35px rgba(0, 229, 255, 0.35));
+  }
+
+  /* FOREGROUND CONTENT LAYERING */
+  .hud-header, .main-wrap, .modal-backdrop, #toast-wrap {
+    position: relative;
+    z-index: 10;
+  }
+
+  /* TOP HOLONET HUD */
   .hud-header {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(10, 14, 22, 0.96);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
+    background: rgba(6, 10, 18, 0.94);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid #1e324d;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.75), 0 1px 0 rgba(0, 229, 255, 0.25);
     padding: 8px 12px;
   }
   .hud-top-row {
@@ -46,70 +89,83 @@
   }
   .brand-title {
     display: flex; align-items: center; gap: 10px;
-    font-weight: 900; letter-spacing: 0.8px; font-size: 14px; color: var(--beskar);
+    font-weight: 900; letter-spacing: 1.5px; font-size: 14px; color: var(--beskar);
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.35);
   }
   .brand-badge {
-    background: linear-gradient(135deg, #b91c1c, #7f1d1d);
-    color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 800;
-    border: 1px solid #f87171;
+    background: linear-gradient(135deg, #d90429, #690214);
+    color: #fff; padding: 4px 9px; font-size: 10px; font-weight: 900;
+    letter-spacing: 1.2px;
+    border: 1px solid #ff4d6d;
+    clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
   }
   .hud-stats {
     display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
   }
   .stat-pill {
-    background: var(--bg-card); border: 1px solid var(--border);
-    padding: 5px 9px; border-radius: 6px; font-size: 11px;
-    display: flex; align-items: center; gap: 5px;
+    background: rgba(14, 23, 38, 0.95);
+    border: 1px solid #294060;
+    border-left: 3px solid var(--cyan);
+    padding: 5px 10px;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+    display: flex; align-items: center; gap: 6px;
+    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
   }
-  .stat-pill b { font-family: "Courier New", monospace; font-size: 13px; }
-  .val-gold { color: var(--gold); }
-  .val-cyan { color: var(--cyan); }
-  .val-emerald { color: var(--emerald); }
+  .stat-pill b { font-family: "Courier New", monospace; font-size: 13px; letter-spacing: 0.5px; }
+  .val-gold { color: var(--gold); text-shadow: 0 0 8px rgba(255, 183, 3, 0.3); }
+  .val-cyan { color: var(--cyan); text-shadow: 0 0 8px rgba(0, 229, 255, 0.3); }
+  .val-emerald { color: var(--emerald); text-shadow: 0 0 8px rgba(0, 245, 155, 0.3); }
   .val-purple { color: var(--purple); }
 
-  /* STREAMLINED 5-TAB NAVIGATION BAR (1 ROW x 5 COLUMNS) */
+  /* STREAMLINED 5-TAB NAVIGATION BAR */
   .nav-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 6px;
+    gap: 7px;
     max-width: 1440px;
-    margin: 8px auto 0;
+    margin: 9px auto 0;
   }
   @media (max-width: 680px) {
     .nav-grid { grid-template-columns: repeat(2, 1fr); }
   }
   .nav-btn {
-    background: var(--bg-card);
+    background: linear-gradient(180deg, rgba(20, 31, 49, 0.95) 0%, rgba(11, 18, 29, 0.95) 100%);
     color: var(--text-dim);
-    border: 1px solid var(--border);
-    border-radius: 6px;
+    border: 1px solid #293e5c;
     padding: 9px 6px;
-    font-size: 12px;
-    font-weight: 800;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
     cursor: pointer;
     text-align: center;
     transition: all 0.15s ease;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
   }
-  .nav-btn:hover { border-color: var(--cyan); color: var(--text-main); }
+  .nav-btn:hover { border-color: var(--cyan); color: #fff; }
   .nav-btn.active {
-    background: linear-gradient(180deg, #1e3a5f 0%, #13243b 100%);
+    background: linear-gradient(180deg, #0d3b5c 0%, #071f36 100%);
     color: #fff;
     border-color: var(--cyan);
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+    box-shadow: inset 0 0 14px rgba(0, 229, 255, 0.35), 0 0 12px rgba(0, 229, 255, 0.2);
   }
   .nav-badge {
-    display: inline-block; background: var(--bg-elev); color: var(--gold);
-    padding: 1px 6px; border-radius: 99px; font-size: 10px; margin-left: 4px;
+    display: inline-block; background: rgba(0, 0, 0, 0.6); color: var(--gold);
+    border: 1px solid rgba(255, 183, 3, 0.4);
+    padding: 1px 6px; border-radius: 3px; font-size: 10px; margin-left: 4px;
+    font-family: "Courier New", monospace;
   }
 
   /* MAIN CONTAINER */
   .main-wrap {
     max-width: 1440px;
     margin: 0 auto;
-    padding: 12px;
+    padding: 14px 12px 40px;
   }
   .tab-pane { display: none; }
   .tab-pane.active { display: block; }
@@ -117,13 +173,20 @@
   .section-bar {
     display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
     gap: 10px; margin-bottom: 12px;
-    background: var(--bg-panel); border: 1px solid var(--border);
-    padding: 10px 14px; border-radius: 8px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    padding: 10px 14px;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
   }
-  .section-title { font-size: 15px; font-weight: 800; color: var(--beskar); letter-spacing: 0.5px; }
-  .section-sub { font-size: 12px; color: var(--text-dim); }
+  .section-title {
+    font-size: 14px; font-weight: 900; color: var(--beskar);
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .section-sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
 
-  /* CARDS & GRIDS */
+  /* CHAMFERED STAR WARS UNIT CARDS & GRIDS */
   .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
@@ -132,20 +195,23 @@
   .unit-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 8px;
     padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 7px;
     position: relative;
-    transition: border-color 0.12s ease;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    transition: border-color 0.12s ease, box-shadow 0.12s ease;
   }
-  .unit-card:hover { border-color: #475569; }
+  .unit-card:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 14px rgba(0, 229, 255, 0.12);
+  }
   .unit-thumb-wrap {
     width: 100%; height: 152px;
-    background: radial-gradient(circle at 50% 55%, #24344d 0%, #090d14 90%);
-    border: 1px solid #222e42;
-    border-radius: 6px;
+    background:
+      radial-gradient(circle at 50% 55%, rgba(0, 229, 255, 0.16) 0%, rgba(9, 13, 22, 0.95) 85%);
+    border: 1px solid #22354f;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer; position: relative; overflow: hidden;
   }
@@ -156,99 +222,131 @@
   }
   .tier-tag {
     position: absolute; top: 6px; left: 6px;
-    padding: 2px 6px; border-radius: 4px;
-    font-size: 10px; font-weight: 900; letter-spacing: 0.5px;
-    background: rgba(0,0,0,0.8); border: 1px solid currentColor;
+    padding: 2px 7px;
+    font-size: 10px; font-weight: 900; letter-spacing: 0.8px;
+    background: rgba(4, 8, 15, 0.88); border: 1px solid currentColor;
   }
   .dex-tag {
     position: absolute; bottom: 5px; left: 6px;
-    padding: 2px 6px; border-radius: 4px;
+    padding: 2px 6px;
     font-size: 10px; font-weight: 800; font-family: "Courier New", monospace;
-    background: rgba(0,0,0,0.75); color: var(--gold); border: 1px solid #475569;
+    background: rgba(4, 8, 15, 0.88); color: var(--gold); border: 1px solid #475569;
   }
   .finish-tag {
     position: absolute; top: 6px; right: 6px;
-    padding: 2px 6px; border-radius: 4px;
+    padding: 2px 6px;
     font-size: 10px; font-weight: 700;
-    background: rgba(15, 23, 42, 0.88); color: var(--beskar);
+    background: rgba(12, 20, 35, 0.9); color: var(--beskar);
     border: 1px solid #334155;
   }
   .inspect-hint {
     position: absolute; bottom: 5px; right: 6px;
-    font-size: 10px; color: var(--cyan); background: rgba(0,0,0,0.75);
-    padding: 2px 6px; border-radius: 4px;
+    font-size: 10px; color: var(--cyan); background: rgba(4, 8, 15, 0.85);
+    border: 1px solid rgba(0, 229, 255, 0.35);
+    padding: 2px 6px;
   }
-  .unit-title { font-size: 13px; font-weight: 800; color: #fff; line-height: 1.25; }
+  .unit-title { font-size: 13px; font-weight: 800; color: #fff; line-height: 1.25; letter-spacing: 0.3px; }
   .unit-meta { font-size: 11px; color: var(--text-dim); display: flex; justify-content: space-between; }
   .stat-row {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
-    background: var(--bg-panel); padding: 5px; border-radius: 5px; font-size: 11px; text-align: center;
+    background: rgba(8, 13, 22, 0.85); border: 1px solid #1e2d44;
+    padding: 5px; font-size: 11px; text-align: center;
   }
   .hp-bar-outer {
-    width: 100%; height: 6px; background: #090d14; border-radius: 3px; overflow: hidden;
+    width: 100%; height: 6px; background: #060a10; overflow: hidden; border: 1px solid #1d2b40;
   }
   .hp-bar-inner { height: 100%; background: var(--emerald); transition: width 0.2s; }
 
-  /* BUTTONS & INPUTS */
+  /* SCI-FI ANGLED BUTTONS & INPUTS */
   .btn {
     background: var(--bg-elev); color: var(--text-main);
-    border: 1px solid var(--border); border-radius: 5px;
-    padding: 6px 10px; font-size: 11px; font-weight: 700;
+    border: 1px solid #344c70;
+    padding: 7px 11px; font-size: 11px; font-weight: 800;
+    letter-spacing: 0.5px; text-transform: uppercase;
     cursor: pointer; transition: all 0.12s;
-    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+    clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
   }
-  .btn:hover:not(:disabled) { border-color: var(--cyan); color: #fff; }
+  .btn:hover:not(:disabled) { border-color: var(--cyan); color: #fff; filter: brightness(1.15); }
+  .btn:active:not(:disabled) { transform: scale(0.98); }
   .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-  .btn-gold { background: linear-gradient(180deg, #d97706, #92400e); border-color: #f59e0b; color: #fff; }
-  .btn-cyan { background: linear-gradient(180deg, #0284c7, #075985); border-color: #38bdf8; color: #fff; }
-  .btn-emerald { background: linear-gradient(180deg, #16a34a, #14532d); border-color: #4ade80; color: #fff; }
-  .btn-crimson { background: linear-gradient(180deg, #dc2626, #7f1d1d); border-color: #f87171; color: #fff; }
+  .btn-gold { background: linear-gradient(180deg, #e08e00, #8c5300); border-color: #ffb703; color: #fff; }
+  .btn-cyan { background: linear-gradient(180deg, #0077b6, #034078); border-color: #00e5ff; color: #fff; }
+  .btn-emerald { background: linear-gradient(180deg, #059669, #064e3b); border-color: #00f59b; color: #fff; }
+  .btn-crimson { background: linear-gradient(180deg, #d90429, #690214); border-color: #ff4d6d; color: #fff; }
   .btn-purple { background: linear-gradient(180deg, #7e22ce, #4c1d95); border-color: #c084fc; color: #fff; }
   .btn-row { display: flex; flex-wrap: wrap; gap: 5px; }
 
   select, input[type="text"] {
-    background: var(--bg-deep); color: var(--text-main);
-    border: 1px solid var(--border); border-radius: 5px;
+    background: #070b12; color: var(--text-main);
+    border: 1px solid #2b4060;
     padding: 6px 8px; font-size: 11px;
   }
   label.chk-pill {
     display: inline-flex; align-items: center; gap: 6px;
-    background: var(--bg-deep); border: 1px solid var(--gold);
-    color: var(--gold); padding: 5px 10px; border-radius: 5px;
+    background: #070b12; border: 1px solid var(--gold);
+    color: var(--gold); padding: 5px 10px;
     font-size: 11px; font-weight: 800; cursor: pointer;
   }
 
-  /* SNIPE AUCTION SPOTLIGHT */
+  /* ========================================================================
+     SNIPE AUCTION SPOTLIGHT + 3.0s INTERMISSION STATES
+     ======================================================================== */
+  @keyframes holoLockIn {
+    0%   { opacity: 0.25; transform: scale(0.985); filter: brightness(2.2) hue-rotate(20deg); }
+    100% { opacity: 1; transform: scale(1); filter: brightness(1) hue-rotate(0deg); }
+  }
   .snipe-spotlight {
-    background: linear-gradient(135deg, #131c2e 0%, #0d131f 100%);
+    background: linear-gradient(135deg, rgba(14, 25, 45, 0.94) 0%, rgba(8, 14, 26, 0.96) 100%);
     border: 2px solid var(--cyan);
-    border-radius: 10px;
     padding: 14px;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
     display: grid;
-    grid-template-columns: 180px 1fr;
+    grid-template-columns: 185px 1fr;
     gap: 16px;
     align-items: center;
-    box-shadow: 0 0 25px rgba(56, 189, 248, 0.12);
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.16);
+    animation: holoLockIn 0.28s ease-out;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .snipe-spotlight.phase-won {
+    border-color: var(--emerald);
+    box-shadow: 0 0 35px rgba(0, 245, 155, 0.28);
+  }
+  .snipe-spotlight.phase-lost {
+    border-color: var(--crimson);
+    box-shadow: 0 0 30px rgba(255, 42, 84, 0.22);
   }
   @media (max-width: 640px) {
     .snipe-spotlight { grid-template-columns: 1fr; }
   }
+  .intermission-banner {
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid currentColor;
+  }
+  .intermission-banner.show { display: flex; }
 
   /* ARENA LAYOUT */
   .arena-grid {
-    display: grid; grid-template-columns: 1fr 310px 1fr; gap: 12px;
+    display: grid; grid-template-columns: 1fr 320px 1fr; gap: 12px;
   }
   @media (max-width: 980px) {
     .arena-grid { grid-template-columns: 1fr; }
   }
-  .arena-side {
+  .arena-side, .arena-center {
     background: var(--bg-panel); border: 1px solid var(--border);
-    border-radius: 8px; padding: 10px;
+    padding: 12px;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
   }
   .arena-center {
-    background: var(--bg-panel); border: 1px solid var(--border);
-    border-radius: 8px; padding: 12px;
     display: flex; flex-direction: column; gap: 10px; align-items: center;
   }
   .dice-tray {
@@ -256,47 +354,49 @@
     margin: 4px 0;
   }
   .die-box {
-    width: 52px; height: 52px; border-radius: 10px;
-    background: linear-gradient(145deg, #1e293b, #0f172a);
+    width: 52px; height: 52px;
+    background: linear-gradient(145deg, #16243a, #09101c);
     border: 2px solid var(--gold); color: var(--gold);
     font-size: 25px; font-weight: 900;
     display: flex; align-items: center; justify-content: center;
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
   }
   .combat-log {
     width: 100%; height: 180px; overflow-y: auto;
-    background: var(--bg-deep); border: 1px solid var(--border);
-    border-radius: 6px; padding: 8px; font-size: 11px;
+    background: #05080f; border: 1px solid var(--border);
+    padding: 8px; font-size: 11px;
     font-family: "Courier New", monospace; line-height: 1.45;
   }
   .fighter-slot {
     background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: 6px; padding: 8px; margin-bottom: 8px;
+    padding: 8px; margin-bottom: 8px;
     display: flex; align-items: center; gap: 10px; position: relative;
   }
-  .fighter-slot.dead { opacity: 0.38; filter: grayscale(1); }
+  .fighter-slot.dead { opacity: 0.35; filter: grayscale(1); }
 
   /* 3D INSPECTOR MODAL */
   .modal-backdrop {
     position: fixed; inset: 0; z-index: 999;
-    background: rgba(3, 6, 12, 0.88);
-    backdrop-filter: blur(6px);
+    background: rgba(3, 6, 12, 0.90);
+    backdrop-filter: blur(8px);
     display: none; align-items: center; justify-content: center;
     padding: 12px;
   }
   .modal-backdrop.open { display: flex; }
   .modal-box {
-    background: var(--bg-panel); border: 1px solid var(--cyan);
-    border-radius: 10px; max-width: 860px; width: 100%;
+    background: #0c1422; border: 2px solid var(--cyan);
+    max-width: 860px; width: 100%;
     padding: 14px; display: grid; grid-template-columns: 512px 1fr; gap: 14px;
-    box-shadow: 0 0 35px rgba(56, 189, 248, 0.2);
+    box-shadow: 0 0 40px rgba(0, 229, 255, 0.25);
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
   }
   @media (max-width: 860px) {
     .modal-box { grid-template-columns: 1fr; max-height: 94vh; overflow-y: auto; }
   }
   #inspect-canvas {
     width: 100%; max-width: 512px; aspect-ratio: 1 / 1;
-    background: radial-gradient(circle at 50% 55%, #1e293b 0%, #06090f 85%);
-    border: 1px solid var(--border); border-radius: 8px;
+    background: radial-gradient(circle at 50% 55%, #1c2d47 0%, #05080e 85%);
+    border: 1px solid var(--border);
     cursor: grab; touch-action: none;
   }
   #inspect-canvas:active { cursor: grabbing; }
@@ -307,22 +407,63 @@
     display: flex; flex-direction: column; gap: 6px; pointer-events: none;
   }
   .toast-msg {
-    background: rgba(15, 23, 42, 0.96); color: #fff;
-    border-left: 4px solid var(--gold); border-top: 1px solid var(--border);
+    background: rgba(10, 17, 29, 0.96); color: #fff;
+    border-left: 4px solid var(--cyan); border-top: 1px solid var(--border);
     border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
-    padding: 9px 14px; border-radius: 6px; font-size: 12px; font-weight: 600;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    padding: 9px 14px; font-size: 12px; font-weight: 700;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.65);
   }
 </style>
 </head>
 <body>
 
-<!-- TOP HUD -->
+<!-- GIANT MANDALORIAN MYTHOSAUR SKULL WATERMARK IN BACKGROUND -->
+<svg class="mythosaur-bg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="beskarGrad" x1="0" y1="0" x2="0" y2="500" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.75" />
+      <stop offset="50%" stop-color="#94a3b8" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#ffb703" stop-opacity="0.65" />
+    </linearGradient>
+  </defs>
+  <!-- Outer Targeting Holoring -->
+  <circle cx="250" cy="250" r="236" stroke="url(#beskarGrad)" stroke-width="2" stroke-dasharray="18 8 4 8" />
+  <circle cx="250" cy="250" r="218" stroke="#00e5ff" stroke-opacity="0.25" stroke-width="1" />
+  <!-- Iconic Mythosaur Cranium, Sweeping Tusks, Eye Sockets & Snout -->
+  <path d="M250 38
+           L295 46 L342 74 L366 112
+           C418 118, 468 158, 480 232
+           C490 296, 460 374, 412 428
+           C436 364, 442 292, 422 238
+           C406 196, 378 182, 356 184
+           L348 258 L372 326 L344 378 L314 334
+           L298 446 L272 478 L260 402
+           L250 418
+           L240 402 L228 478 L202 446
+           L186 334 L156 378 L128 326 L152 258
+           L144 184
+           C122 182, 94 196, 78 238
+           C58 292, 64 364, 88 428
+           C40 374, 10 296, 20 232
+           C32 158, 82 118, 134 112
+           L158 74 L205 46 Z"
+        fill="url(#beskarGrad)" fill-opacity="0.18"
+        stroke="url(#beskarGrad)" stroke-width="5" stroke-linejoin="bevel" />
+  <!-- Cranium Battle Fissure -->
+  <path d="M250 38 L242 82 L262 114 L246 152 L250 185" stroke="#00e5ff" stroke-width="3.5" />
+  <!-- Angled Mythosaur Eye Sockets -->
+  <polygon points="168,188 226,208 214,244 156,226" fill="#04060a" stroke="#00e5ff" stroke-width="3.5" />
+  <polygon points="332,188 274,208 286,244 344,226" fill="#04060a" stroke="#00e5ff" stroke-width="3.5" />
+  <!-- Nasal Cavity Ridge -->
+  <polygon points="250,256 232,318 250,306 268,318" fill="#04060a" stroke="#ffb703" stroke-width="3" />
+</svg>
+
+<!-- TOP HOLONET HUD -->
 <header class="hud-header">
   <div class="hud-top-row">
     <div class="brand-title">
-      <span class="brand-badge">128³ HEROIC</span>
-      <span>MANDALORIAN WARFORGE // 1,000 COLLECTOR EDITION</span>
+      <span class="brand-badge">HOLONET // 128³</span>
+      <span>MANDALORIAN WARFORGE : COVERT COMMAND</span>
     </div>
     <div class="hud-stats">
       <div class="stat-pill"><span>Imperial Credits:</span> <b class="val-gold" id="hud-funds">◈500</b></div>
@@ -330,15 +471,15 @@
       <div class="stat-pill"><span>Covert Racks:</span> <b class="val-emerald" id="hud-fleet">0</b></div>
       <div class="stat-pill"><span>1,000 Codex:</span> <b class="val-gold" id="hud-codex">0/1000</b></div>
       <div class="stat-pill"><span>Creed Trials:</span> <b class="val-purple" id="hud-miles">0/150</b></div>
-      <button class="btn btn-cyan" onclick="UI.openCodeModal()">📡 Trade Codes</button>
+      <button class="btn btn-cyan" onclick="UI.openCodeModal()">📡 Holonet Codes</button>
     </div>
   </div>
 
   <!-- STREAMLINED 5-TAB NAVIGATION BAR -->
   <nav class="nav-grid" id="nav-grid">
-    <button class="nav-btn active" data-tab="tab-racks" onclick="UI.switchTab('tab-racks')">1. 🛡️ Covert Racks &amp; Armory <span class="nav-badge" id="rack-count">0</span></button>
-    <button class="nav-btn" data-tab="tab-boxes" onclick="UI.switchTab('tab-boxes')">2. 📦 Warforge Crates &amp; Depot</button>
-    <button class="nav-btn" data-tab="tab-auctions" onclick="UI.switchTab('tab-auctions')">3. 🔨 Auction House <span class="nav-badge" id="auc-timer">10s</span></button>
+    <button class="nav-btn active" data-tab="tab-racks" onclick="UI.switchTab('tab-racks')">1. 🛡️ Covert Racks <span class="nav-badge" id="rack-count">0</span></button>
+    <button class="nav-btn" data-tab="tab-boxes" onclick="UI.switchTab('tab-boxes')">2. 📦 Great Forge Crates</button>
+    <button class="nav-btn" data-tab="tab-auctions" onclick="UI.switchTab('tab-auctions')">3. 🔨 Holonet Auctions <span class="nav-badge" id="auc-timer">10s</span></button>
     <button class="nav-btn" data-tab="tab-arena" onclick="UI.switchTab('tab-arena')">4. ⚔️ Battle &amp; Patrols</button>
     <button class="nav-btn" data-tab="tab-command" onclick="UI.switchTab('tab-command')">5. 📜 High Command</button>
   </nav>
@@ -347,13 +488,13 @@
 <main class="main-wrap">
 
   <!-- ======================================================================
-       TAB 1: COVERT RACKS, VAULT FILTER, ARMORERS & ARMORY TECH (MERGED 3+5+9+10)
+       TAB 1: COVERT RACKS, VAULT FILTER, ARMORY TECH & ARMORERS
        ====================================================================== -->
   <section id="tab-racks" class="tab-pane active">
     <div class="section-bar">
       <div>
-        <div class="section-title">1. COVERT RACKS (1,000 HEROIC-SCALE MANDALORIAN MINIATURES)</div>
-        <div class="section-sub">Each miniature is a 92-voxel-tall Heroic Character (`#0001–#1000`) with full *Kar'ta Beskar* anatomy. Lock favorites, send to your 5 Seller Auction lanes, or inspect at 512² 60 FPS.</div>
+        <div class="section-title">1. COVERT RACKS // 1,000 HEROIC-SCALE MANDALORIAN MINIATURES</div>
+        <div class="section-sub">Each miniature is a 92-voxel-tall Heroic Character (`#0001–#1000`) with full *Kar'ta Beskar* anatomy. Lock favorites, list in your 5 Seller Auction lanes, or inspect in 3D.</div>
       </div>
       <div class="btn-row">
         <label class="chk-pill">
@@ -377,7 +518,7 @@
     </div>
     <div class="card-grid" id="rack-list"></div>
 
-    <!-- MERGED TAB 9: ARMORY TECH UPGRADES -->
+    <!-- ARMORY TECH UPGRADES -->
     <div class="section-bar" style="margin-top:18px;">
       <div>
         <div class="section-title">⚙️ MANDALORIAN ARMORY TECH UPGRADES</div>
@@ -386,7 +527,7 @@
     </div>
     <div class="card-grid" id="tech-list"></div>
 
-    <!-- MERGED TAB 5: ARMORERS & TACTICIANS ROSTER -->
+    <!-- ARMORERS & TACTICIANS ROSTER -->
     <div class="section-bar" style="margin-top:18px;">
       <div>
         <div class="section-title">🎖️ COVERT ARMORERS &amp; TACTICIANS ROSTER (<span id="pilot-count">0</span>)</div>
@@ -423,16 +564,53 @@
   </section>
 
   <!-- ======================================================================
-       TAB 3: AUCTION HOUSE (1-LANE DISCOUNT BUYER + 5-LANE PLAYER SELLER)
+       TAB 3: HOLONET AUCTION HOUSE (1-LANE SNIPE BUYER + 5-LANE PLAYER SELLER)
        ====================================================================== -->
   <section id="tab-auctions" class="tab-pane">
     <div class="section-bar">
       <div>
-        <div class="section-title">3A. 🎯 1-LANE BARGAIN SNIPE AUCTION (BUY LOW // ◈1 INCREMENTS // 10.0s TIMER)</div>
-        <div class="section-sub">Single-item clearance lane for zero lag! Starts at 12%–20% of true market value. Bid in ◈1 ($1) increments to snipe miniatures and flip them below for massive profit!</div>
+        <div class="section-title">3A. 🎯 1-LANE HOLONET BARGAIN SNIPE AUCTION (10.0s LIVE + 3.0s COOLDOWN // +◈1 BIDS)</div>
+        <div class="section-sub">Heavily discounted single-lot feed! As long as any time remains (&gt;0.0s), you can out-snipe anyone for +◈1. Features a 3.0s intermission between lots so you always see the outcome!</div>
       </div>
     </div>
-    <div id="buyer-auction-slot"></div>
+
+    <!-- PERSISTENT DOM CONTAINER FOR ZERO-DROP SNIPING -->
+    <div class="snipe-spotlight" id="buyer-spotlight-card">
+      <div class="unit-thumb-wrap" style="height:165px;" onclick="Inspector.open('BUYER', 0)">
+        <img class="unit-thumb" id="buyer-thumb" src="" alt="Bargain Lot" />
+        <span class="tier-tag" id="buyer-tier-tag">T1</span>
+        <span class="dex-tag" id="buyer-dex-tag">#0001</span>
+        <span class="inspect-hint">🔍 512² 3D</span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:9px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+          <div class="unit-title" style="font-size:16px;" id="buyer-unit-title">Loading Holonet Lot...</div>
+          <span id="buyer-timer-badge" style="background:#0077b6; border:1px solid var(--cyan); color:#fff; padding:5px 12px; font-weight:900; font-size:13px; font-family:'Courier New',monospace;">
+            ⏱️ 10.0s
+          </span>
+        </div>
+
+        <!-- 3-SECOND INTERMISSION VERDICT BANNER -->
+        <div class="intermission-banner" id="buyer-verdict-banner">
+          <span id="buyer-verdict-text">LOT CLOSED</span>
+          <span id="buyer-verdict-countdown" style="font-family:'Courier New',monospace;">NEXT LOT IN 3.0s</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:8px; background:rgba(6, 10, 18, 0.85); border:1px solid var(--border); padding:10px;">
+          <div>Guide Valuation: <b class="val-gold" id="buyer-true-val">◈0</b></div>
+          <div>Current Bid: <b class="val-cyan" id="buyer-cur-bid">◈0</b></div>
+          <div>Est. Flip Profit: <b class="val-emerald" id="buyer-flip-profit">+◈0</b></div>
+          <div>High Bidder: <b id="buyer-high-bidder">Scrapper</b></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-emerald" id="buyer-bid-btn" style="font-size:13px; padding:11px 20px; flex:1;" onclick="Game.bidOnBuyerAuction()">
+            ⚡ SNIPE BID +◈1
+          </button>
+          <button class="btn btn-cyan" style="padding:11px 14px;" onclick="Inspector.open('BUYER', 0)">🔍 Inspect 3D</button>
+        </div>
+      </div>
+    </div>
 
     <div class="section-bar">
       <div>
@@ -447,7 +625,7 @@
   </section>
 
   <!-- ======================================================================
-       TAB 4: TABLETOP WARGAME ARENA & OUTER RIM SECTOR PATROLS (MERGED 4+6)
+       TAB 4: TABLETOP WARGAME ARENA & OUTER RIM SECTOR PATROLS
        ====================================================================== -->
   <section id="tab-arena" class="tab-pane">
     <div class="section-bar">
@@ -496,7 +674,7 @@
       </div>
     </div>
 
-    <!-- MERGED TAB 6: OUTER RIM SECTOR PATROLS -->
+    <!-- OUTER RIM SECTOR PATROLS -->
     <div class="section-bar" style="margin-top:18px;">
       <div>
         <div class="section-title">4B. 🎯 OUTER RIM SECTOR PATROLS (PASSIVE BOUNTY DISPATCH)</div>
@@ -566,7 +744,7 @@
       <div>
         <div class="section-title" id="insp-name" style="font-size:18px;">Miniature Name</div>
         <div id="insp-sub" style="font-size:12px; color:var(--gold); margin:4px 0 10px;">Class &amp; Finish</div>
-        <div id="insp-details" style="font-size:12px; line-height:1.6; background:var(--bg-deep); padding:10px; border-radius:6px; border:1px solid var(--border);"></div>
+        <div id="insp-details" style="font-size:12px; line-height:1.6; background:var(--bg-deep); padding:10px; border:1px solid var(--border);"></div>
       </div>
       <div style="display:flex; flex-direction:column; gap:6px;">
         <div class="btn-row">
@@ -575,7 +753,7 @@
           <button class="btn btn-gold" onclick="Inspector.zoom(-0.35)">➖ Zoom Out</button>
           <button class="btn" onclick="Inspector.resetCam()">🎯 Reset Camera</button>
         </div>
-        <div style="background:var(--bg-deep); padding:8px; border-radius:6px; border:1px solid var(--border); font-size:11px;">
+        <div style="background:var(--bg-deep); padding:8px; border:1px solid var(--border); font-size:11px;">
           <div><b>Base36 Collector Code:</b> <code id="insp-code" style="color:var(--cyan);">WF-000</code></div>
         </div>
         <button class="btn btn-crimson" style="padding:10px;" onclick="Inspector.close()">✖ Close 3D Inspector</button>
@@ -590,7 +768,7 @@
     <div>
       <div class="section-title">📡 HOLONET BASE36 TRADE CODE TRANSCEIVER</div>
       <div class="section-sub" style="margin:6px 0 12px;">
-        Import any Collector Miniature Code (<code>WF-XXXX</code> encoding Collector `#0001–#1000`) or Commander Code (<code>CMD-XXXX</code>).
+        Import any Collector Miniature Code (<code>WF-XXX</code> encoding Collector `#0001–#1000`) or Commander Code (<code>CMD-XXXX</code>).
       </div>
       <div style="display:flex; gap:8px; margin-bottom:12px;">
         <input type="text" id="trade-code-input" placeholder="Paste WF-... or CMD-... code here" style="flex:1; font-size:13px;" />
@@ -607,7 +785,6 @@
 /* ============================================================================
    1. EXACT 1,000 COLLECTOR MINIATURE MATRIX (10 CLASSES x 10 CLANS x 10 TIERS)
    ============================================================================ */
-// 10 Rarity Tiers paired with 10 Iconic Beskar Material Finishes (10)
 const TIERS = [
   { id: 0, code: 'T1',  name: 'Foundling Initiate',       finish: 'Raw Durasteel',         val: 15,     hp: 110,  atk: 15,  color: '#94a3b8', palShift: [115, 125, 138], emissive: [56, 189, 248] },
   { id: 1, code: 'T2',  name: 'Covert Bounty Tracker',    finish: 'Weathered Beskar',      val: 45,     hp: 165,  atk: 24,  color: '#64748b', palShift: [158, 170, 184], emissive: [245, 158, 11] },
@@ -621,7 +798,6 @@ const TIERS = [
   { id: 9, code: 'T10', name: 'Mythic Mand\'alor Host',   finish: 'Darksaber Obsidian',    val: 250000, hp: 8000, atk: 1120,color: '#ef4444', palShift: [42, 48, 62],    emissive: [255, 255, 255] }
 ];
 
-// 10 Iconic Mandalorian Clans & Houses (10)
 const FACTIONS = [
   { id: 0, name: 'Clan Mudhorn',          accent: [217, 119, 6],  cape: [120, 65, 25] },
   { id: 1, name: 'Children of the Watch', accent: [56, 189, 248], cape: [30, 58, 95] },
@@ -635,7 +811,6 @@ const FACTIONS = [
   { id: 9, name: 'Heirs of Mand\'alor',   accent: [245, 158, 11], cape: [45, 45, 55] }
 ];
 
-// 10 Ultra-Detailed Heroic Character Archetypes (10 x 10 x 10 = 1,000 Collector Miniatures)
 const ARCHETYPES = [
   { id: 0, key: 'DARKSABER_CHAMP', group: 'B', range: 25, helm: 'crest',  weapon: 'darksaber', cape: true,  jetpack: true,  plinth: 'ruins', name: 'Darksaber Mand\'alor Champion' },
   { id: 1, key: 'AMBAN_SNIPER',    group: 'C', range: 95, helm: 'tvisor', weapon: 'amban',     cape: true,  jetpack: false, plinth: 'dune',  name: 'Amban Phase-Pulse Sniper' },
@@ -649,7 +824,6 @@ const ARCHETYPES = [
   { id: 9, key: 'REMNANT_COMMANDO',group: 'C', range: 75, helm: 'spikes', weapon: 'eweb',      cape: true,  jetpack: true,  plinth: 'ruins', name: 'Supercommando Siege Gunner' }
 ];
 
-// 6 Outer Rim Sector Patrols
 const SECTORS = [
   { id: 0, name: 'Nevarro Lava Flats',         minTier: 0, cycleSec: 12, baseReward: 32,   fuelCost: 4,  desc: 'Clear Remnant scout patrols around the covert lava tunnels.' },
   { id: 1, name: 'Tatooine Dune Sea Wastes',   minTier: 1, cycleSec: 16, baseReward: 95,   fuelCost: 8,  desc: 'Hunt syndicate bounties across the Jundland canyon ridges.' },
@@ -699,7 +873,7 @@ class VoxelWarforgeEngine {
     this.materialPriority = new Uint32Array(256);
     this.isEmissive = new Uint8Array(256);
 
-    this.yaw = 0.48; this.pitch = 0.26; this.scale = 3.95; this.seed = 1600;
+    this.yaw = 0.48; this.pitch = 0.26; this.scale = 3.95;
   }
 
   clearGrid() {
@@ -735,29 +909,17 @@ class VoxelWarforgeEngine {
       }
     };
 
-    // 1..15: Plinth Rim Obsidian
     fillRamp(1, 15, 34, 40, 50, 1, 0);
-    // 16..31: Plinth Stone / Basalt / Dune Terrain
     fillRamp(16, 16, 76, 70, 64, 2, 0);
-    // 32..47: Primary Beskar Armor Finish
     fillRamp(32, 16, tData.palShift[0], tData.palShift[1], tData.palShift[2], 6, 0);
-    // 48..63: Clan Accent Plating (Pauldrons, Trim, Knee Poleyns)
     fillRamp(48, 16, fac.accent[0], fac.accent[1], fac.accent[2], 7, 0);
-    // 64..79: Flightsuit Charcoal & T-Visor Pitch Black
     fillRamp(64, 16, 22, 26, 34, 5, 0);
-    // 80..95: Weapon Gunmetal & Barrel Steel
     fillRamp(80, 16, 62, 70, 82, 7, 0);
-    // 96..111: Forged Gold / Kar'ta Beskar Trim / Buckles
     fillRamp(96, 16, 238, 184, 52, 8, 0);
-    // 112..127: Cuirbouilli Leather Bandolier, Belt & Holsters
     fillRamp(112, 16, 114, 72, 42, 6, 0);
-    // 128..143: Emissive Plasma / Darksaber Edge / Whistling Bird Glow
     fillRamp(128, 16, tData.emissive[0], tData.emissive[1], tData.emissive[2], 10, 1);
-    // 144..159: Woven Cape & Kama Cloth
     fillRamp(144, 16, fac.cape[0], fac.cape[1], fac.cape[2], 4, 0);
-    // 160..175: Flame / Lava / Thruster Fire Glow
     fillRamp(160, 16, 255, 105, 25, 10, 1);
-    // 176..191: Thermal Smoke / Exhaust Cloud
     fillRamp(176, 16, 165, 175, 188, 3, 0);
   }
 
@@ -863,28 +1025,22 @@ class VoxelWarforgeEngine {
     }
   }
 
-  // Build Heroic Display Plinth (Y = 5..18)
   buildHeroicPlinth(plinthType) {
-    // Beveled collector base ring
     this.fillShellCylinder(64, 5, 64, 38, 5, 1, 10);
     this.fillShellCylinder(64, 10, 64, 34, 5, 16, 12);
     this.fillShellCylinder(64, 15, 64, 31, 3, 18, 12);
-    // Gold collector rim plaque on front (+Z)
     this.fillShellBox(52, 6, 98, 76, 10, 102, 98, 8);
 
     if (plinthType === 'lava') {
-      // Glowing Nevarro lava river channel & basalt rocks
       this.fillShellBox(44, 16, 42, 84, 18, 86, 162, 10);
       this.fillShellBox(38, 16, 48, 56, 20, 80, 18, 10);
       this.fillShellBox(70, 16, 48, 88, 20, 80, 18, 10);
     } else if (plinthType === 'anvil') {
-      // Great Forge Sacred Beskar Anvil & Brazier in front-side
       this.fillShellBox(76, 18, 68, 92, 28, 80, 82, 10);
       this.fillShellBox(72, 28, 66, 96, 33, 82, 98, 10);
       this.fillShellCylinder(42, 18, 74, 7, 10, 82, 8);
       this.fillShellCylinder(42, 28, 74, 6, 5, 162, 8);
     } else if (plinthType === 'smoke') {
-      // Billowing 3D thermal smoke clouds around boots
       for (let i = 0; i < 12; i++) {
         const ang = (i / 12) * Math.PI * 2;
         const sx = (64 + Math.cos(ang) * 20) | 0;
@@ -892,20 +1048,17 @@ class VoxelWarforgeEngine {
         this.fillEllipsoid(sx, 20 + (i % 3) * 3, sz, 7, 5, 7, 176, 10);
       }
     } else if (plinthType === 'air') {
-      // Twin Jetpack Rocket Exhaust Plumes lifting the warrior!
       this.fillShellCylinder(58, 16, 56, 5, 16, 160, 12);
       this.fillShellCylinder(70, 16, 56, 5, 16, 160, 12);
       this.fillEllipsoid(58, 18, 56, 9, 4, 9, 176, 10);
       this.fillEllipsoid(70, 18, 56, 9, 4, 9, 176, 10);
     } else {
-      // Shattered Sundari Ruins & Remnant Droid Trophy
       this.fillShellBox(40, 17, 44, 58, 21, 78, 20, 10);
       this.fillShellCylinder(80, 18, 76, 6, 6, 82, 8);
-      this.setVoxel(80, 21, 82, 164); // Crushed droid photoreceptor
+      this.setVoxel(80, 21, 82, 164);
     }
   }
 
-  // Build 92-Voxel-Tall Heroic Scale Mandalorian Character
   buildUnitModel(unit) {
     this.clearGrid();
     this.setupPalette(unit);
@@ -914,75 +1067,59 @@ class VoxelWarforgeEngine {
     this.buildHeroicPlinth(arch.plinth);
 
     const flyOffset = arch.jetpack === 'fly' ? 12 : 0;
-    const by = 18 + flyOffset; // Base foot height
+    const by = 18 + flyOffset;
 
-    // 1. ARMORED BOOTS, PLEATED GAITERS & SHIN GREAVES (by .. by+20)
     const lx = 55, rx = 73, lz = 64, rz = 62;
-    // Left & Right Armored Boots
     this.fillShellBox(lx - 5, by, lz - 5, lx + 5, by + 6, lz + 9, 64, 10);
-    this.fillShellBox(lx - 4, by + 2, lz + 4, lx + 4, by + 6, lz + 10, 34, 10); // Toe plate
+    this.fillShellBox(lx - 4, by + 2, lz + 4, lx + 4, by + 6, lz + 10, 34, 10);
     this.fillShellBox(rx - 5, by, rz - 5, rx + 5, by + 6, rz + 9, 64, 10);
     this.fillShellBox(rx - 4, by + 2, rz + 4, rx + 4, by + 6, rz + 10, 34, 10);
 
-    // Shin Flightsuit + Beskar Greaves + Center Ridge
     this.fillShellCylinder(lx, by + 6, lz, 4.5, 15, 64, 10);
     this.fillShellCylinder(rx, by + 6, rz, 4.5, 15, 64, 10);
     this.fillShellBox(lx - 4, by + 7, lz + 1, lx + 4, by + 20, lz + 6, 32, 12);
     this.fillShellBox(rx - 4, by + 7, rz + 1, rx + 4, by + 20, rz + 6, 32, 12);
-    // Vertical center ridge on greaves
     this.fillShellBox(lx - 1, by + 8, lz + 6, lx + 1, by + 19, lz + 7, 48, 10);
     this.fillShellBox(rx - 1, by + 8, rz + 6, rx + 1, by + 19, rz + 7, 48, 10);
 
-    // 2. KNEE POLEYNS WITH DART LAUNCHERS (by+20 .. by+25)
     this.fillShellBox(lx - 5, by + 20, lz + 2, lx + 5, by + 25, lz + 8, 48, 12);
     this.fillShellBox(rx - 5, by + 20, rz + 2, rx + 5, by + 25, rz + 8, 48, 12);
-    // Knee rocket-dart tubes on outer edges
     this.setVoxel(lx - 6, by + 22, lz + 5, 98);
     this.setVoxel(lx - 6, by + 23, lz + 6, 132);
     this.setVoxel(rx + 6, by + 22, rz + 5, 98);
     this.setVoxel(rx + 6, by + 23, rz + 6, 132);
 
-    // 3. THIGH CUISSES, HIP TASSETS & CODPIECE (by+25 .. by+40)
     this.fillShellCylinder(lx + 1, by + 25, lz, 5.2, 13, 64, 10);
     this.fillShellCylinder(rx - 1, by + 25, rz, 5.2, 13, 64, 10);
-    // Beskar Thigh Plates with raised rectangular ridge
     this.fillShellBox(lx - 4, by + 26, lz + 2, lx + 5, by + 37, lz + 7, 34, 12);
     this.fillShellBox(rx - 5, by + 26, rz + 2, rx + 4, by + 37, rz + 7, 34, 12);
     this.fillShellBox(lx, by + 27, lz + 7, lx + 1, by + 36, lz + 8, 98, 8);
     this.fillShellBox(rx - 1, by + 27, rz + 7, rx, by + 36, rz + 8, 98, 8);
 
-    // Pelvis, Codpiece & Hip Tassets
     const py = by + 37;
     this.fillShellBox(51, py, 57, 77, py + 7, 69, 64, 10);
-    this.fillShellBox(58, py, 68, 70, py + 6, 72, 34, 12); // Codpiece
-    this.fillShellBox(47, py - 3, 58, 51, py + 5, 68, 48, 10); // Left Tasset
-    this.fillShellBox(77, py - 3, 58, 81, py + 5, 68, 48, 10); // Right Tasset
+    this.fillShellBox(58, py, 68, 70, py + 6, 72, 34, 12);
+    this.fillShellBox(47, py - 3, 58, 51, py + 5, 68, 48, 10);
+    this.fillShellBox(77, py - 3, 58, 81, py + 5, 68, 48, 10);
 
-    // 4. LEATHER UTILITY BELT, AMMO POUCHES & THERMAL DETONATORS (py+6 .. py+10)
     const beltY = py + 6;
     this.fillShellBox(49, beltY, 56, 79, beltY + 4, 71, 112, 12);
-    this.fillShellBox(60, beltY, 71, 68, beltY + 4, 73, 98, 10); // Gold Mythosaur Buckle
-    // Individual Thermal Detonators & Tibanna Cartridges on belt
+    this.fillShellBox(60, beltY, 71, 68, beltY + 4, 73, 98, 10);
     for (let bx = 52; bx <= 76; bx += 6) {
       if (bx === 64) continue;
       this.fillShellBox(bx - 1, beltY + 1, 71, bx + 1, beltY + 3, 73, 82, 8);
-      this.setVoxel(bx, beltY + 2, 74, 134); // Glowing detonator indicator
+      this.setVoxel(bx, beltY + 2, 74, 134);
     }
 
-    // 5. TORSO FLAK VEST, BREASTPLATES & KAR'TA BESKAR IRON HEART (beltY+4 .. beltY+26)
     const ty0 = beltY + 4;
     const ty1 = ty0 + 22;
-    this.fillShellBox(50, ty0, 56, 78, ty1, 70, 64, 12); // Dark Flak Vest
-    // Abdominal Plate
+    this.fillShellBox(50, ty0, 56, 78, ty1, 70, 64, 12);
     this.fillShellBox(54, ty0 + 2, 69, 74, ty0 + 8, 72, 32, 12);
-    // Left & Right Symmetrical Beskar Breastplates
     this.fillShellBox(51, ty0 + 10, 69, 61, ty1 - 2, 74, 34, 12);
     this.fillShellBox(67, ty0 + 10, 69, 77, ty1 - 2, 74, 34, 12);
-    // THE KAR'TA BESKAR (Hexagonal Iron Heart Diamond at center of chest!)
     this.fillShellBox(62, ty0 + 12, 70, 66, ty0 + 18, 74, 98, 10);
     this.setVoxel(64, ty0 + 15, 75, 134);
 
-    // Diagonal Leather Bandolier with Silver Tibanna Charges
     for (let s = 0; s <= 18; s++) {
       const bx = 52 + s;
       const byBand = ty1 - 2 - s;
@@ -992,7 +1129,6 @@ class VoxelWarforgeEngine {
       }
     }
 
-    // 6. 3D SINE-WAVE FLOWING CAPE OR Z-6 JETPACK ON BACK (-Z)
     if (arch.cape) {
       for (let cy = by + 8; cy <= ty1 - 1; cy++) {
         const t = (ty1 - cy) / (ty1 - by);
@@ -1007,48 +1143,36 @@ class VoxelWarforgeEngine {
       }
     }
     if (arch.jetpack) {
-      // Z-6 Jetpack with Dual Fuel Tanks, Thruster Bells & Warhead Cone
       this.fillShellBox(54, ty0 + 4, 47, 74, ty1 - 1, 56, 34, 12);
       this.fillShellCylinder(57, ty0 + 2, 50, 4, 18, 48, 10);
       this.fillShellCylinder(71, ty0 + 2, 50, 4, 18, 48, 10);
-      this.fillShellCylinder(64, ty1 - 1, 51, 3, 9, 98, 10); // Top Warhead
-      this.setVoxel(57, ty0, 50, 164); // Left thruster glow
-      this.setVoxel(71, ty0, 50, 164); // Right thruster glow
+      this.fillShellCylinder(64, ty1 - 1, 51, 3, 9, 98, 10);
+      this.setVoxel(57, ty0, 50, 164);
+      this.setVoxel(71, ty0, 50, 164);
     }
 
-    // 7. SCULPTED PAULDRONS, ARMS & 5-GROOVED WHISTLING BIRD GAUNTLETS
     const pSize = arch.helm === 'heavy' ? 9 : 7;
-    // Left & Right Pauldrons with raised center ridge
     this.fillEllipsoid(44, ty1 - 4, 63, pSize, 7, 8, 48, 12);
     this.fillEllipsoid(84, ty1 - 4, 63, pSize, 7, 8, 48, 12);
-    this.fillShellBox(44 - pSize, ty1 - 5, 61, 44 - pSize + 2, ty1 - 1, 65, 98, 8); // Clan Crest
+    this.fillShellBox(44 - pSize, ty1 - 5, 61, 44 - pSize + 2, ty1 - 1, 65, 98, 8);
     this.fillShellBox(84 + pSize - 2, ty1 - 5, 61, 84 + pSize, ty1 - 1, 65, 98, 8);
 
-    // Upper Arms & Articulated Gauntlets
     this.drawRod(44, ty1 - 6, 63, 39, ty0 + 4, 68, 4.0, 64);
     this.drawRod(84, ty1 - 6, 63, 89, ty0 + 4, 68, 4.0, 64);
-    // Left Gauntlet (5-grooved Whistling Bird launcher + Flamethrower housing)
     this.fillShellBox(35, ty0 + 1, 65, 43, ty0 + 11, 76, 34, 12);
-    this.fillShellBox(36, ty0 + 8, 68, 42, ty0 + 13, 75, 98, 10); // Whistling bird micro-tubes
+    this.fillShellBox(36, ty0 + 8, 68, 42, ty0 + 13, 75, 98, 10);
     for (let g = 69; g <= 74; g += 2) this.setVoxel(39, ty0 + 13, g, 134);
-    // Right Gauntlet
     this.fillShellBox(85, ty0 + 1, 65, 93, ty0 + 11, 76, 34, 12);
 
-    // 8. HEROIC MANDALORIAN HELMET, MANDIBLES, T-VISOR & CRESTS (ty1+1 .. ty1+22)
     const hy0 = ty1 + 1;
-    // Neck seal
     this.fillShellCylinder(64, ty1 - 1, 63, 5.5, 4, 64, 8);
-    // Lower Helmet Cylinder + Rounded Dome Crown
     this.fillShellCylinder(64, hy0 + 2, 63, 10.5, 11, 32, 14);
     this.fillEllipsoid(64, hy0 + 13, 63, 10.8, 8.5, 11.2, 34, 14);
-    // Mohawk Dome Ridge
     this.fillShellBox(62, hy0 + 14, 54, 66, hy0 + 22, 71, 48, 10);
-    // Brow Groove & Cheek Mandibles
     this.fillShellBox(55, hy0 + 11, 71, 73, hy0 + 13, 75, 48, 10);
     this.fillShellBox(54, hy0 + 3, 69, 59, hy0 + 9, 74, 48, 10);
     this.fillShellBox(69, hy0 + 3, 69, 74, hy0 + 9, 74, 48, 10);
 
-    // Iconic Pitch-Black T-Visor (or Nite Owl Angled Visor)
     for (let vx = 56; vx <= 72; vx++) {
       const owlDip = (arch.helm === 'owl' && (vx < 60 || vx > 68)) ? -1 : 0;
       this.setVoxel(vx, hy0 + 10 + owlDip, 73, 64);
@@ -1059,14 +1183,12 @@ class VoxelWarforgeEngine {
       this.fillShellBox(62, vy, 73, 66, vy, 75, 64, 4);
     }
 
-    // Ear Caps & Articulated Rangefinder Stalk
     this.fillShellBox(52, hy0 + 6, 61, 54, hy0 + 13, 65, 98, 8);
     this.fillShellBox(74, hy0 + 6, 61, 76, hy0 + 13, 65, 98, 8);
     this.drawRod(75, hy0 + 12, 63, 75, hy0 + 23, 63, 1.1, 82);
     this.fillShellBox(71, hy0 + 22, 62, 76, hy0 + 24, 66, 98, 8);
-    this.setVoxel(72, hy0 + 23, 67, 134); // Rangefinder HUD optic
+    this.setVoxel(72, hy0 + 23, 67, 134);
 
-    // Special Helmet Crowns (Armorer Gold Horns / Mauldalorian Spikes / Mand'alor Crest)
     if (arch.helm === 'horns') {
       const hPts = [[-6, 6], [-3, 8], [0, 9], [3, 8], [6, 6]];
       for (const [hx, hz] of hPts) {
@@ -1081,48 +1203,38 @@ class VoxelWarforgeEngine {
       this.fillShellBox(61, hy0 + 16, 52, 67, hy0 + 25, 73, 98, 10);
     }
 
-    // 9. SIGNATURE HEROIC WEAPON SYSTEMS (10 LOADOUTS)
     const wxR = 89, wyR = ty0 + 4, wzR = 74;
     const wxL = 39, wyL = ty0 + 4, wzL = 74;
 
     if (arch.weapon === 'darksaber') {
-      // Crackling White-Edged Black Obsidian Darksaber Blade!
-      this.drawRod(wxR, wyR - 2, wzR, wxR, wyR + 6, wzR + 4, 2.0, 98); // Hilt & Crossguard
-      this.drawRod(wxR, wyR + 6, wzR + 4, wxR - 6, wyR + 46, wzR + 22, 2.3, 134); // Glowing white plasma aura
-      this.drawRod(wxR, wyR + 6, wzR + 3, wxR - 6, wyR + 44, wzR + 21, 1.4, 64);  // Void-black core
+      this.drawRod(wxR, wyR - 2, wzR, wxR, wyR + 6, wzR + 4, 2.0, 98);
+      this.drawRod(wxR, wyR + 6, wzR + 4, wxR - 6, wyR + 46, wzR + 22, 2.3, 134);
+      this.drawRod(wxR, wyR + 6, wzR + 3, wxR - 6, wyR + 44, wzR + 21, 1.4, 64);
     } else if (arch.weapon === 'amban') {
-      // Iconic Forked Amban Phase-Pulse Sniper Rifle
-      this.drawRod(wxR, wyR - 8, wzR - 10, wxR, wyR + 2, wzR + 28, 2.0, 114); // Wooden stock & receiver
-      this.drawRod(wxR, wyR + 2, wzR + 4, wxR, wyR + 6, wzR + 44, 1.4, 82);   // Long barrel
-      this.drawRod(wxR, wyR + 5, wzR + 12, wxR, wyR + 5, wzR + 22, 1.5, 98);  // Optic scope
-      // Two-prong disintegrator tuning fork tip
+      this.drawRod(wxR, wyR - 8, wzR - 10, wxR, wyR + 2, wzR + 28, 2.0, 114);
+      this.drawRod(wxR, wyR + 2, wzR + 4, wxR, wyR + 6, wzR + 44, 1.4, 82);
+      this.drawRod(wxR, wyR + 5, wzR + 12, wxR, wyR + 5, wzR + 22, 1.5, 98);
       this.drawRod(wxR - 2, wyR + 6, wzR + 44, wxR - 2, wyR + 7, wzR + 50, 1.0, 132);
       this.drawRod(wxR + 2, wyR + 6, wzR + 44, wxR + 2, wyR + 7, wzR + 50, 1.0, 132);
     } else if (arch.weapon === 'rotary') {
-      // Paz-Pattern Heavy Rotary Blaster Cannon + Ammo Belt
       this.fillShellCylinder(64, wyR - 4, wzR + 10, 6, 22, 82, 10);
       this.drawRod(52, wyR - 2, wzR + 6, 84, wyR - 4, wzR + 28, 4.2, 82);
-      this.fillShellCylinder(84, wyR - 4, wzR + 28, 4.5, 6, 162, 10); // Glowing hot rotary muzzle
+      this.fillShellCylinder(84, wyR - 4, wzR + 28, 4.5, 6, 162, 10);
     } else if (arch.weapon === 'dual') {
-      // Dual Westar-35 Pistols with Plasma Muzzle Bolts
       this.drawRod(wxL, wyL, wzL, wxL, wyL + 2, wzL + 16, 1.8, 82);
       this.drawRod(wxR, wyR, wzR, wxR, wyR + 2, wzR + 16, 1.8, 82);
       this.fillShellCylinder(wxL, wyL + 2, wzL + 18, 2.5, 4, 132, 6);
       this.fillShellCylinder(wxR, wyR + 2, wzR + 18, 2.5, 4, 132, 6);
     } else if (arch.weapon === 'spear') {
-      // Pure Beskar Vibro-Spear + Left Arm Energy Buckler Shield
       this.drawRod(wxR + 2, by + 2, wzR - 8, wxR + 2, by + 88, wzR + 12, 1.6, 36);
       this.drawRod(wxR + 2, by + 82, wzR + 10, wxR + 2, by + 95, wzR + 14, 2.2, 132);
-      // Glowing circular energy shield on left gauntlet
       this.fillShellCylinder(wxL - 4, wyL - 2, wzL + 4, 10, 2, 130, 8);
     } else if (arch.weapon === 'hammer') {
-      // Great Forge Beskar Hammer + Glowing Tongs
       this.drawRod(wxR, wyR - 6, wzR, wxR, wyR + 22, wzR + 8, 1.8, 98);
       this.fillShellBox(wxR - 6, wyR + 20, wzR + 2, wxR + 6, wyR + 27, wzR + 14, 98, 10);
       this.drawRod(wxL, wyL, wzL, wxL - 2, wyL + 16, wzL + 12, 1.5, 82);
-      this.fillShellBox(wxL - 5, wyL + 15, wzL + 12, wxL + 1, wyL + 19, wzL + 18, 162, 8); // Heated Beskar ingot
+      this.fillShellBox(wxL - 5, wyL + 15, wzL + 12, wxL + 1, wyL + 19, wzL + 18, 162, 8);
     } else if (arch.weapon === 'pyro') {
-      // 3D Gauntlet Flamethrower Plume + Spiraling Whistling Birds
       for (let f = 1; f <= 10; f++) {
         this.fillEllipsoid(wxL, wyL + f * 1.2, wzL + f * 3, 2 + f * 0.7, 2 + f * 0.6, 3, 160, 12);
       }
@@ -1133,13 +1245,11 @@ class VoxelWarforgeEngine {
         this.fillShellBox(bx - 2, byW - 2, 84, bx + 2, byW + 2, 89, 132, 6);
       }
     } else if (arch.weapon === 'blades') {
-      // Dual Wrist Vibro-Blades with Energy Edge
       this.drawRod(wxL, wyL + 2, wzL + 2, wxL - 4, wyL + 16, wzL + 22, 1.8, 36);
       this.drawRod(wxR, wyR + 2, wzR + 2, wxR + 4, wyR + 16, wzR + 22, 1.8, 36);
       this.drawRod(wxL, wyL + 3, wzL + 3, wxL - 4, wyL + 17, wzL + 23, 1.0, 134);
       this.drawRod(wxR, wyR + 3, wzR + 3, wxR + 4, wyR + 17, wzR + 23, 1.0, 134);
     } else {
-      // Heavy Blaster Carbine / E-Web Assault Blaster
       this.drawRod(wxR, wyR, wzR - 4, wxR, wyR + 3, wzR + 26, 2.4, 82);
       this.fillShellBox(wxR - 2, wyR - 3, wzR + 6, wxR + 2, wyR + 4, wzR + 16, 48, 8);
       this.setVoxel(wxR, wyR + 3, wzR + 27, 164);
@@ -1286,10 +1396,13 @@ const State = {
   fuelReserve: 1000,
   fleet: [],
   pilots: [],
-  codexUnlocked: {}, // Tracks #0001..#1000
+  codexUnlocked: {},
   buyerAuction: null,
+  buyerPhase: 'ACTIVE', // 'ACTIVE' (10.0s bidding) or 'COOLDOWN' (3.0s intermission)
   buyerTimer: 10.0,
-  sellerLanes: [null, null, null, null, null], // 5 player-selling lanes
+  buyerLastOutcome: '',
+  buyerWonLast: false,
+  sellerLanes: [null, null, null, null, null],
   commissions: [],
   claimedMilestones: {},
   autoMarch: false,
@@ -1311,10 +1424,8 @@ const State = {
   }
 };
 
-// Base36 Codec for 1,000 Collector Miniatures (#0001 to #1000)
 const TradeCodec = {
   getCollectorNumber(u) {
-    // 1..1000 = tier(0..9)*100 + faction(0..9)*10 + division(0..9) + 1
     return (u.tier * 100) + (u.faction * 10) + (u.division % 10) + 1;
   },
   formatDex(num) {
@@ -1355,7 +1466,7 @@ const TradeCodec = {
 };
 
 /* ============================================================================
-   4. CORE GAMEPLAY & DUAL AUCTION LOGIC (BUY LOW 1-LANE / SELL HIGH 5-LANES)
+   4. CORE GAMEPLAY & DUAL AUCTION LOGIC (GUARANTEED SNIPE + 3s INTERMISSION)
    ============================================================================ */
 let NEXT_ID = 1;
 
@@ -1418,7 +1529,7 @@ const Game = {
     };
   },
 
-  // 1-LANE DISCOUNTED BUYER AUCTION (10s timer, 12%-20% start price, ◈1 increments)
+  // 1-LANE DISCOUNTED BUYER AUCTION (10.0s active + 3.0s intermission cooldown)
   spawnBuyerAuction() {
     const maxUnlockedTier = Math.min(9, Math.max(2, Math.floor(Math.log10(Math.max(50, State.stats.lifetimeCredits)))));
     const tier = (Math.random() * (maxUnlockedTier + 1)) | 0;
@@ -1428,22 +1539,39 @@ const Game = {
     State.buyerAuction = {
       unit,
       currentBid: discountStart,
-      highBidder: 'Outer Rim Scrapper'
+      highBidder: 'Outer Rim Scrapper',
+      rivalCooldown: 0
     };
+    State.buyerPhase = 'ACTIVE';
     State.buyerTimer = 10.0;
+    State.buyerLastOutcome = '';
+
+    // Trigger holoprojector lock-in visual cue
+    const card = document.getElementById('buyer-spotlight-card');
+    if (card) {
+      card.style.animation = 'none';
+      void card.offsetWidth;
+      card.style.animation = 'holoLockIn 0.28s ease-out';
+    }
+    UI.updateBuyerSpotlightDOM();
   },
 
+  // Guaranteed Sniping: As long as phase === 'ACTIVE' and buyerTimer > 0, player can ALWAYS bid +◈1!
   bidOnBuyerAuction() {
     const b = State.buyerAuction;
-    if (!b) return;
-    const nextBid = b.currentBid + 1; // Strictly $1 / ◈1 increment!
-    if (State.funds < nextBid) return UI.toast(`Need ◈${nextBid.toLocaleString()} Credits to bid!`);
+    if (!b || State.buyerPhase !== 'ACTIVE' || State.buyerTimer <= 0) return;
+
+    const nextBid = b.currentBid + 1; // Strictly +◈1 increment
+    if (State.funds < nextBid) return UI.toast(`Need ◈${nextBid.toLocaleString()} Credits to snipe!`);
+
     b.currentBid = nextBid;
     b.highBidder = 'YOU';
-    UI.renderAuctions();
+    // Put rival AI on a 1.6s stun cooldown so player can cleanly snipe at any time
+    b.rivalCooldown = 1.6;
+    UI.updateBuyerSpotlightDOM();
   },
 
-  // 5-LANE PLAYER SELLER AUCTIONS (20s timer, 40% start, 10% bid/tick, 1.5% 2x-20x BID WAR Spike, <=1.0s overtime -> 2.0s)
+  // 5-LANE PLAYER SELLER AUCTIONS
   sendUnitToSellerAuction(unitId) {
     const idx = State.fleet.findIndex(x => x.id === unitId);
     if (idx === -1) return;
@@ -1488,7 +1616,6 @@ const Game = {
     if (listed === 0) UI.toast('No unvaulted idle units available (or all 5 lanes active).');
   },
 
-  // Warforge Crates
   openWarbox(boxTier, count) {
     const prices = [20, 200, 2000, 15000];
     const totalCost = prices[boxTier] * count;
@@ -1581,7 +1708,7 @@ const Game = {
     State.funds += salvage;
     State.stats.lifetimeCredits += salvage;
     State.fleet.splice(idx, 1);
-    UI.toast(`Salvaged miniature for ◈${salvage.toLocaleString()} Credits (Tip: Auction in Tab 3 for higher profit!).`);
+    UI.toast(`Salvaged miniature for ◈${salvage.toLocaleString()} Credits.`);
     UI.renderAllActive();
   },
 
@@ -1649,7 +1776,6 @@ const Game = {
     UI.renderAllActive();
   },
 
-  // 6 Rotating Guild Commissions
   initCommissions() {
     State.commissions = [];
     for (let i = 0; i < 6; i++) {
@@ -1736,7 +1862,6 @@ const Game = {
     UI.renderAllActive();
   },
 
-  // 150 Creed Milestones
   getMilestones() {
     if (this._cachedMilestones) return this._cachedMilestones;
     const list = [];
@@ -2124,7 +2249,7 @@ const Inspector = {
 };
 
 /* ============================================================================
-   7. CRASH-PROOF 5-TAB UI RENDERER (ZERO `innerHTML +=` INSIDE LOOPS)
+   7. CRASH-PROOF 5-TAB UI RENDERER & ZERO-FLICKER AUCTION DOM UPDATER
    ============================================================================ */
 const UI = {
   activeTab: 'tab-racks',
@@ -2162,7 +2287,10 @@ const UI = {
     document.getElementById('hud-codex').textContent = `${Object.keys(State.codexUnlocked).length}/1000`;
     document.getElementById('hud-miles').textContent = `${Object.keys(State.claimedMilestones).length}/150`;
 
-    document.getElementById('auc-timer').textContent = State.buyerTimer.toFixed(0) + 's';
+    const badgeText = State.buyerPhase === 'COOLDOWN'
+      ? `WAIT ${State.buyerTimer.toFixed(0)}s`
+      : `${State.buyerTimer.toFixed(0)}s`;
+    document.getElementById('auc-timer').textContent = badgeText;
     document.getElementById('rack-count').textContent = State.fleet.length;
     const vCount = State.fleet.filter(u => u.vaulted).length;
     const vSpan = document.getElementById('vault-inline-count');
@@ -2180,7 +2308,8 @@ const UI = {
     } else if (this.activeTab === 'tab-boxes') {
       this.renderBoxes();
     } else if (this.activeTab === 'tab-auctions') {
-      this.renderAuctions();
+      this.updateBuyerSpotlightDOM();
+      this.renderSellerAuctions();
     } else if (this.activeTab === 'tab-arena') {
       this.renderArena();
       this.renderPatrols();
@@ -2189,7 +2318,116 @@ const UI = {
     }
   },
 
-  // TAB 1: Covert Racks + Vault Filter + Tech + Pilots
+  // ZERO-FLICKER BUYER AUCTION UPDATER (Never destroys the button mid-click!)
+  updateBuyerSpotlightDOM() {
+    const b = State.buyerAuction;
+    if (!b) return;
+    const u = b.unit;
+    const t = TIERS[u.tier];
+    const dexStr = TradeCodec.formatDex(u.dexNum);
+    const estProfit = Math.max(0, u.value - (b.currentBid + 1));
+
+    const card = document.getElementById('buyer-spotlight-card');
+    const thumb = document.getElementById('buyer-thumb');
+    if (thumb.getAttribute('src') !== u.imgData) thumb.setAttribute('src', u.imgData);
+
+    const tierTag = document.getElementById('buyer-tier-tag');
+    tierTag.textContent = t.code;
+    tierTag.style.color = t.color;
+
+    document.getElementById('buyer-dex-tag').textContent = dexStr;
+    document.getElementById('buyer-unit-title').textContent = `${dexStr} ${u.name} (${t.finish})`;
+    document.getElementById('buyer-true-val').textContent = `◈${u.value.toLocaleString()}`;
+    document.getElementById('buyer-cur-bid').textContent = `◈${b.currentBid.toLocaleString()}`;
+    document.getElementById('buyer-flip-profit').textContent = `+◈${estProfit.toLocaleString()}`;
+
+    const hbEl = document.getElementById('buyer-high-bidder');
+    hbEl.textContent = b.highBidder;
+    hbEl.style.color = b.highBidder === 'YOU' ? 'var(--emerald)' : 'var(--crimson)';
+
+    const timerBadge = document.getElementById('buyer-timer-badge');
+    const verdictBanner = document.getElementById('buyer-verdict-banner');
+    const verdictText = document.getElementById('buyer-verdict-text');
+    const verdictCount = document.getElementById('buyer-verdict-countdown');
+    const bidBtn = document.getElementById('buyer-bid-btn');
+
+    if (State.buyerPhase === 'ACTIVE') {
+      card.classList.remove('phase-won', 'phase-lost');
+      verdictBanner.classList.remove('show');
+      timerBadge.textContent = `⏱️ ${State.buyerTimer.toFixed(1)}s LIVE`;
+      timerBadge.style.background = State.buyerTimer <= 3.0 ? '#d90429' : '#0077b6';
+
+      bidBtn.disabled = false;
+      if (b.highBidder === 'YOU') {
+        bidBtn.textContent = `✅ YOU LEAD AT ◈${b.currentBid.toLocaleString()} (CLICK TO RAISE +◈1)`;
+        bidBtn.className = 'btn btn-cyan';
+      } else {
+        bidBtn.textContent = `⚡ SNIPE BID +◈1 (TAKE LEAD FOR ◈${(b.currentBid + 1).toLocaleString()})`;
+        bidBtn.className = 'btn btn-emerald';
+      }
+    } else {
+      // 3.0-SECOND INTERMISSION COOLDOWN STATE
+      card.classList.toggle('phase-won', State.buyerWonLast);
+      card.classList.toggle('phase-lost', !State.buyerWonLast);
+
+      timerBadge.textContent = `⏸️ NEXT LOT IN ${State.buyerTimer.toFixed(1)}s`;
+      timerBadge.style.background = '#334155';
+
+      verdictBanner.classList.add('show');
+      verdictBanner.style.color = State.buyerWonLast ? 'var(--emerald)' : 'var(--crimson)';
+      verdictBanner.style.background = State.buyerWonLast ? 'rgba(0, 245, 155, 0.12)' : 'rgba(255, 42, 84, 0.12)';
+      verdictText.textContent = State.buyerLastOutcome;
+      verdictCount.textContent = `NEW HOLONET LOT IN ${State.buyerTimer.toFixed(1)}s...`;
+
+      bidBtn.disabled = true;
+      bidBtn.className = 'btn';
+      bidBtn.textContent = `⏳ PREPARING NEXT HOLONET LOT (${State.buyerTimer.toFixed(1)}s)...`;
+    }
+  },
+
+  renderSellerAuctions() {
+    const sHtml = [];
+    for (let i = 0; i < 5; i++) {
+      const slot = State.sellerLanes[i];
+      if (!slot) {
+        sHtml.push(`
+          <div class="unit-card" style="border-style:dashed; justify-content:center; align-items:center; min-height:240px; text-align:center;">
+            <div class="unit-title" style="color:var(--text-dim);">Seller Lane #${i + 1} — Open</div>
+            <div style="font-size:11px; color:var(--text-dim); margin:6px 0;">
+              Click <b>"🔨 Auction Off"</b> on any miniature in Covert Racks (Tab 1) or click Auto-List above!
+            </div>
+          </div>
+        `);
+      } else {
+        const u = slot.unit;
+        const t = TIERS[u.tier];
+        const dexStr = TradeCodec.formatDex(u.dexNum);
+        const pctOfVal = Math.round((slot.currentBid / u.value) * 100);
+        sHtml.push(`
+          <div class="unit-card" style="border-color:var(--gold);">
+            <div class="unit-thumb-wrap" onclick="Inspector.open('SELLER', ${i})">
+              <img class="unit-thumb" src="${u.imgData}" alt="${u.name}" />
+              <span class="tier-tag" style="color:${t.color};">${t.code}</span>
+              <span class="dex-tag">${dexStr}</span>
+              <span class="finish-tag">⏱️ ${slot.timer.toFixed(1)}s</span>
+            </div>
+            <div class="unit-title">${u.name}</div>
+            <div class="unit-meta">
+              <span>Guide Val: ◈${u.value.toLocaleString()}</span>
+              <span>Bids: <b>${slot.bidCount}</b></span>
+            </div>
+            <div style="background:var(--bg-panel); padding:7px; border:1px solid var(--border); font-size:11px;">
+              <div>Live Offer: <b class="val-gold" style="font-size:14px;">◈${slot.currentBid.toLocaleString()}</b> (${pctOfVal}%)</div>
+              <div>High Bidder: <b class="val-cyan">${slot.highBidder}</b></div>
+              ${slot.spikeNotice ? `<div style="color:var(--amber); font-weight:900; margin-top:3px;">${slot.spikeNotice}</div>` : ''}
+            </div>
+          </div>
+        `);
+      }
+    }
+    document.getElementById('seller-auction-list').innerHTML = sHtml.join('');
+  },
+
   renderRacks() {
     const vaultOnly = document.getElementById('filter-vault-only').checked;
     const divFilter = document.getElementById('filter-div').value;
@@ -2264,7 +2502,7 @@ const UI = {
         </div>
       `);
     }
-    document.getElementById('rack-list').innerHTML = html.length ? html.join('') : '<div class="section-sub">No miniatures match current filter. Snipe discounted units in Tab 3 (Auction House) or unbox Crates in Tab 2!</div>';
+    document.getElementById('rack-list').innerHTML = html.length ? html.join('') : '<div class="section-sub">No miniatures match current filter. Snipe discounted units in Tab 3 (Holonet Auctions) or unbox Crates in Tab 2!</div>';
   },
 
   renderTech() {
@@ -2315,7 +2553,6 @@ const UI = {
     document.getElementById('pilot-list').innerHTML = html.length ? html.join('') : '<div class="section-sub">No Commanders recruited yet. Recruit Armorers & Tacticians in Tab 2!</div>';
   },
 
-  // TAB 2: Warforge Crates & Pilot Pods
   renderBoxes() {
     const boxes = [
       { tier: 0, name: 'Foundling Munitions Crate', cost: 20,    tiers: 'T1 - T3 (#0001–#0300)', color: '#94a3b8' },
@@ -2360,91 +2597,6 @@ const UI = {
     document.getElementById('pilotbox-list').innerHTML = pHtml.join('');
   },
 
-  // TAB 3: DUAL AUCTION HOUSE (1-LANE BUYER SNIPE + 5-LANE PLAYER SELLER)
-  renderAuctions() {
-    // 3A. 1-Lane Discounted Buyer Snipe Auction
-    const b = State.buyerAuction;
-    if (b) {
-      const u = b.unit;
-      const t = TIERS[u.tier];
-      const dexStr = TradeCodec.formatDex(u.dexNum);
-      const estProfit = Math.max(0, u.value - (b.currentBid + 1));
-      document.getElementById('buyer-auction-slot').innerHTML = `
-        <div class="snipe-spotlight">
-          <div class="unit-thumb-wrap" style="height:160px;" onclick="Inspector.open('BUYER', 0)">
-            <img class="unit-thumb" src="${u.imgData}" alt="${u.name}" />
-            <span class="tier-tag" style="color:${t.color};">${t.code}</span>
-            <span class="dex-tag">${dexStr}</span>
-            <span class="inspect-hint">🔍 512² 3D</span>
-          </div>
-          <div style="display:flex; flex-direction:column; gap:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
-              <div class="unit-title" style="font-size:16px;">${dexStr} ${u.name} (${t.finish})</div>
-              <span style="background:#0284c7; color:#fff; padding:4px 10px; border-radius:6px; font-weight:900; font-size:13px;">
-                ⏱️ ${State.buyerTimer.toFixed(1)}s Remaining
-              </span>
-            </div>
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:8px; background:var(--bg-panel); padding:10px; border-radius:6px;">
-              <div>True Valuation: <b class="val-gold">◈${u.value.toLocaleString()}</b></div>
-              <div>Current Bid: <b class="val-cyan">◈${b.currentBid.toLocaleString()}</b></div>
-              <div>Est. Flip Margin: <b class="val-emerald">+◈${estProfit.toLocaleString()}</b></div>
-              <div>High Bidder: <b style="color:${b.highBidder === 'YOU' ? 'var(--emerald)' : 'var(--crimson)'};">${b.highBidder}</b></div>
-            </div>
-            <div class="btn-row">
-              <button class="btn btn-emerald" style="font-size:13px; padding:10px 18px;" onclick="Game.bidOnBuyerAuction()">
-                ⚡ Bid +◈1 (Total: ◈${(b.currentBid + 1).toLocaleString()})
-              </button>
-              <button class="btn btn-cyan" onclick="Inspector.open('BUYER', 0)">🔍 Inspect 3D Diorama</button>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    // 3B. 5-Lane Player Seller Auctions
-    const sHtml = [];
-    for (let i = 0; i < 5; i++) {
-      const slot = State.sellerLanes[i];
-      if (!slot) {
-        sHtml.push(`
-          <div class="unit-card" style="border-style:dashed; justify-content:center; align-items:center; min-height:240px; text-align:center;">
-            <div class="unit-title" style="color:var(--text-dim);">Seller Lane #${i + 1} — Open</div>
-            <div style="font-size:11px; color:var(--text-dim); margin:6px 0;">
-              Click <b>"🔨 Auction Off"</b> on any miniature in Covert Racks (Tab 1) or click Auto-List above!
-            </div>
-          </div>
-        `);
-      } else {
-        const u = slot.unit;
-        const t = TIERS[u.tier];
-        const dexStr = TradeCodec.formatDex(u.dexNum);
-        const pctOfVal = Math.round((slot.currentBid / u.value) * 100);
-        sHtml.push(`
-          <div class="unit-card" style="border-color:var(--gold);">
-            <div class="unit-thumb-wrap" onclick="Inspector.open('SELLER', ${i})">
-              <img class="unit-thumb" src="${u.imgData}" alt="${u.name}" />
-              <span class="tier-tag" style="color:${t.color};">${t.code}</span>
-              <span class="dex-tag">${dexStr}</span>
-              <span class="finish-tag">⏱️ ${slot.timer.toFixed(1)}s</span>
-            </div>
-            <div class="unit-title">${u.name}</div>
-            <div class="unit-meta">
-              <span>Guide Val: ◈${u.value.toLocaleString()}</span>
-              <span>Bids: <b>${slot.bidCount}</b></span>
-            </div>
-            <div style="background:var(--bg-panel); padding:7px; border-radius:5px; font-size:11px;">
-              <div>Live Offer: <b class="val-gold" style="font-size:14px;">◈${slot.currentBid.toLocaleString()}</b> (${pctOfVal}%)</div>
-              <div>High Bidder: <b class="val-cyan">${slot.highBidder}</b></div>
-              ${slot.spikeNotice ? `<div style="color:var(--amber); font-weight:900; margin-top:3px;">${slot.spikeNotice}</div>` : ''}
-            </div>
-          </div>
-        `);
-      }
-    }
-    document.getElementById('seller-auction-list').innerHTML = sHtml.join('');
-  },
-
-  // TAB 4: Tabletop Wargame Arena + Sector Patrols
   renderArena() {
     const pHtml = [];
     for (let i = 0; i < Arena.playerTeam.length; i++) {
@@ -2452,7 +2604,7 @@ const UI = {
       const hpPct = Math.round((u.curHp / u.maxHp) * 100);
       pHtml.push(`
         <div class="fighter-slot ${u.curHp <= 0 ? 'dead' : ''}">
-          <img src="${u.imgData}" style="width:48px;height:48px;image-rendering:pixelated;border-radius:4px;border:1px solid #334155;" />
+          <img src="${u.imgData}" style="width:48px;height:48px;image-rendering:pixelated;border:1px solid #334155;" />
           <div style="flex:1;">
             <div style="font-size:12px;font-weight:800;">${TradeCodec.formatDex(u.dexNum)} ${u.name} ${u.fortified ? '🛡️' : ''}</div>
             <div style="font-size:11px;color:var(--text-dim);">ATK ${u.atk} | Group ${u.group} | HP ${u.curHp}/${u.maxHp}</div>
@@ -2469,7 +2621,7 @@ const UI = {
       const hpPct = Math.round((u.curHp / u.maxHp) * 100);
       eHtml.push(`
         <div class="fighter-slot ${u.curHp <= 0 ? 'dead' : ''}">
-          <img src="${u.imgData}" style="width:48px;height:48px;image-rendering:pixelated;border-radius:4px;border:1px solid #334155;" />
+          <img src="${u.imgData}" style="width:48px;height:48px;image-rendering:pixelated;border:1px solid #334155;" />
           <div style="flex:1;">
             <div style="font-size:12px;font-weight:800;color:#fca5a5;">${TradeCodec.formatDex(u.dexNum)} ${u.name}</div>
             <div style="font-size:11px;color:var(--text-dim);">ATK ${u.atk} | Group ${u.group} | HP ${u.curHp}/${u.maxHp}</div>
@@ -2505,7 +2657,6 @@ const UI = {
     document.getElementById('sector-list').innerHTML = html.join('');
   },
 
-  // TAB 5: High Command (Automations, 6 Commissions, 150 Milestones)
   renderCommand() {
     document.getElementById('tog-automarch').textContent = `🤖 Auto-March: ${State.autoMarch ? 'ON' : 'OFF'}`;
     document.getElementById('tog-automarch').className = `btn ${State.autoMarch ? 'btn-emerald' : ''}`;
@@ -2591,36 +2742,62 @@ const SYNDICATE_BIDDERS = ['Pyke Collector', 'Hutt Cartel Envoy', 'Crimson Dawn 
 function gameTick() {
   const dt = 0.2;
 
-  // 1. 1-Lane Bargain Buyer Auction (10.0s countdown, gentle rival $1 bids so player can snipe for profit)
+  // 1. 1-Lane Bargain Buyer Auction State Machine ('ACTIVE' 10.0s -> 'COOLDOWN' 3.0s)
   if (State.buyerAuction) {
-    State.buyerTimer -= dt;
-    // Small 4% chance per tick for rival to bump by ◈1, only if still under 35% of value
-    if (State.buyerAuction.highBidder === 'YOU' &&
-        State.buyerAuction.currentBid < State.buyerAuction.unit.value * 0.35 &&
-        Math.random() < 0.04) {
-      State.buyerAuction.currentBid += 1;
-      State.buyerAuction.highBidder = 'Rival Bargain Hunter';
-    }
-    if (State.buyerTimer <= 0) {
-      const b = State.buyerAuction;
-      if (b.highBidder === 'YOU' && State.funds >= b.currentBid) {
-        State.funds -= b.currentBid;
-        Game.addUnitToFleet(b.unit);
-        State.stats.auctionsWon++;
-        UI.toast(`🎯 Sniped ${TradeCodec.formatDex(b.unit.dexNum)} ${b.unit.name} for only ◈${b.currentBid.toLocaleString()} (Val: ◈${b.unit.value.toLocaleString()})!`);
-        if (UI.activeTab === 'tab-racks') UI.renderRacks();
+    const b = State.buyerAuction;
+    if (State.buyerPhase === 'ACTIVE') {
+      State.buyerTimer = Math.max(0, State.buyerTimer - dt);
+      if (b.rivalCooldown > 0) b.rivalCooldown = Math.max(0, b.rivalCooldown - dt);
+
+      // Rival AI can only counter-bid if > 1.8s remains AND rivalCooldown <= 0, so player can ALWAYS out-snipe!
+      if (State.buyerTimer > 1.8 &&
+          b.rivalCooldown <= 0 &&
+          b.highBidder === 'YOU' &&
+          b.currentBid < b.unit.value * 0.32 &&
+          Math.random() < 0.04) {
+        b.currentBid += 1;
+        b.highBidder = 'Rival Scrapper';
       }
-      Game.spawnBuyerAuction();
+
+      if (State.buyerTimer <= 0) {
+        // Hammer falls! Enter 3.0-second visual intermission
+        State.buyerPhase = 'COOLDOWN';
+        State.buyerTimer = 3.0;
+        const dexStr = TradeCodec.formatDex(b.unit.dexNum);
+
+        if (b.highBidder === 'YOU' && State.funds >= b.currentBid) {
+          State.funds -= b.currentBid;
+          Game.addUnitToFleet(b.unit);
+          State.stats.auctionsWon++;
+          State.buyerWonLast = true;
+          State.buyerLastOutcome = `🏆 SNIPED BY YOU FOR ◈${b.currentBid.toLocaleString()}! (${dexStr} ADDED TO RACKS)`;
+          UI.toast(`🎯 Sniped ${dexStr} ${b.unit.name} for ◈${b.currentBid.toLocaleString()}!`);
+          if (UI.activeTab === 'tab-racks') UI.renderRacks();
+        } else {
+          State.buyerWonLast = false;
+          State.buyerLastOutcome = `🔨 LOT CLOSED — SOLD TO ${b.highBidder.toUpperCase()} FOR ◈${b.currentBid.toLocaleString()}`;
+        }
+      }
+    } else if (State.buyerPhase === 'COOLDOWN') {
+      State.buyerTimer = Math.max(0, State.buyerTimer - dt);
+      if (State.buyerTimer <= 0) {
+        Game.spawnBuyerAuction();
+      }
+    }
+
+    if (UI.activeTab === 'tab-auctions') {
+      UI.updateBuyerSpotlightDOM();
     }
   }
 
   // 2. 5-Lane Player Seller Auctions (20.0s timer, 40% start, 10% bid/tick, 1.5% 2x-20x BID WAR Spike, <=1.0s overtime -> 2.0s)
+  let sellerChanged = false;
   for (let i = 0; i < 5; i++) {
     const s = State.sellerLanes[i];
     if (!s) continue;
     s.timer -= dt;
+    sellerChanged = true;
 
-    // 10% chance per tick for NPC collectors to bid up your miniature
     if (Math.random() < 0.10) {
       let mult = 1.12 + Math.random() * 0.08;
       if (Math.random() < 0.015) {
@@ -2634,7 +2811,7 @@ function gameTick() {
       s.bidCount++;
 
       if (s.timer <= 1.0) {
-        s.timer = 2.0; // Overtime reset to 2.0s
+        s.timer = 2.0;
         s.spikeNotice = '⏱️ OVERTIME BID WAR (2.0s)!';
       }
     }
@@ -2649,7 +2826,9 @@ function gameTick() {
     }
   }
 
-  if (UI.activeTab === 'tab-auctions') UI.renderAuctions();
+  if (UI.activeTab === 'tab-auctions' && sellerChanged) {
+    UI.renderSellerAuctions();
+  }
 
   // 3. High Command Automations
   if (State.autoSupply && State.fuelReserve < 500 && State.funds >= 125) {
@@ -2712,10 +2891,10 @@ window.addEventListener('DOMContentLoaded', () => {
   populateFilterDropdowns();
   Inspector.bindEvents();
 
-  // Seed 3 Iconic Heroic Scale Starters (#0001, #0115, #0232)
-  Game.addUnitToFleet(Game.createUnit({ tier: 0, faction: 0, division: 0 }, false)); // Darksaber Champion
-  Game.addUnitToFleet(Game.createUnit({ tier: 1, faction: 1, division: 5 }, false)); // Great Forge Armorer
-  Game.addUnitToFleet(Game.createUnit({ tier: 2, faction: 3, division: 2 }, false)); // Paz Heavy Repeater Juggernaut
+  // Seed 3 Iconic Heroic Scale Starters
+  Game.addUnitToFleet(Game.createUnit({ tier: 0, faction: 0, division: 0 }, false));
+  Game.addUnitToFleet(Game.createUnit({ tier: 1, faction: 1, division: 5 }, false));
+  Game.addUnitToFleet(Game.createUnit({ tier: 2, faction: 3, division: 2 }, false));
   State.pilots.push(Game.createPilot(0));
 
   Game.spawnBuyerAuction();
