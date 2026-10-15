@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>MANDALORIAN WARFORGE // Darksaber Edition</title>
+<title>MANDALORIAN WARFORGE // Darksaber Master Template</title>
 <style>
   :root {
     --bg-void: #030406;
@@ -234,6 +234,11 @@
   .btn-emerald { background: linear-gradient(180deg, #059669, #064e3b); border-color: #34d399; color: #fff; }
   .btn-crimson { background: linear-gradient(180deg, #dc2626, #7f1d1d); border-color: #f87171; color: #fff; }
   .btn-purple { background: linear-gradient(180deg, #7e22ce, #4c1d95); border-color: #c084fc; color: #fff; }
+  .btn-god {
+    background: linear-gradient(135deg, #f59e0b, #b91c1c);
+    border-color: #fff; color: #fff;
+    box-shadow: 0 0 14px rgba(245, 158, 11, 0.55);
+  }
   .btn-row { display: flex; flex-wrap: wrap; gap: 5px; }
 
   select, input[type="text"] {
@@ -249,7 +254,7 @@
   }
 
   /* ========================================================================
-     TAB 2: CUSTOM FORGE & 5-ZONE PAINT STUDIO LAYOUT
+     TAB 2: CUSTOM FORGE & ENDLESS HEX PAINT STUDIO LAYOUT
      ======================================================================== */
   .forge-studio-grid {
     display: grid;
@@ -282,7 +287,7 @@
     padding: 14px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
   .control-group {
     background: var(--bg-card);
@@ -298,26 +303,48 @@
     margin-bottom: 6px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+  }
+  .paint-zone-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .hex-input {
+    width: 92px;
+    font-family: "Courier New", monospace;
+    font-weight: 800;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid var(--silver);
+    background: #040508;
+    color: #fff;
+    padding: 5px 7px;
+  }
+  .color-wheel-input {
+    width: 34px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid #fff;
+    background: none;
+    cursor: pointer;
   }
   .swatch-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 5px;
+    flex: 1;
   }
   .color-swatch {
-    width: 28px;
-    height: 28px;
-    border: 2px solid #2c3344;
+    width: 22px;
+    height: 22px;
+    border: 1px solid #3c465c;
     cursor: pointer;
     transition: transform 0.1s, border-color 0.1s;
-    clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
   }
-  .color-swatch:hover { transform: scale(1.1); }
-  .color-swatch.active {
-    border-color: #fff;
-    box-shadow: 0 0 10px #fff;
-    transform: scale(1.12);
-  }
+  .color-swatch:hover { transform: scale(1.15); border-color: #fff; }
   .artisan-banner {
     background: linear-gradient(90deg, #161922 0%, #242a3a 50%, #161922 100%);
     border: 1px solid var(--silver);
@@ -449,7 +476,7 @@
   <div class="hud-top-row">
     <div class="brand-title">
       <span class="brand-badge">DARKSABER // 128³</span>
-      <span>MANDALORIAN WARFORGE : COVERT COMMAND</span>
+      <span>MANDALORIAN WARFORGE : MASTER EDITION</span>
     </div>
     <div class="hud-stats">
       <div class="stat-pill"><span>Imperial Credits:</span> <b class="val-gold" id="hud-funds">◈500</b></div>
@@ -457,6 +484,7 @@
       <div class="stat-pill"><span>Covert Racks:</span> <b class="val-emerald" id="hud-fleet">0</b></div>
       <div class="stat-pill"><span>1,000 Codex:</span> <b class="val-gold" id="hud-codex">0/1000</b></div>
       <div class="stat-pill"><span>Creed Trials:</span> <b class="val-purple" id="hud-miles">0/150</b></div>
+      <button class="btn btn-god" id="hud-god-btn" onclick="Game.activateGodMode()">⚡ GOD MODE: OFF</button>
       <button class="btn btn-silver" onclick="UI.openCodeModal()">📡 Codes</button>
       <button class="btn btn-emerald" onclick="UI.openSaveModal()">💾 Save / Load</button>
     </div>
@@ -481,8 +509,8 @@
   <section id="tab-racks" class="tab-pane active">
     <div class="section-bar">
       <div>
-        <div class="section-title">1. COVERT RACKS // HEROIC-SCALE MANDALORIAN MINIATURES</div>
-        <div class="section-sub">Manage your numbered Collector Miniatures (`#0001–#1000`) and Custom-Forged Masterworks. Lock favorites, auction off in Tab 4, or inspect in 3D.</div>
+        <div class="section-title">1. COVERT RACKS // DYNAMIC POSE &amp; SAMURAI BESKAR MINIATURES</div>
+        <div class="section-sub">Manage your numbered Collector Miniatures (`#0001–#1000`) and Custom-Forged Masterworks. Click any miniature for an isolated 512² 60 FPS 3D inspection.</div>
       </div>
       <div class="btn-row">
         <label class="chk-pill">
@@ -526,16 +554,16 @@
   </section>
 
   <!-- ======================================================================
-       TAB 2: CUSTOM FORGE & 5-ZONE PAINT STUDIO (WITH 1.35x - 50x ARTISAN ROLL)
+       TAB 2: CUSTOM FORGE & ENDLESS HEX PAINT STUDIO
        ====================================================================== -->
   <section id="tab-forge" class="tab-pane">
     <div class="section-bar">
       <div>
-        <div class="section-title">2. 🎨 GREAT FORGE CUSTOM MINIATURE BUILDER &amp; 5-ZONE PAINT STUDIO</div>
-        <div class="section-sub">Assemble custom 92-voxel-tall Mandalorian Hunters, hand-paint 5 armor zones, and roll an Artisan Commission Multiplier from <b>1.35x (Craft)</b> up to <b>25x–50x (Mand'alor Masterwork)</b>!</div>
+        <div class="section-title">2. 🎨 GREAT FORGE CUSTOM STUDIO // POSES, SAMURAI BESKAR &amp; HEX PAINT</div>
+        <div class="section-sub">Select from 8 Dynamic Poses, 10 Helmets, 6 Armor Styles (including Samurai O-Yoroi), 11 Weapons, and type any <code>#RRGGBB</code> Hex color code for endless customization!</div>
       </div>
       <div class="btn-row">
-        <button class="btn btn-silver" onclick="CustomForge.randomizeDesign()">🎲 Randomize Sculpt &amp; Paint</button>
+        <button class="btn btn-silver" onclick="CustomForge.randomizeDesign()">🎲 Randomize Sculpt, Pose &amp; Hex Paint</button>
       </div>
     </div>
 
@@ -552,45 +580,75 @@
           </div>
         </div>
         <div class="artisan-banner" style="margin-top:10px;" id="forge-last-roll-banner">
-          <span><b>Artisan Appraisal Odds:</b> Craft (1.35x–1.75x) • Journeyman (2x–3.5x) • Artisan (4.5x–8x) • Relic (10x–18x) • <b class="val-gold">★ MASTERWORK (25x–50x!)</b></span>
+          <span><b>Artisan Commission Multipliers:</b> Craft (1.35x–1.75x) • Journeyman (2x–3.5x) • Artisan (4.5x–8x) • Relic (10x–18x) • <b class="val-gold">★ MASTERWORK (25x–50x!)</b></span>
         </div>
       </div>
 
-      <!-- RIGHT: MODULAR PARTS + 5-ZONE PAINT PALETTE + FORGE BUTTON -->
+      <!-- RIGHT: POSES + MODULAR PARTS + ENDLESS HEX COLOR STUDIO -->
       <div class="forge-controls-box">
         <div class="control-group">
           <div class="control-label">
             <span>1. Custom Miniature Title &amp; Beskar Grade</span>
-            <span class="val-gold" id="forge-cost-label">Cost: ◈20 + 25 Supply</span>
+            <span class="val-gold" id="forge-cost-label">Cost: ◈20 + 15 Supply</span>
           </div>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-            <input type="text" id="forge-custom-name" placeholder="Enter Custom Hunter Name (or leave blank)" maxlength="32" />
+            <input type="text" id="forge-custom-name" placeholder="Enter Custom Hunter Name (or leave blank)" maxlength="34" />
             <select id="forge-tier-sel" onchange="CustomForge.updateConfig()"></select>
           </div>
         </div>
 
         <div class="control-group">
-          <div class="control-label"><span>2. Modular Armor &amp; Weapon Assembly</span></div>
-          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:8px;">
+          <div class="control-label"><span>2. Dynamic Pose, Armor Style, Helmet &amp; Weapon Assembly</span></div>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap:8px;">
             <div>
-              <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">HELMET &amp; VISOR PATTERN</div>
+              <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">DYNAMIC POSE &amp; ELEVATION</div>
+              <select id="forge-pose-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
+                <option value="heroic">Heroic Wide Stance (Grounded)</option>
+                <option value="rock_perch">Tactical Rock Perch (Leg Raised)</option>
+                <option value="hover">Mid-Air Jetpack Hover</option>
+                <option value="leap">Airborne Darksaber Leap</option>
+                <option value="kneel">Marksman Kneeling Aim</option>
+                <option value="iaijutsu">Samurai Iaijutsu Duel Stance</option>
+                <option value="spire">Monolith Spire Warlord (High)</option>
+                <option value="strafe">Aerial Banking Strafe</option>
+              </select>
+            </div>
+            <div>
+              <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">ARMOR ARCHITECTURE</div>
+              <select id="forge-armor-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
+                <option value="standard">Standard Beskar'gam Plate</option>
+                <option value="samurai">Samurai O-Yoroi Beskar (Sode)</option>
+                <option value="ronin">Shogunate Ronin Paragon</option>
+                <option value="heavy">Paz Heavy Juggernaut Box-Shield</option>
+                <option value="fur">Armorer Fur-Mantle Cuirass</option>
+                <option value="skirmish">Agile Recon Skirmisher</option>
+              </select>
+            </div>
+            <div>
+              <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">HELMET &amp; VISOR SCULPT</div>
               <select id="forge-helm-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
                 <option value="tvisor">Classic T-Visor Stalker</option>
-                <option value="crest">Mand'alor War-Crest</option>
+                <option value="kabuto">Ronin Kabuto + Crescent Horns</option>
+                <option value="oni">Daimyo Oni Masked War-Helm</option>
+                <option value="crest">Mand'alor Royal War-Crest</option>
                 <option value="owl">Nite Owl Angled Visor</option>
-                <option value="heavy">Heavy Juggernaut Brow</option>
-                <option value="horns">Armorer Forged Horns</option>
-                <option value="spikes">Supercommando Spikes</option>
+                <option value="heavy">Heavy Juggernaut Brow-Shield</option>
+                <option value="horns">Armorer Forged Horn Crown</option>
+                <option value="spikes">Supercommando Mauldalorian Spikes</option>
+                <option value="cowl">Shadow Executioner Cowl</option>
+                <option value="dome">Concord Interceptor Dome</option>
               </select>
             </div>
             <div>
               <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">SIGNATURE WEAPON SYSTEM</div>
               <select id="forge-weapon-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
                 <option value="darksaber">Crackling Void Darksaber</option>
+                <option value="katana">Beskar Katana &amp; Wakizashi Daisho</option>
+                <option value="naginata">Electro-Plasma Naginata Polearm</option>
                 <option value="amban">Amban Phase-Pulse Sniper</option>
                 <option value="rotary">Paz Heavy Rotary Cannon</option>
                 <option value="dual">Dual Westar-35 Pistols</option>
-                <option value="spear">Beskar Spear + Energy Shield</option>
+                <option value="spear">Beskar Spear + Energy Buckler</option>
                 <option value="hammer">Forge Hammer &amp; Molten Ingot</option>
                 <option value="pyro">Flamethrower + Whistling Birds</option>
                 <option value="blades">Dual Wrist Vibro-Blades</option>
@@ -601,45 +659,29 @@
               <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">BACK &amp; FLIGHT RIG</div>
               <select id="forge-back-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
                 <option value="both">Z-6 Jetpack + Flowing Cape</option>
+                <option value="sashimono">Samurai Sashimono War-Banner</option>
                 <option value="jetpack">Z-6 Combat Jetpack Only</option>
                 <option value="cape">Draped Bounty Cape Only</option>
-                <option value="fly">Mid-Air Rocket Plume Thrusters</option>
+                <option value="fly">Twin Rocket Thruster Plumes</option>
+                <option value="katanas">Crossed Back Trophy Blades</option>
               </select>
             </div>
             <div>
               <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">SCENIC DISPLAY PLINTH</div>
               <select id="forge-plinth-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
+                <option value="boulder">Jagged Basalt Tactical Outcrop</option>
+                <option value="spire">Tall Obsidian Spire Monolith</option>
                 <option value="lava">Nevarro Molten Lava River</option>
                 <option value="anvil">Sacred Great Forge Anvil</option>
                 <option value="smoke">Billowing Thermal Smoke</option>
-                <option value="air">Jetpack Exhaust Blast Plume</option>
                 <option value="ruins">Sundari Ruins &amp; Droid Trophy</option>
               </select>
             </div>
           </div>
         </div>
 
-        <!-- 5-ZONE PAINT STUDIO -->
-        <div class="control-group">
-          <div class="control-label"><span>Zone A: Primary Beskar Armor Plates</span><span id="lbl-zone-0">Pure Beskar Silver</span></div>
-          <div class="swatch-row" id="swatches-zone-0"></div>
-        </div>
-        <div class="control-group">
-          <div class="control-label"><span>Zone B: Pauldrons, Mandibles &amp; Knee Poleyns</span><span id="lbl-zone-1">Darksaber Void</span></div>
-          <div class="swatch-row" id="swatches-zone-1"></div>
-        </div>
-        <div class="control-group">
-          <div class="control-label"><span>Zone C: Kar'ta Beskar Iron Heart &amp; Trim</span><span id="lbl-zone-2">Armorer Gold</span></div>
-          <div class="swatch-row" id="swatches-zone-2"></div>
-        </div>
-        <div class="control-group">
-          <div class="control-label"><span>Zone D: Woven Cape &amp; Flightsuit Cloth</span><span id="lbl-zone-3">Viszla Crimson</span></div>
-          <div class="swatch-row" id="swatches-zone-3"></div>
-        </div>
-        <div class="control-group">
-          <div class="control-label"><span>Zone E: Darksaber / Plasma / Whistling Bird Glow</span><span id="lbl-zone-4">Darksaber Ice White</span></div>
-          <div class="swatch-row" id="swatches-zone-4"></div>
-        </div>
+        <!-- 5-ZONE ENDLESS HEX COLOR CODE + COLOR WHEEL STUDIO -->
+        <div class="control-group" id="hex-studio-zones"></div>
 
         <div class="btn-row" style="margin-top:4px;">
           <button class="btn btn-silver" style="flex:1; padding:12px; font-size:13px;" onclick="CustomForge.forgeAndCommission(false)">
@@ -660,7 +702,7 @@
     <div class="section-bar">
       <div>
         <div class="section-title">3. GREAT FORGE BESKAR CRATES &amp; TIBANNA SUPPLY DEPOT</div>
-        <div class="section-sub">Unbox Heroic-Scale 128³ Mandalorian Miniatures (`#0001–#1000`) in 1x / 5x / 10x batches, recruit Master Armorers, or replenish Upkeep Supply.</div>
+        <div class="section-sub">Unbox Heroic-Scale 128³ Mandalorian Miniatures (`#0001–#1000`) with dynamic poses and rare Samurai Beskar armor in 1x / 5x / 10x batches.</div>
       </div>
       <div class="btn-row">
         <button class="btn btn-silver" onclick="Game.buyFuel(500)">⚡ +500 Supply (◈125)</button>
@@ -680,7 +722,7 @@
   </section>
 
   <!-- ======================================================================
-       TAB 4: HOLONET AUCTION HOUSE (1-LANE SNIPE BUYER + 5-LANE PLAYER SELLER)
+       TAB 4: AUCTION HOUSE (1-LANE SNIPE BUYER + 5-LANE PLAYER SELLER)
        ====================================================================== -->
   <section id="tab-auctions" class="tab-pane">
     <div class="section-bar">
@@ -770,7 +812,7 @@
         </div>
         <div style="font-size:11px; color:var(--text-dim); text-align:center;">
           <b>Counter Triangle (+45% DMG):</b><br/>
-          Group A (Spear/Heavy/Armorer) &gt; Group B (Darksaber/Gunslinger/Jetpack) &gt; Group C (Sniper/WhistlingBird/Assassin/Remnant) &gt; Group A
+          Group A (Spear/Samurai/Heavy/Armorer) &gt; Group B (Darksaber/Gunslinger/Jetpack) &gt; Group C (Sniper/WhistlingBird/Assassin/Remnant) &gt; Group A
         </div>
         <div class="btn-row" style="justify-content:center; width:100%;">
           <button class="btn btn-crimson" onclick="Arena.issueOrder('CHARGE')">🗡️ Jetpack Charge (+30%)</button>
@@ -844,14 +886,14 @@
 
 </main>
 
-<!-- 512x512 60 FPS 3D VOXEL INSPECTOR MODAL -->
+<!-- 512x512 60 FPS 3D VOXEL INSPECTOR MODAL (ISOLATED SNAPSHOT BUFFER) -->
 <div class="modal-backdrop" id="inspect-modal">
   <div class="modal-box">
     <div>
       <canvas id="inspect-canvas" width="512" height="512"></canvas>
       <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:11px; color:var(--text-dim);">
         <span>🖱️ Drag to Orbit 92-Voxel-Tall Heroic Sculpt</span>
-        <span id="inspect-vox-stats">128³ Sparse Voxel Kernel</span>
+        <span id="inspect-vox-stats">128³ Isolated Snapshot Kernel</span>
       </div>
     </div>
     <div style="display:flex; flex-direction:column; justify-content:space-between; gap:10px;">
@@ -868,7 +910,7 @@
           <button class="btn" onclick="Inspector.resetCam()">🎯 Reset Camera</button>
         </div>
         <div style="background:var(--bg-deep); padding:8px; border:1px solid var(--border); font-size:11px;">
-          <div><b>Base36 Collector Code:</b> <code id="insp-code" style="color:#fff;">WF-000</code></div>
+          <div><b>Base36 Collector Code:</b> <code id="insp-code" style="color:#fff; word-break:break-all;">WF-000</code></div>
         </div>
         <button class="btn btn-crimson" style="padding:10px;" onclick="Inspector.close()">✖ Close 3D Inspector</button>
       </div>
@@ -919,7 +961,7 @@
 
 <script>
 /* ============================================================================
-   1. EXACT 1,000 COLLECTOR MINIATURE MATRIX & 12 CUSTOM PAINT SWATCHES
+   1. 1,000 COLLECTOR MATRIX, POSES, SAMURAI BESKAR & HEX COLOR HELPERS
    ============================================================================ */
 const TIERS = [
   { id: 0, code: 'T1',  name: 'Foundling Initiate',       finish: 'Raw Durasteel',         val: 15,     hp: 110,  atk: 15,  color: '#94a3b8', palShift: [115, 125, 138], emissive: [220, 230, 242] },
@@ -935,48 +977,36 @@ const TIERS = [
 ];
 
 const FACTIONS = [
-  { id: 0, name: 'Clan Mudhorn',          accent: [217, 119, 6],  cape: [120, 65, 25] },
-  { id: 1, name: 'Children of the Watch', accent: [180, 195, 210],cape: [30, 42, 65] },
-  { id: 2, name: 'Clan Kryze Nite Owls',  accent: [37, 99, 235],  cape: [28, 45, 88] },
-  { id: 3, name: 'House Vizsla',          accent: [220, 38, 38],  cape: [95, 22, 28] },
-  { id: 4, name: 'Clan Wren',             accent: [234, 179, 8],  cape: [110, 85, 20] },
-  { id: 5, name: 'Concord Dawn Protectors',accent:[22, 163, 74],  cape: [24, 72, 42] },
-  { id: 6, name: 'Clan Rook',             accent: [168, 85, 247], cape: [68, 32, 98] },
-  { id: 7, name: 'Clan Eldar',            accent: [20, 184, 166], cape: [22, 78, 74] },
-  { id: 8, name: 'Clan Saxon',            accent: [244, 63, 94],  cape: [88, 20, 38] },
-  { id: 9, name: 'Heirs of Mand\'alor',   accent: [245, 158, 11], cape: [35, 38, 46] }
+  { id: 0, name: 'Clan Mudhorn',           accent: [217, 119, 6],  cape: [120, 65, 25] },
+  { id: 1, name: 'Children of the Watch',  accent: [180, 195, 210],cape: [30, 42, 65] },
+  { id: 2, name: 'Clan Kryze Nite Owls',   accent: [37, 99, 235],  cape: [28, 45, 88] },
+  { id: 3, name: 'House Vizsla',           accent: [220, 38, 38],  cape: [95, 22, 28] },
+  { id: 4, name: 'Clan Wren',              accent: [234, 179, 8],  cape: [110, 85, 20] },
+  { id: 5, name: 'Concord Dawn Protectors',accent: [22, 163, 74],  cape: [24, 72, 42] },
+  { id: 6, name: 'Clan Shogunate Ronin',   accent: [225, 45, 65],  cape: [28, 28, 36] },
+  { id: 7, name: 'Clan Eldar',             accent: [20, 184, 166], cape: [22, 78, 74] },
+  { id: 8, name: 'Clan Saxon',             accent: [244, 63, 94],  cape: [88, 20, 38] },
+  { id: 9, name: 'Heirs of Mand\'alor',    accent: [245, 158, 11], cape: [35, 38, 46] }
 ];
 
 const ARCHETYPES = [
-  { id: 0, key: 'DARKSABER_CHAMP', group: 'B', range: 25, helm: 'crest',  weapon: 'darksaber', cape: true,  jetpack: true,  plinth: 'ruins', name: 'Darksaber Mand\'alor Champion' },
-  { id: 1, key: 'AMBAN_SNIPER',    group: 'C', range: 95, helm: 'tvisor', weapon: 'amban',     cape: true,  jetpack: false, plinth: 'dune',  name: 'Amban Phase-Pulse Sniper' },
-  { id: 2, key: 'PAZ_JUGGERNAUT',  group: 'A', range: 55, helm: 'heavy',  weapon: 'rotary',    cape: false, jetpack: true,  plinth: 'lava',  name: 'Heavy Repeater Juggernaut' },
-  { id: 3, key: 'NITE_GUNSLINGER', group: 'B', range: 45, helm: 'owl',    weapon: 'dual',      cape: false, jetpack: true,  plinth: 'ruins', name: 'Nite Owl Dual-Westar Gunslinger' },
-  { id: 4, key: 'BESKAR_SPEARMAN', group: 'A', range: 20, helm: 'tvisor', weapon: 'spear',     cape: true,  jetpack: true,  plinth: 'lava',  name: 'Beskar Vibro-Spear Duelist' },
-  { id: 5, key: 'FORGE_ARMORER',   group: 'A', range: 30, helm: 'horns',  weapon: 'hammer',    cape: true,  jetpack: false, plinth: 'anvil', name: 'Great Forge High Armorer' },
-  { id: 6, key: 'WHISTLING_PYRO',  group: 'C', range: 40, helm: 'tvisor', weapon: 'pyro',      cape: true,  jetpack: true,  plinth: 'lava',  name: 'Whistling Bird Flame-Enforcer' },
-  { id: 7, key: 'HAWK_INTERCEPT',  group: 'B', range: 65, helm: 'owl',    weapon: 'eweb',      cape: false, jetpack: 'fly', plinth: 'air',   name: 'Shrieking Hawk Flight Interceptor' },
-  { id: 8, key: 'SHADOW_ASSASSIN', group: 'C', range: 35, helm: 'spikes', weapon: 'blades',    cape: true,  jetpack: false, plinth: 'smoke', name: 'Shadow Covert Vibro-Assassin' },
-  { id: 9, key: 'REMNANT_COMMANDO',group: 'C', range: 75, helm: 'spikes', weapon: 'eweb',      cape: true,  jetpack: true,  plinth: 'ruins', name: 'Supercommando Siege Gunner' }
+  { id: 0, key: 'DARKSABER_CHAMP', group: 'B', range: 25, pose: 'leap',       armor: 'standard', helm: 'crest',  weapon: 'darksaber', back: 'both',      plinth: 'spire',   name: 'Darksaber Mand\'alor Champion' },
+  { id: 1, key: 'AMBAN_SNIPER',    group: 'C', range: 95, pose: 'kneel',      armor: 'skirmish', helm: 'tvisor', weapon: 'amban',     back: 'cape',      plinth: 'boulder', name: 'Amban Phase-Pulse Sniper' },
+  { id: 2, key: 'PAZ_JUGGERNAUT',  group: 'A', range: 55, pose: 'heroic',     armor: 'heavy',    helm: 'heavy',  weapon: 'rotary',    back: 'jetpack',   plinth: 'lava',    name: 'Heavy Repeater Juggernaut' },
+  { id: 3, key: 'RONIN_SAMURAI',   group: 'A', range: 25, pose: 'iaijutsu',   armor: 'samurai',  helm: 'kabuto', weapon: 'katana',    back: 'sashimono', plinth: 'boulder', name: 'Beskar Ronin Kabuto Blademaster' },
+  { id: 4, key: 'SHOGUN_NAGINATA', group: 'A', range: 35, pose: 'rock_perch', armor: 'ronin',    helm: 'oni',    weapon: 'naginata',  back: 'katanas',   plinth: 'spire',   name: 'Daimyo Oni Naginata Warlord' },
+  { id: 5, key: 'FORGE_ARMORER',   group: 'A', range: 30, pose: 'heroic',     armor: 'fur',      helm: 'horns',  weapon: 'hammer',    back: 'cape',      plinth: 'anvil',   name: 'Great Forge High Armorer' },
+  { id: 6, key: 'WHISTLING_PYRO',  group: 'C', range: 40, pose: 'rock_perch', armor: 'standard', helm: 'cowl',   weapon: 'pyro',      back: 'both',      plinth: 'lava',    name: 'Whistling Bird Flame-Enforcer' },
+  { id: 7, key: 'HAWK_INTERCEPT',  group: 'B', range: 65, pose: 'hover',      armor: 'skirmish', helm: 'owl',    weapon: 'dual',      back: 'fly',       plinth: 'air',     name: 'Shrieking Hawk Flight Interceptor' },
+  { id: 8, key: 'SHADOW_ASSASSIN', group: 'C', range: 35, pose: 'strafe',     armor: 'ronin',    helm: 'spikes', weapon: 'blades',    back: 'fly',       plinth: 'smoke',   name: 'Shadow Covert Vibro-Assassin' },
+  { id: 9, key: 'REMNANT_COMMANDO',group: 'C', range: 75, pose: 'spire',      armor: 'heavy',    helm: 'dome',   weapon: 'spear',     back: 'both',      plinth: 'ruins',   name: 'Supercommando Spire Sentinel' }
 ];
 
-// 12 Paint Studio Color Swatches
-const PAINT_SWATCHES = [
-  { id: 0,  name: 'Pure Beskar Silver', rgb: [214, 224, 238], hex: '#d6e0ee' },
-  { id: 1,  name: 'Darksaber Void',     rgb: [32, 36, 44],    hex: '#20242c' },
-  { id: 2,  name: 'Brushed Gunmetal',   rgb: [108, 118, 132], hex: '#6c7684' },
-  { id: 3,  name: 'Armorer Gold',       rgb: [238, 184, 48],  hex: '#eeb830' },
-  { id: 4,  name: 'Vizsla Crimson',     rgb: [208, 36, 48],   hex: '#d02430' },
-  { id: 5,  name: 'Nite Owl Cobalt',    rgb: [45, 115, 218],  hex: '#2d73da' },
-  { id: 6,  name: 'Mythosaur Bone',     rgb: [224, 212, 184], hex: '#e0d4b8' },
-  { id: 7,  name: 'Concord Emerald',    rgb: [28, 172, 96],   hex: '#1cac60' },
-  { id: 8,  name: 'Nevarro Magma',      rgb: [242, 96, 32],   hex: '#f26020' },
-  { id: 9,  name: 'Wren Royal Purple',  rgb: [158, 72, 232],  hex: '#9e48e8' },
-  { id: 10, name: 'Tatooine Ochre',     rgb: [188, 138, 68],  hex: '#bc8a44' },
-  { id: 11, name: 'Darksaber Ice White',rgb: [245, 250, 255], hex: '#f5faff' }
+const QUICK_SWATCHES = [
+  '#D6E0EE', '#1E222B', '#6C7684', '#EEB830', '#D02430', '#2D73DA',
+  '#E0D4B8', '#1CAC60', '#F26020', '#9E48E8', '#00F5D4', '#FFFFFF'
 ];
 
-// Artisan Custom Commission Grading Table (1.35x Craft up to 25x-50x Masterwork!)
 const ARTISAN_GRADES = [
   { id: 0, name: 'Foundling Craft',          minM: 1.35, maxM: 1.75, chance: 0.50, color: '#94a3b8' },
   { id: 1, name: 'Journeyman Forged',        minM: 2.00, maxM: 3.50, chance: 0.25, color: '#34d399' },
@@ -994,13 +1024,34 @@ const SECTORS = [
   { id: 5, name: 'Mandalore Great Forge Ruins',minTier: 8, cycleSec: 34, baseReward: 9500, fuelCost: 65, desc: 'Reclaim the Living Waters and purge Beskar-armored Praetorians.' }
 ];
 
+function hexToRgbArray(hex, fallback = [200, 210, 225]) {
+  if (!hex || typeof hex !== 'string') return fallback;
+  const clean = hex.trim().replace(/^#/, '');
+  if (/^[0-9A-Fa-f]{3}$/.test(clean)) {
+    return [
+      parseInt(clean[0] + clean[0], 16),
+      parseInt(clean[1] + clean[1], 16),
+      parseInt(clean[2] + clean[2], 16)
+    ];
+  }
+  if (/^[0-9A-Fa-f]{6}$/.test(clean)) {
+    return [
+      parseInt(clean.slice(0, 2), 16),
+      parseInt(clean.slice(2, 4), 16),
+      parseInt(clean.slice(4, 6), 16)
+    ];
+  }
+  return fallback;
+}
+
 /* ============================================================================
-   2. ULTRA-DETAILED 128³ HEROIC CHARACTER VOXEL ENGINE (SUPPORTS CUSTOM PAINT)
+   2. SINGLE SHARED 128³ VOXEL KERNEL + ISOLATED SNAPSHOT RENDERER
+      (Fixes both iOS Memory Crashes AND the 3D Inspector Auction Hijack Bug!)
    ============================================================================ */
 class VoxelWarforgeEngine {
-  constructor(canvas) {
+  constructor() {
     this.width = 512; this.height = 512;
-    this.canvas = canvas || document.createElement('canvas');
+    this.canvas = document.createElement('canvas');
     this.canvas.width = 512; this.canvas.height = 512;
     this.ctx = this.canvas.getContext('2d');
 
@@ -1017,7 +1068,7 @@ class VoxelWarforgeEngine {
     this.occupiedList = new Int32Array(320000);
     this.occupiedCount = 0;
 
-    const MAX_SURF = 200000;
+    const MAX_SURF = 180000;
     this.surfX = new Int16Array(MAX_SURF);
     this.surfY = new Int16Array(MAX_SURF);
     this.surfZ = new Int16Array(MAX_SURF);
@@ -1033,8 +1084,6 @@ class VoxelWarforgeEngine {
     this.paletteRGB = new Uint32Array(256);
     this.materialPriority = new Uint32Array(256);
     this.isEmissive = new Uint8Array(256);
-
-    this.yaw = 0.48; this.pitch = 0.26; this.scale = 3.95;
   }
 
   clearGrid() {
@@ -1070,29 +1119,29 @@ class VoxelWarforgeEngine {
       }
     };
 
-    // Determine RGB for the 5 customizable zones (Custom Paint overrides or Standard Clan/Tier)
-    const cPrim  = unit.customColors ? PAINT_SWATCHES[unit.customColors[0]].rgb : tData.palShift;
-    const cSec   = unit.customColors ? PAINT_SWATCHES[unit.customColors[1]].rgb : fac.accent;
-    const cHeart = unit.customColors ? PAINT_SWATCHES[unit.customColors[2]].rgb : [238, 184, 52];
-    const cCape  = unit.customColors ? PAINT_SWATCHES[unit.customColors[3]].rgb : fac.cape;
-    const cGlow  = unit.customColors ? PAINT_SWATCHES[unit.customColors[4]].rgb : tData.emissive;
+    const hexes = unit.customHexColors;
+    const cPrim  = hexes ? hexToRgbArray(hexes[0], tData.palShift) : tData.palShift;
+    const cSec   = hexes ? hexToRgbArray(hexes[1], fac.accent)     : fac.accent;
+    const cHeart = hexes ? hexToRgbArray(hexes[2], [238, 184, 52]) : [238, 184, 52];
+    const cCape  = hexes ? hexToRgbArray(hexes[3], fac.cape)       : fac.cape;
+    const cGlow  = hexes ? hexToRgbArray(hexes[4], tData.emissive) : tData.emissive;
 
     fillRamp(1, 15, 34, 38, 46, 1, 0);                        // Plinth Rim
-    fillRamp(16, 16, 76, 70, 64, 2, 0);                       // Terrain Stone
+    fillRamp(16, 16, 76, 70, 64, 2, 0);                       // Terrain Stone / Boulder
     fillRamp(32, 16, cPrim[0], cPrim[1], cPrim[2], 6, 0);     // Zone A: Primary Beskar
-    fillRamp(48, 16, cSec[0], cSec[1], cSec[2], 7, 0);        // Zone B: Secondary Pauldrons/Trim
+    fillRamp(48, 16, cSec[0], cSec[1], cSec[2], 7, 0);        // Zone B: Secondary Pauldrons/Sode
     fillRamp(64, 16, 20, 23, 30, 5, 0);                       // Flightsuit & T-Visor Black
     fillRamp(80, 16, 62, 70, 82, 7, 0);                       // Weapon Gunmetal
-    fillRamp(96, 16, cHeart[0], cHeart[1], cHeart[2], 8, 0);  // Zone C: Kar'ta Beskar & Trim
-    fillRamp(112, 16, 114, 72, 42, 6, 0);                     // Leather Bandolier & Belt
+    fillRamp(96, 16, cHeart[0], cHeart[1], cHeart[2], 8, 0);  // Zone C: Kar'ta Beskar & Horns
+    fillRamp(112, 16, 114, 72, 42, 6, 0);                     // Leather / Fur Mantle
     fillRamp(128, 16, cGlow[0], cGlow[1], cGlow[2], 10, 1);   // Zone E: Plasma / Darksaber Glow
-    fillRamp(144, 16, cCape[0], cCape[1], cCape[2], 4, 0);    // Zone D: Woven Cape Cloth
+    fillRamp(144, 16, cCape[0], cCape[1], cCape[2], 4, 0);    // Zone D: Cape / Sashimono Banner
     fillRamp(160, 16, 255, 105, 25, 10, 1);                   // Lava / Thruster Fire
     fillRamp(176, 16, 165, 175, 188, 3, 0);                   // Thermal Smoke
   }
 
   setVoxel(x, y, z, colIdx) {
-    if (x < 2 || x >= 126 || y < 2 || y >= 124 || z < 2 || z >= 126 || colIdx <= 0) return;
+    if (x < 2 || x >= 126 || y < 2 || y >= 125 || z < 2 || z >= 126 || colIdx <= 0) return;
     const idx = (y << 14) | (z << 7) | x;
     const stamp = this.stampGrid[idx];
     if (stamp !== this.currentStamp) {
@@ -1119,7 +1168,7 @@ class VoxelWarforgeEngine {
     const ax0 = Math.max(2, Math.min(x0, x1) | 0);
     const ax1 = Math.min(125, Math.max(x0, x1) | 0);
     const ay0 = Math.max(2, Math.min(y0, y1) | 0);
-    const ay1 = Math.min(123, Math.max(y0, y1) | 0);
+    const ay1 = Math.min(124, Math.max(y0, y1) | 0);
     const az0 = Math.max(2, Math.min(z0, z1) | 0);
     const az1 = Math.min(125, Math.max(z0, z1) | 0);
 
@@ -1193,37 +1242,41 @@ class VoxelWarforgeEngine {
     }
   }
 
-  buildHeroicPlinth(plinthType) {
-    this.fillShellCylinder(64, 5, 64, 38, 5, 1, 10);
-    this.fillShellCylinder(64, 10, 64, 34, 5, 16, 12);
-    this.fillShellCylinder(64, 15, 64, 31, 3, 18, 12);
-    this.fillShellBox(52, 6, 98, 76, 10, 102, 98, 8);
+  buildHeroicPlinth(plinthType, poseType) {
+    this.fillShellCylinder(64, 4, 64, 38, 4, 1, 10);
+    this.fillShellCylinder(64, 8, 64, 34, 4, 16, 12);
+    this.fillShellCylinder(64, 12, 64, 31, 3, 18, 12);
+    this.fillShellBox(52, 5, 98, 76, 9, 102, 98, 8);
 
+    if (plinthType === 'spire' || poseType === 'spire') {
+      this.fillShellCylinder(64, 15, 62, 18, 5, 16, 10);
+      this.fillShellCylinder(64, 20, 62, 14, 6, 1, 10);
+      this.fillShellBox(52, 26, 52, 76, 30, 74, 18, 10);
+    }
+    if (plinthType === 'boulder' || poseType === 'rock_perch') {
+      this.fillShellBox(38, 15, 56, 62, 25, 82, 18, 12);
+      this.fillShellBox(42, 25, 60, 58, 28, 78, 20, 10);
+    }
     if (plinthType === 'lava') {
-      this.fillShellBox(44, 16, 42, 84, 18, 86, 162, 10);
-      this.fillShellBox(38, 16, 48, 56, 20, 80, 18, 10);
-      this.fillShellBox(70, 16, 48, 88, 20, 80, 18, 10);
+      this.fillShellBox(44, 14, 42, 84, 16, 86, 162, 10);
+      this.fillShellBox(38, 14, 48, 56, 18, 80, 18, 10);
+      this.fillShellBox(70, 14, 48, 88, 18, 80, 18, 10);
     } else if (plinthType === 'anvil') {
-      this.fillShellBox(76, 18, 68, 92, 28, 80, 82, 10);
-      this.fillShellBox(72, 28, 66, 96, 33, 82, 98, 10);
-      this.fillShellCylinder(42, 18, 74, 7, 10, 82, 8);
-      this.fillShellCylinder(42, 28, 74, 6, 5, 162, 8);
+      this.fillShellBox(76, 15, 68, 92, 25, 80, 82, 10);
+      this.fillShellBox(72, 25, 66, 96, 30, 82, 98, 10);
+      this.fillShellCylinder(42, 15, 74, 7, 10, 82, 8);
+      this.fillShellCylinder(42, 25, 74, 6, 5, 162, 8);
     } else if (plinthType === 'smoke') {
       for (let i = 0; i < 12; i++) {
         const ang = (i / 12) * Math.PI * 2;
         const sx = (64 + Math.cos(ang) * 20) | 0;
         const sz = (64 + Math.sin(ang) * 20) | 0;
-        this.fillEllipsoid(sx, 20 + (i % 3) * 3, sz, 7, 5, 7, 176, 10);
+        this.fillEllipsoid(sx, 18 + (i % 3) * 3, sz, 7, 5, 7, 176, 10);
       }
-    } else if (plinthType === 'air') {
-      this.fillShellCylinder(58, 16, 56, 5, 16, 160, 12);
-      this.fillShellCylinder(70, 16, 56, 5, 16, 160, 12);
-      this.fillEllipsoid(58, 18, 56, 9, 4, 9, 176, 10);
-      this.fillEllipsoid(70, 18, 56, 9, 4, 9, 176, 10);
-    } else {
-      this.fillShellBox(40, 17, 44, 58, 21, 78, 20, 10);
-      this.fillShellCylinder(80, 18, 76, 6, 6, 82, 8);
-      this.setVoxel(80, 21, 82, 164);
+    } else if (plinthType === 'ruins') {
+      this.fillShellBox(40, 15, 44, 58, 19, 78, 20, 10);
+      this.fillShellCylinder(80, 15, 76, 6, 6, 82, 8);
+      this.setVoxel(80, 18, 82, 164);
     }
   }
 
@@ -1232,190 +1285,310 @@ class VoxelWarforgeEngine {
     this.setupPalette(unit);
 
     const arch = ARCHETYPES[unit.division || 0] || ARCHETYPES[0];
-    // Support custom overrides from Tab 2 Custom Forge
-    const helmType = unit.customParts ? unit.customParts.helm : arch.helm;
-    const weapType = unit.customParts ? unit.customParts.weapon : arch.weapon;
-    const backType = unit.customParts ? unit.customParts.back : (arch.jetpack === 'fly' ? 'fly' : (arch.cape && arch.jetpack ? 'both' : (arch.cape ? 'cape' : 'jetpack')));
-    const plinthType = unit.customParts ? unit.customParts.plinth : arch.plinth;
+    const parts = unit.customParts || {};
+    const poseType   = parts.pose   || arch.pose   || 'heroic';
+    const armorType  = parts.armor  || arch.armor  || 'standard';
+    const helmType   = parts.helm   || arch.helm   || 'tvisor';
+    const weapType   = parts.weapon || arch.weapon || 'darksaber';
+    const backType   = parts.back   || arch.back   || 'both';
+    const plinthType = parts.plinth || arch.plinth || 'boulder';
 
-    this.buildHeroicPlinth(plinthType);
+    this.buildHeroicPlinth(plinthType, poseType);
 
-    const flyOffset = backType === 'fly' ? 12 : 0;
-    const by = 18 + flyOffset;
+    let by = 15;
+    let lFoot = { x: 54, y: 15, z: 64 };
+    let rFoot = { x: 74, y: 15, z: 62 };
+    let pelvis = { x: 64, y: 49, z: 63 };
+    let shoulder = { x: 64, y: 73, z: 63 };
+    let rHand = { x: 89, y: 60, z: 75 };
+    let lHand = { x: 39, y: 60, z: 74 };
 
-    const lx = 55, rx = 73, lz = 64, rz = 62;
-    this.fillShellBox(lx - 5, by, lz - 5, lx + 5, by + 6, lz + 9, 64, 10);
-    this.fillShellBox(lx - 4, by + 2, lz + 4, lx + 4, by + 6, lz + 10, 34, 10);
-    this.fillShellBox(rx - 5, by, rz - 5, rx + 5, by + 6, rz + 9, 64, 10);
-    this.fillShellBox(rx - 4, by + 2, rz + 4, rx + 4, by + 6, rz + 10, 34, 10);
+    if (poseType === 'rock_perch') {
+      lFoot = { x: 50, y: 28, z: 69 };
+      rFoot = { x: 76, y: 15, z: 57 };
+      pelvis = { x: 64, y: 51, z: 64 };
+      shoulder = { x: 63, y: 75, z: 66 };
+      rHand = { x: 88, y: 66, z: 78 };
+      lHand = { x: 42, y: 64, z: 78 };
+    } else if (poseType === 'hover') {
+      by = 29;
+      lFoot = { x: 55, y: 31, z: 60 };
+      rFoot = { x: 73, y: 27, z: 58 };
+      pelvis = { x: 64, y: 61, z: 62 };
+      shoulder = { x: 64, y: 84, z: 64 };
+      rHand = { x: 90, y: 74, z: 76 };
+      lHand = { x: 38, y: 74, z: 76 };
+      this.drawRod(57, 15, 52, 57, 62, 50, 4.2, 160);
+      this.drawRod(71, 15, 52, 71, 62, 50, 4.2, 160);
+      this.fillEllipsoid(57, 17, 52, 9, 4, 9, 176, 10);
+      this.fillEllipsoid(71, 17, 52, 9, 4, 9, 176, 10);
+    } else if (poseType === 'leap') {
+      by = 26;
+      lFoot = { x: 51, y: 34, z: 70 };
+      rFoot = { x: 77, y: 24, z: 52 };
+      pelvis = { x: 64, y: 58, z: 62 };
+      shoulder = { x: 64, y: 81, z: 66 };
+      rHand = { x: 91, y: 84, z: 76 };
+      lHand = { x: 40, y: 68, z: 74 };
+      this.drawRod(58, 15, 48, 58, 56, 50, 3.8, 162);
+      this.drawRod(70, 15, 48, 70, 56, 50, 3.8, 162);
+    } else if (poseType === 'kneel') {
+      lFoot = { x: 53, y: 15, z: 71 };
+      rFoot = { x: 74, y: 15, z: 52 };
+      pelvis = { x: 64, y: 39, z: 62 };
+      shoulder = { x: 64, y: 62, z: 65 };
+      rHand = { x: 84, y: 56, z: 78 };
+      lHand = { x: 52, y: 55, z: 79 };
+    } else if (poseType === 'iaijutsu') {
+      lFoot = { x: 46, y: 15, z: 68 };
+      rFoot = { x: 82, y: 15, z: 57 };
+      pelvis = { x: 64, y: 43, z: 63 };
+      shoulder = { x: 64, y: 66, z: 65 };
+      rHand = { x: 86, y: 52, z: 76 };
+      lHand = { x: 44, y: 50, z: 72 };
+    } else if (poseType === 'spire') {
+      by = 30;
+      lFoot = { x: 56, y: 30, z: 64 };
+      rFoot = { x: 72, y: 30, z: 61 };
+      pelvis = { x: 64, y: 61, z: 63 };
+      shoulder = { x: 64, y: 84, z: 63 };
+      rHand = { x: 89, y: 72, z: 75 };
+      lHand = { x: 39, y: 72, z: 74 };
+    } else if (poseType === 'strafe') {
+      by = 27;
+      lFoot = { x: 49, y: 29, z: 58 };
+      rFoot = { x: 69, y: 25, z: 54 };
+      pelvis = { x: 62, y: 58, z: 60 };
+      shoulder = { x: 67, y: 81, z: 65 };
+      rHand = { x: 92, y: 72, z: 78 };
+      lHand = { x: 42, y: 74, z: 78 };
+      this.drawRod(56, 15, 48, 56, 56, 48, 4.0, 160);
+      this.drawRod(68, 15, 48, 68, 56, 48, 4.0, 160);
+    }
 
-    this.fillShellCylinder(lx, by + 6, lz, 4.5, 15, 64, 10);
-    this.fillShellCylinder(rx, by + 6, rz, 4.5, 15, 64, 10);
-    this.fillShellBox(lx - 4, by + 7, lz + 1, lx + 4, by + 20, lz + 6, 32, 12);
-    this.fillShellBox(rx - 4, by + 7, rz + 1, rx + 4, by + 20, rz + 6, 32, 12);
-    this.fillShellBox(lx - 1, by + 8, lz + 6, lx + 1, by + 19, lz + 7, 48, 10);
-    this.fillShellBox(rx - 1, by + 8, rz + 6, rx + 1, by + 19, rz + 7, 48, 10);
+    // 1. ARTICULATED LEGS, BOOTS, KNEE POLEYNS & GREAVES
+    const lKnee = {
+      x: Math.round((lFoot.x + pelvis.x - 8) * 0.5),
+      y: Math.round((lFoot.y + pelvis.y) * 0.5),
+      z: Math.round((lFoot.z + pelvis.z) * 0.5 + 4)
+    };
+    const rKnee = {
+      x: Math.round((rFoot.x + pelvis.x + 8) * 0.5),
+      y: Math.round((rFoot.y + pelvis.y) * 0.5 - (poseType === 'kneel' ? 6 : 0)),
+      z: Math.round((rFoot.z + pelvis.z) * 0.5 + 3)
+    };
 
-    this.fillShellBox(lx - 5, by + 20, lz + 2, lx + 5, by + 25, lz + 8, 48, 12);
-    this.fillShellBox(rx - 5, by + 20, rz + 2, rx + 5, by + 25, rz + 8, 48, 12);
-    this.setVoxel(lx - 6, by + 22, lz + 5, 98);
-    this.setVoxel(lx - 6, by + 23, lz + 6, 132);
-    this.setVoxel(rx + 6, by + 22, rz + 5, 98);
-    this.setVoxel(rx + 6, by + 23, rz + 6, 132);
+    this.fillShellBox(lFoot.x - 5, lFoot.y, lFoot.z - 4, lFoot.x + 5, lFoot.y + 6, lFoot.z + 8, 34, 10);
+    this.fillShellBox(rFoot.x - 5, rFoot.y, rFoot.z - 4, rFoot.x + 5, rFoot.y + 6, rFoot.z + 8, 34, 10);
+    this.drawRod(lFoot.x, lFoot.y + 4, lFoot.z, lKnee.x, lKnee.y, lKnee.z, 4.5, 32);
+    this.drawRod(rFoot.x, rFoot.y + 4, rFoot.z, rKnee.x, rKnee.y, rKnee.z, 4.5, 32);
+    this.drawRod(lKnee.x, lKnee.y, lKnee.z, pelvis.x - 8, pelvis.y, pelvis.z, 5.0, 64);
+    this.drawRod(rKnee.x, rKnee.y, rKnee.z, pelvis.x + 8, pelvis.y, pelvis.z, 5.0, 64);
+    this.drawRod(lKnee.x, lKnee.y + 2, lKnee.z + 2, pelvis.x - 8, pelvis.y - 2, pelvis.z + 2, 3.8, 34);
+    this.drawRod(rKnee.x, rKnee.y + 2, rKnee.z + 2, pelvis.x + 8, pelvis.y - 2, pelvis.z + 2, 3.8, 34);
+    this.fillShellBox(lKnee.x - 4, lKnee.y - 2, lKnee.z, lKnee.x + 4, lKnee.y + 3, lKnee.z + 5, 48, 10);
+    this.fillShellBox(rKnee.x - 4, rKnee.y - 2, rKnee.z, rKnee.x + 4, rKnee.y + 3, rKnee.z + 5, 48, 10);
 
-    this.fillShellCylinder(lx + 1, by + 25, lz, 5.2, 13, 64, 10);
-    this.fillShellCylinder(rx - 1, by + 25, rz, 5.2, 13, 64, 10);
-    this.fillShellBox(lx - 4, by + 26, lz + 2, lx + 5, by + 37, lz + 7, 34, 12);
-    this.fillShellBox(rx - 5, by + 26, rz + 2, rx + 4, by + 37, rz + 7, 34, 12);
-    this.fillShellBox(lx, by + 27, lz + 7, lx + 1, by + 36, lz + 8, 98, 8);
-    this.fillShellBox(rx - 1, by + 27, rz + 7, rx, by + 36, rz + 8, 98, 8);
+    // 2. PELVIS, BELT & SAMURAI KUSAZURI TASSET SKIRT
+    const py = pelvis.y;
+    const pz = pelvis.z;
+    this.fillShellBox(pelvis.x - 13, py, pz - 6, pelvis.x + 13, py + 7, pz + 6, 64, 10);
+    this.fillShellBox(pelvis.x - 6, py, pz + 5, pelvis.x + 6, py + 6, pz + 9, 34, 12);
 
-    const py = by + 37;
-    this.fillShellBox(51, py, 57, 77, py + 7, 69, 64, 10);
-    this.fillShellBox(58, py, 68, 70, py + 6, 72, 34, 12);
-    this.fillShellBox(47, py - 3, 58, 51, py + 5, 68, 48, 10);
-    this.fillShellBox(77, py - 3, 58, 81, py + 5, 68, 48, 10);
+    if (armorType === 'samurai' || armorType === 'ronin') {
+      for (let tierK = 0; tierK < 4; tierK++) {
+        const ky = py - 8 + tierK * 3;
+        const colK = tierK % 2 === 0 ? 48 : 98;
+        this.fillShellBox(pelvis.x - 16, ky, pz - 7, pelvis.x - 11, ky + 2, pz + 7, colK, 8);
+        this.fillShellBox(pelvis.x + 11, ky, pz - 7, pelvis.x + 16, ky + 2, pz + 7, colK, 8);
+        this.fillShellBox(pelvis.x - 10, ky, pz + 6, pelvis.x - 2, ky + 2, pz + 9, colK, 8);
+        this.fillShellBox(pelvis.x + 2, ky, pz + 6, pelvis.x + 10, ky + 2, pz + 9, colK, 8);
+      }
+    } else {
+      this.fillShellBox(pelvis.x - 17, py - 3, pz - 5, pelvis.x - 13, py + 5, pz + 5, 48, 10);
+      this.fillShellBox(pelvis.x + 13, py - 3, pz - 5, pelvis.x + 17, py + 5, pz + 5, 48, 10);
+    }
 
     const beltY = py + 6;
-    this.fillShellBox(49, beltY, 56, 79, beltY + 4, 71, 112, 12);
-    this.fillShellBox(60, beltY, 71, 68, beltY + 4, 73, 98, 10);
-    for (let bx = 52; bx <= 76; bx += 6) {
-      if (bx === 64) continue;
-      this.fillShellBox(bx - 1, beltY + 1, 71, bx + 1, beltY + 3, 73, 82, 8);
-      this.setVoxel(bx, beltY + 2, 74, 134);
-    }
+    this.fillShellBox(pelvis.x - 14, beltY, pz - 7, pelvis.x + 14, beltY + 4, pz + 8, 112, 12);
+    this.fillShellBox(pelvis.x - 4, beltY, pz + 8, pelvis.x + 4, beltY + 4, pz + 10, 98, 10);
 
+    // 3. TORSO CUIRASS & KAR'TA BESKAR IRON HEART
     const ty0 = beltY + 4;
-    const ty1 = ty0 + 22;
-    this.fillShellBox(50, ty0, 56, 78, ty1, 70, 64, 12);
-    this.fillShellBox(54, ty0 + 2, 69, 74, ty0 + 8, 72, 32, 12);
-    this.fillShellBox(51, ty0 + 10, 69, 61, ty1 - 2, 74, 34, 12);
-    this.fillShellBox(67, ty0 + 10, 69, 77, ty1 - 2, 74, 34, 12);
-    this.fillShellBox(62, ty0 + 12, 70, 66, ty0 + 18, 74, 98, 10);
-    this.setVoxel(64, ty0 + 15, 75, 134);
+    const ty1 = shoulder.y;
+    const tx = shoulder.x;
+    const tz = shoulder.z;
+    this.fillShellBox(tx - 14, ty0, tz - 7, tx + 14, ty1, tz + 7, 64, 12);
+    this.fillShellBox(tx - 10, ty0 + 2, tz + 6, tx + 10, ty0 + 8, tz + 9, 32, 12);
+    this.fillShellBox(tx - 13, ty0 + 9, tz + 6, tx - 3, ty1 - 2, tz + 11, 34, 12);
+    this.fillShellBox(tx + 3, ty0 + 9, tz + 6, tx + 13, ty1 - 2, tz + 11, 34, 12);
+    this.fillShellBox(tx - 2, ty0 + 11, tz + 7, tx + 2, ty0 + 17, tz + 11, 98, 10);
+    this.setVoxel(tx, ty0 + 14, tz + 12, 134);
 
-    for (let s = 0; s <= 18; s++) {
-      const bx = 52 + s;
-      const byBand = ty1 - 2 - s;
-      this.fillShellBox(bx, byBand, 72, bx + 2, byBand + 2, 75, 114, 8);
-      if (s % 4 === 0) {
-        this.fillShellBox(bx, byBand, 75, bx + 2, byBand + 1, 76, 98, 6);
-      }
+    if (armorType === 'fur') {
+      this.fillEllipsoid(tx, ty1 - 1, tz, 18, 5, 11, 112, 12);
     }
 
+    // 4. BACK RIGS: CAPE, JETPACK, SAMURAI SASHIMONO WAR-BANNER, OR CROSSED KATANAS
     if (backType === 'cape' || backType === 'both') {
-      for (let cy = by + 8; cy <= ty1 - 1; cy++) {
-        const t = (ty1 - cy) / (ty1 - by);
+      for (let cy = by + 6; cy <= ty1 - 1; cy++) {
+        const t = (ty1 - cy) / Math.max(1, ty1 - by);
         const flare = Math.round(t * 10);
         const wave = Math.round(Math.sin(cy * 0.25) * 2.5);
-        for (let cx = 48 - flare; cx <= 80 + flare; cx++) {
-          const fold = Math.round(Math.cos((cx - 64) * 0.35) * 2);
-          const cz = 53 - Math.round(t * 8) + wave + fold;
+        for (let cx = tx - 15 - flare; cx <= tx + 15 + flare; cx++) {
+          const fold = Math.round(Math.cos((cx - tx) * 0.35) * 2);
+          const cz = tz - 10 - Math.round(t * 8) + wave + fold;
           this.setVoxel(cx, cy, cz, 144 + ((cx + cy) % 12));
           this.setVoxel(cx, cy, cz + 1, 144 + ((cx + cy) % 12));
         }
       }
     }
     if (backType === 'jetpack' || backType === 'both' || backType === 'fly') {
-      this.fillShellBox(54, ty0 + 4, 47, 74, ty1 - 1, 56, 34, 12);
-      this.fillShellCylinder(57, ty0 + 2, 50, 4, 18, 48, 10);
-      this.fillShellCylinder(71, ty0 + 2, 50, 4, 18, 48, 10);
-      this.fillShellCylinder(64, ty1 - 1, 51, 3, 9, 98, 10);
-      this.setVoxel(57, ty0, 50, 164);
-      this.setVoxel(71, ty0, 50, 164);
+      this.fillShellBox(tx - 10, ty0 + 4, tz - 16, tx + 10, ty1 - 1, tz - 7, 34, 12);
+      this.fillShellCylinder(tx - 7, ty0 + 2, tz - 13, 4, 16, 48, 10);
+      this.fillShellCylinder(tx + 7, ty0 + 2, tz - 13, 4, 16, 48, 10);
+      this.fillShellCylinder(tx, ty1 - 1, tz - 12, 3, 8, 98, 10);
+      this.setVoxel(tx - 7, ty0, tz - 13, 164);
+      this.setVoxel(tx + 7, ty0, tz - 13, 164);
+    }
+    if (backType === 'sashimono') {
+      this.drawRod(tx, ty0 + 4, tz - 9, tx, Math.min(122, ty1 + 38), tz - 9, 1.4, 98);
+      this.drawRod(tx - 12, Math.min(121, ty1 + 36), tz - 9, tx + 12, Math.min(121, ty1 + 36), tz - 9, 1.3, 98);
+      this.fillShellBox(tx - 10, ty1 + 10, tz - 10, tx + 10, Math.min(120, ty1 + 35), tz - 8, 144, 12);
+      this.fillShellBox(tx - 5, ty1 + 18, tz - 11, tx + 5, Math.min(116, ty1 + 28), tz - 7, 98, 10);
+    }
+    if (backType === 'katanas') {
+      this.drawRod(tx - 16, ty0 + 4, tz - 10, tx + 18, ty1 + 14, tz - 10, 1.6, 98);
+      this.drawRod(tx + 16, ty0 + 4, tz - 10, tx - 18, ty1 + 14, tz - 10, 1.6, 98);
     }
 
-    const pSize = helmType === 'heavy' ? 9 : 7;
-    this.fillEllipsoid(44, ty1 - 4, 63, pSize, 7, 8, 48, 12);
-    this.fillEllipsoid(84, ty1 - 4, 63, pSize, 7, 8, 48, 12);
-    this.fillShellBox(44 - pSize, ty1 - 5, 61, 44 - pSize + 2, ty1 - 1, 65, 98, 8);
-    this.fillShellBox(84 + pSize - 2, ty1 - 5, 61, 84 + pSize, ty1 - 1, 65, 98, 8);
+    // 5. PAULDRONS (INCLUDING SAMURAI O-YOROI TIERED SODE) & ARTICULATED ARMS
+    if (armorType === 'samurai') {
+      for (let s = 0; s < 4; s++) {
+        const sy = ty1 - 10 + s * 3;
+        const colS = s % 2 === 0 ? 48 : 98;
+        this.fillShellBox(tx - 26, sy, tz - 8, tx - 14, sy + 2, tz + 8, colS, 10);
+        this.fillShellBox(tx + 14, sy, tz - 8, tx + 26, sy + 2, tz + 8, colS, 10);
+      }
+    } else if (armorType === 'heavy') {
+      this.fillShellBox(tx - 25, ty1 - 8, tz - 8, tx - 14, ty1 + 3, tz + 8, 48, 12);
+      this.fillShellBox(tx + 14, ty1 - 8, tz - 8, tx + 25, ty1 + 3, tz + 8, 48, 12);
+    } else {
+      const pSize = armorType === 'skirmish' ? 5 : 7;
+      this.fillEllipsoid(tx - 19, ty1 - 4, tz, pSize, 6, 8, 48, 12);
+      this.fillEllipsoid(tx + 19, ty1 - 4, tz, pSize, 6, 8, 48, 12);
+    }
 
-    this.drawRod(44, ty1 - 6, 63, 39, ty0 + 4, 68, 4.0, 64);
-    this.drawRod(84, ty1 - 6, 63, 89, ty0 + 4, 68, 4.0, 64);
-    this.fillShellBox(35, ty0 + 1, 65, 43, ty0 + 11, 76, 34, 12);
-    this.fillShellBox(36, ty0 + 8, 68, 42, ty0 + 13, 75, 98, 10);
-    for (let g = 69; g <= 74; g += 2) this.setVoxel(39, ty0 + 13, g, 134);
-    this.fillShellBox(85, ty0 + 1, 65, 93, ty0 + 11, 76, 34, 12);
+    this.drawRod(tx - 18, ty1 - 4, tz, lHand.x, lHand.y, lHand.z, 4.0, 64);
+    this.drawRod(tx + 18, ty1 - 4, tz, rHand.x, rHand.y, rHand.z, 4.0, 64);
+    this.fillShellBox(lHand.x - 4, lHand.y - 3, lHand.z - 5, lHand.x + 4, lHand.y + 5, lHand.z + 4, 34, 12);
+    this.fillShellBox(rHand.x - 4, rHand.y - 3, rHand.z - 5, rHand.x + 4, rHand.y + 5, rHand.z + 4, 34, 12);
+    this.fillShellBox(lHand.x - 3, lHand.y + 4, lHand.z - 3, lHand.x + 3, lHand.y + 7, lHand.z + 3, 98, 8);
 
+    // 6. 10 DISTINCT HELMET & VISOR SCULPTS (INCLUDING SAMURAI KABUTO & ONI WAR-HELM)
     const hy0 = ty1 + 1;
-    this.fillShellCylinder(64, ty1 - 1, 63, 5.5, 4, 64, 8);
-    this.fillShellCylinder(64, hy0 + 2, 63, 10.5, 11, 32, 14);
-    this.fillEllipsoid(64, hy0 + 13, 63, 10.8, 8.5, 11.2, 34, 14);
-    this.fillShellBox(62, hy0 + 14, 54, 66, hy0 + 22, 71, 48, 10);
-    this.fillShellBox(55, hy0 + 11, 71, 73, hy0 + 13, 75, 48, 10);
-    this.fillShellBox(54, hy0 + 3, 69, 59, hy0 + 9, 74, 48, 10);
-    this.fillShellBox(69, hy0 + 3, 69, 74, hy0 + 9, 74, 48, 10);
+    this.fillShellCylinder(tx, ty1 - 1, tz, 5.5, 4, 64, 8);
+    this.fillShellCylinder(tx, hy0 + 2, tz, 10.2, 10, 32, 14);
+    this.fillEllipsoid(tx, hy0 + 12, tz, 10.5, 8.0, 11.0, 34, 14);
+    this.fillShellBox(tx - 9, hy0 + 10, tz + 8, tx + 9, hy0 + 12, tz + 12, 48, 10);
+    this.fillShellBox(tx - 10, hy0 + 3, tz + 6, tx - 5, hy0 + 8, tz + 11, 48, 10);
+    this.fillShellBox(tx + 5, hy0 + 3, tz + 6, tx + 10, hy0 + 8, tz + 11, 48, 10);
 
-    for (let vx = 56; vx <= 72; vx++) {
-      const owlDip = (helmType === 'owl' && (vx < 60 || vx > 68)) ? -1 : 0;
-      this.setVoxel(vx, hy0 + 10 + owlDip, 73, 64);
-      this.setVoxel(vx, hy0 + 9 + owlDip, 73, 64);
-      this.setVoxel(vx, hy0 + 10 + owlDip, 74, 64);
+    for (let vx = tx - 8; vx <= tx + 8; vx++) {
+      const owlDip = (helmType === 'owl' && (vx < tx - 4 || vx > tx + 4)) ? -1 : 0;
+      this.setVoxel(vx, hy0 + 9 + owlDip, tz + 10, 64);
+      this.setVoxel(vx, hy0 + 8 + owlDip, tz + 10, 64);
+      this.setVoxel(vx, hy0 + 9 + owlDip, tz + 11, 64);
     }
-    for (let vy = hy0 + 3; vy <= hy0 + 10; vy++) {
-      this.fillShellBox(62, vy, 73, 66, vy, 75, 64, 4);
+    for (let vy = hy0 + 3; vy <= hy0 + 9; vy++) {
+      this.fillShellBox(tx - 2, vy, tz + 10, tx + 2, vy, tz + 12, 64, 4);
     }
 
-    this.fillShellBox(52, hy0 + 6, 61, 54, hy0 + 13, 65, 98, 8);
-    this.fillShellBox(74, hy0 + 6, 61, 76, hy0 + 13, 65, 98, 8);
-    this.drawRod(75, hy0 + 12, 63, 75, hy0 + 23, 63, 1.1, 82);
-    this.fillShellBox(71, hy0 + 22, 62, 76, hy0 + 24, 66, 98, 8);
-    this.setVoxel(72, hy0 + 23, 67, 134);
-
-    if (helmType === 'horns') {
+    if (helmType === 'kabuto') {
+      for (let sk = 0; sk < 3; sk++) {
+        const sy = hy0 + 1 + sk * 3;
+        const flare = 14 - sk * 1;
+        this.fillShellBox(tx - flare, sy, tz - 13, tx + flare, sy + 2, tz + 4, 48, 10);
+      }
+      this.drawRod(tx - 2, hy0 + 13, tz + 11, tx - 16, hy0 + 25, tz + 13, 1.8, 98);
+      this.drawRod(tx + 2, hy0 + 13, tz + 11, tx + 16, hy0 + 25, tz + 13, 1.8, 98);
+      this.fillShellCylinder(tx, hy0 + 13, tz + 11, 3.5, 4, 132, 6);
+    } else if (helmType === 'oni') {
+      this.drawRod(tx - 7, hy0 + 14, tz + 6, tx - 18, hy0 + 26, tz + 12, 2.4, 98);
+      this.drawRod(tx + 7, hy0 + 14, tz + 6, tx + 18, hy0 + 26, tz + 12, 2.4, 98);
+      this.setVoxel(tx - 4, hy0 + 4, tz + 12, 134);
+      this.setVoxel(tx + 4, hy0 + 4, tz + 12, 134);
+    } else if (helmType === 'horns') {
       const hPts = [[-6, 6], [-3, 8], [0, 9], [3, 8], [6, 6]];
       for (const [hx, hz] of hPts) {
-        this.drawRod(64 + hx, hy0 + 16, 63 + hz, 64 + hx * 1.3, hy0 + 23, 63 + hz + 2, 1.4, 98);
+        this.drawRod(tx + hx, hy0 + 15, tz + hz, tx + hx * 1.3, hy0 + 22, tz + hz + 2, 1.4, 98);
       }
     } else if (helmType === 'spikes') {
       const sPts = [[-7, 4], [-4, 6], [0, 7], [4, 6], [7, 4], [-5, 0], [5, 0]];
       for (const [sx, sz] of sPts) {
-        this.drawRod(64 + sx, hy0 + 17, 63 + sz, 64 + sx * 1.2, hy0 + 24, 63 + sz, 1.3, 98);
+        this.drawRod(tx + sx, hy0 + 16, tz + sz, tx + sx * 1.2, hy0 + 23, tz + sz, 1.3, 98);
       }
     } else if (helmType === 'crest') {
-      this.fillShellBox(61, hy0 + 16, 52, 67, hy0 + 25, 73, 98, 10);
+      this.fillShellBox(tx - 3, hy0 + 14, tz - 10, tx + 3, hy0 + 23, tz + 10, 98, 10);
+    } else if (helmType === 'cowl') {
+      this.fillShellBox(tx - 12, hy0 + 2, tz - 12, tx + 12, hy0 + 21, tz + 9, 144, 12);
+    } else if (helmType === 'dome') {
+      this.fillEllipsoid(tx, hy0 + 14, tz, 13, 9, 13, 34, 12);
+    } else {
+      this.drawRod(tx + 11, hy0 + 10, tz, tx + 11, hy0 + 21, tz, 1.1, 82);
+      this.fillShellBox(tx + 7, hy0 + 20, tz - 1, tx + 12, hy0 + 22, tz + 3, 98, 8);
     }
 
-    const wxR = 89, wyR = ty0 + 4, wzR = 74;
-    const wxL = 39, wyL = ty0 + 4, wzL = 74;
+    // 7. 11 SIGNATURE WEAPONS
+    const wxR = rHand.x, wyR = rHand.y, wzR = rHand.z;
+    const wxL = lHand.x, wyL = lHand.y, wzL = lHand.z;
 
     if (weapType === 'darksaber') {
       this.drawRod(wxR, wyR - 2, wzR, wxR, wyR + 6, wzR + 4, 2.0, 98);
-      this.drawRod(wxR, wyR + 6, wzR + 4, wxR - 6, wyR + 46, wzR + 22, 2.3, 134);
-      this.drawRod(wxR, wyR + 6, wzR + 3, wxR - 6, wyR + 44, wzR + 21, 1.4, 64);
+      this.drawRod(wxR, wyR + 6, wzR + 4, wxR - 6, Math.min(122, wyR + 40), wzR + 20, 2.3, 134);
+      this.drawRod(wxR, wyR + 6, wzR + 3, wxR - 6, Math.min(121, wyR + 38), wzR + 19, 1.4, 64);
+    } else if (weapType === 'katana') {
+      this.fillShellCylinder(wxR, wyR + 3, wzR + 2, 3.2, 2, 98, 6);
+      this.drawRod(wxR, wyR - 4, wzR - 2, wxR, wyR + 3, wzR + 2, 1.6, 144);
+      this.drawRod(wxR, wyR + 4, wzR + 3, wxR - 4, Math.min(122, wyR + 40), wzR + 26, 1.5, 36);
+      this.drawRod(wxR, wyR + 5, wzR + 4, wxR - 4, Math.min(122, wyR + 40), wzR + 27, 0.9, 134);
+      this.fillShellCylinder(wxL, wyL + 2, wzL + 2, 2.8, 2, 98, 6);
+      this.drawRod(wxL, wyL + 3, wzL + 3, wxL - 6, wyL + 24, wzL + 18, 1.3, 36);
+      this.drawRod(wxL, wyL + 4, wzL + 4, wxL - 6, wyL + 24, wzL + 19, 0.8, 134);
+    } else if (weapType === 'naginata') {
+      this.drawRod(wxR + 2, by + 2, wzR - 10, wxR - 2, Math.min(104, wyR + 28), wzR + 10, 1.7, 112);
+      this.fillShellCylinder(wxR - 2, Math.min(104, wyR + 28), wzR + 10, 3.2, 2, 98, 6);
+      this.drawRod(wxR - 2, Math.min(105, wyR + 29), wzR + 10, wxR - 6, Math.min(123, wyR + 48), wzR + 20, 2.2, 132);
     } else if (weapType === 'amban') {
-      this.drawRod(wxR, wyR - 8, wzR - 10, wxR, wyR + 2, wzR + 28, 2.0, 114);
-      this.drawRod(wxR, wyR + 2, wzR + 4, wxR, wyR + 6, wzR + 44, 1.4, 82);
-      this.drawRod(wxR, wyR + 5, wzR + 12, wxR, wyR + 5, wzR + 22, 1.5, 98);
-      this.drawRod(wxR - 2, wyR + 6, wzR + 44, wxR - 2, wyR + 7, wzR + 50, 1.0, 132);
-      this.drawRod(wxR + 2, wyR + 6, wzR + 44, wxR + 2, wyR + 7, wzR + 50, 1.0, 132);
+      this.drawRod(wxR, wyR - 6, wzR - 10, wxR, wyR + 2, wzR + 26, 2.0, 114);
+      this.drawRod(wxR, wyR + 2, wzR + 4, wxR, wyR + 6, wzR + 42, 1.4, 82);
+      this.drawRod(wxR - 2, wyR + 6, wzR + 42, wxR - 2, wyR + 7, wzR + 48, 1.0, 132);
+      this.drawRod(wxR + 2, wyR + 6, wzR + 42, wxR + 2, wyR + 7, wzR + 48, 1.0, 132);
     } else if (weapType === 'rotary') {
-      this.fillShellCylinder(64, wyR - 4, wzR + 10, 6, 22, 82, 10);
-      this.drawRod(52, wyR - 2, wzR + 6, 84, wyR - 4, wzR + 28, 4.2, 82);
-      this.fillShellCylinder(84, wyR - 4, wzR + 28, 4.5, 6, 162, 10);
+      this.fillShellCylinder(tx, wyR - 4, wzR + 6, 6, 20, 82, 10);
+      this.drawRod(tx - 12, wyR - 2, wzR + 2, wxR - 2, wyR - 4, wzR + 24, 4.2, 82);
+      this.fillShellCylinder(wxR - 2, wyR - 4, wzR + 24, 4.5, 6, 162, 10);
     } else if (weapType === 'dual') {
       this.drawRod(wxL, wyL, wzL, wxL, wyL + 2, wzL + 16, 1.8, 82);
       this.drawRod(wxR, wyR, wzR, wxR, wyR + 2, wzR + 16, 1.8, 82);
       this.fillShellCylinder(wxL, wyL + 2, wzL + 18, 2.5, 4, 132, 6);
       this.fillShellCylinder(wxR, wyR + 2, wzR + 18, 2.5, 4, 132, 6);
     } else if (weapType === 'spear') {
-      this.drawRod(wxR + 2, by + 2, wzR - 8, wxR + 2, by + 88, wzR + 12, 1.6, 36);
-      this.drawRod(wxR + 2, by + 82, wzR + 10, wxR + 2, by + 95, wzR + 14, 2.2, 132);
-      this.fillShellCylinder(wxL - 4, wyL - 2, wzL + 4, 10, 2, 130, 8);
+      this.drawRod(wxR + 2, by + 2, wzR - 8, wxR + 2, Math.min(110, by + 84), wzR + 10, 1.6, 36);
+      this.drawRod(wxR + 2, Math.min(106, by + 78), wzR + 8, wxR + 2, Math.min(122, by + 92), wzR + 12, 2.2, 132);
+      this.fillShellCylinder(wxL - 4, wyL - 2, wzL + 4, 9, 2, 130, 8);
     } else if (weapType === 'hammer') {
       this.drawRod(wxR, wyR - 6, wzR, wxR, wyR + 22, wzR + 8, 1.8, 98);
       this.fillShellBox(wxR - 6, wyR + 20, wzR + 2, wxR + 6, wyR + 27, wzR + 14, 98, 10);
-      this.drawRod(wxL, wyL, wzL, wxL - 2, wyL + 16, wzL + 12, 1.5, 82);
-      this.fillShellBox(wxL - 5, wyL + 15, wzL + 12, wxL + 1, wyL + 19, wzL + 18, 162, 8);
+      this.fillShellBox(wxL - 5, wyL + 10, wzL + 8, wxL + 2, wyL + 14, wzL + 14, 162, 8);
     } else if (weapType === 'pyro') {
-      for (let f = 1; f <= 10; f++) {
+      for (let f = 1; f <= 9; f++) {
         this.fillEllipsoid(wxL, wyL + f * 1.2, wzL + f * 3, 2 + f * 0.7, 2 + f * 0.6, 3, 160, 12);
       }
       for (let w = 0; w < 6; w++) {
         const ang = (w / 6) * Math.PI * 2;
-        const bx = (64 + Math.cos(ang) * 34) | 0;
-        const byW = (ty0 + 18 + Math.sin(ang) * 18) | 0;
+        const bx = (tx + Math.cos(ang) * 32) | 0;
+        const byW = (ty0 + 16 + Math.sin(ang) * 16) | 0;
         this.fillShellBox(bx - 2, byW - 2, 84, bx + 2, byW + 2, 89, 132, 6);
       }
     } else if (weapType === 'blades') {
@@ -1434,7 +1607,7 @@ class VoxelWarforgeEngine {
 
   bakeSurfaceVoxels() {
     this.surfCount = 0;
-    const maxS = 199990;
+    const maxS = 179990;
 
     for (let i = 0; i < this.occupiedCount; i++) {
       const idx = this.occupiedList[i];
@@ -1502,18 +1675,36 @@ class VoxelWarforgeEngine {
     }
   }
 
-  render(targetCanvas) {
+  bakeUnitToSnapshot(unit) {
+    this.buildUnitModel(unit);
+    const n = this.surfCount;
+    return {
+      surfCount: n,
+      surfX: this.surfX.slice(0, n),
+      surfY: this.surfY.slice(0, n),
+      surfZ: this.surfZ.slice(0, n),
+      surfColTop: this.surfColTop.slice(0, n),
+      surfColLeft: this.surfColLeft.slice(0, n),
+      surfColRight: this.surfColRight.slice(0, n)
+    };
+  }
+
+  renderSnapshot(snapshot, targetCanvas, yaw, pitch, scale) {
+    if (!snapshot) return;
     this.zBuf.fill(-999999);
     this.pixels.fill(0);
 
-    const cosY = Math.cos(this.yaw), sinY = Math.sin(this.yaw);
-    const cosP = Math.cos(this.pitch), sinP = Math.sin(this.pitch);
-    const sc = this.scale;
+    const cosY = Math.cos(yaw), sinY = Math.sin(yaw);
+    const cosP = Math.cos(pitch), sinP = Math.sin(pitch);
+    const sc = scale;
+    const n = snapshot.surfCount;
+    const sX = snapshot.surfX, sY = snapshot.surfY, sZ = snapshot.surfZ;
+    const cT = snapshot.surfColTop, cL = snapshot.surfColLeft, cR = snapshot.surfColRight;
 
-    for (let i = 0; i < this.surfCount; i++) {
-      const vx = this.surfX[i] - 64;
-      const vy = this.surfY[i] - 58;
-      const vz = this.surfZ[i] - 64;
+    for (let i = 0; i < n; i++) {
+      const vx = sX[i] - 64;
+      const vy = sY[i] - 58;
+      const vz = sZ[i] - 64;
 
       const rx = vx * cosY - vz * sinY;
       const rz = vx * sinY + vz * cosY;
@@ -1525,14 +1716,12 @@ class VoxelWarforgeEngine {
 
       if (sx < 4 || sx >= 507 || sy < 4 || sy >= 507) continue;
 
-      const cTop = this.surfColTop[i];
-      const cLeft = this.surfColLeft[i];
-      const cRight = this.surfColRight[i];
+      const colTop = cT[i], colLeft = cL[i], colRight = cR[i];
 
       for (let dy = 0; dy < 4; dy++) {
         const py = sy + dy;
         const rowOff = py << 9;
-        const col = dy === 0 ? cTop : (dy < 3 ? cLeft : cRight);
+        const col = dy === 0 ? colTop : (dy < 3 ? colLeft : colRight);
         for (let dx = 0; dx < 4; dx++) {
           const idx = rowOff + sx + dx;
           if (depth > this.zBuf[idx]) {
@@ -1549,11 +1738,17 @@ class VoxelWarforgeEngine {
   }
 
   renderThumbnail(unit) {
-    this.yaw = 0.46;
-    this.pitch = 0.24;
-    this.scale = 3.95;
     this.buildUnitModel(unit);
-    this.render(this.canvas);
+    const tempSnap = {
+      surfCount: this.surfCount,
+      surfX: this.surfX,
+      surfY: this.surfY,
+      surfZ: this.surfZ,
+      surfColTop: this.surfColTop,
+      surfColLeft: this.surfColLeft,
+      surfColRight: this.surfColRight
+    };
+    this.renderSnapshot(tempSnap, this.canvas, 0.46, 0.24, 3.85);
     this.thumbCtx.clearRect(0, 0, 128, 128);
     this.thumbCtx.drawImage(this.canvas, 0, 0, 512, 512, 0, 0, 128, 128);
     return this.thumbCanvas.toDataURL('image/webp', 0.85);
@@ -1561,8 +1756,6 @@ class VoxelWarforgeEngine {
 }
 
 const VoxelEngine = new VoxelWarforgeEngine();
-// Separate dedicated Voxel instance for Tab 2 Live Turntable so thumbnails never interrupt live spin
-const StudioEngine = new VoxelWarforgeEngine();
 
 /* ============================================================================
    3. UNIVERSAL GAME STATE & BASE36 CODEC
@@ -1572,6 +1765,7 @@ let NEXT_ID = 1;
 const State = {
   funds: 500,
   fuelReserve: 1000,
+  godMode: false,
   fleet: [],
   pilots: [],
   codexUnlocked: {},
@@ -1612,9 +1806,9 @@ const TradeCodec = {
     return '#' + String(num).padStart(4, '0');
   },
   encodeUnit(u) {
-    if (u.isCustom && u.customColors) {
-      const cStr = u.customColors.map(c => c.toString(36)).join('');
-      return `WFC-${u.tier}${u.division}-${cStr}`.toUpperCase();
+    if (u.isCustom && u.customHexColors) {
+      const hexPack = u.customHexColors.map(h => h.replace('#', '')).join('-');
+      return `WFC-${u.tier}${u.division || 0}-${hexPack}`.toUpperCase();
     }
     const dex = this.getCollectorNumber(u);
     return `WF-${dex.toString(36).toUpperCase().padStart(3, '0')}`;
@@ -1623,11 +1817,11 @@ const TradeCodec = {
     const clean = code.trim().toUpperCase();
     if (clean.startsWith('WFC-')) {
       const parts = clean.split('-');
-      if (!parts[1] || !parts[2] || parts[2].length < 5) return null;
+      if (parts.length < 7) return null;
       const tier = parseInt(parts[1][0], 10) || 0;
       const division = parseInt(parts[1][1], 10) || 0;
-      const customColors = parts[2].slice(0, 5).split('').map(ch => Math.min(11, parseInt(ch, 36) || 0));
-      return { tier, faction: 0, division, isCustom: true, customColors };
+      const customHexColors = parts.slice(2, 7).map(h => '#' + h.slice(0, 6));
+      return { tier, faction: 0, division, isCustom: true, customHexColors };
     }
     if (!clean.startsWith('WF-')) return null;
     const dex = parseInt(clean.slice(3), 36);
@@ -1658,17 +1852,36 @@ const TradeCodec = {
 };
 
 /* ============================================================================
-   4. TAB 2: CUSTOM FORGE & 5-ZONE PAINT STUDIO CONTROLLER
+   4. TAB 2: CUSTOM FORGE & ENDLESS HEX PAINT STUDIO CONTROLLER
    ============================================================================ */
+const ZONE_TITLES = [
+  'Zone A: Primary Beskar Armor Plates',
+  'Zone B: Pauldrons, Sode & Knee Poleyns',
+  'Zone C: Kar\'ta Beskar, Horns & Trim',
+  'Zone D: Cape, Sashimono Banner & Cloth',
+  'Zone E: Darksaber / Plasma / Visor Glow'
+];
+
 const CustomForge = {
   previewUnit: {
     tier: 0,
-    division: 0,
-    faction: 0,
+    division: 3,
+    faction: 6,
     isCustom: true,
-    customParts: { helm: 'crest', weapon: 'darksaber', back: 'both', plinth: 'lava' },
-    customColors: [0, 1, 3, 4, 11] // Pure Beskar, Darksaber Void, Armorer Gold, Vizsla Crimson, Ice White
+    customParts: {
+      pose: 'iaijutsu',
+      armor: 'samurai',
+      helm: 'kabuto',
+      weapon: 'katana',
+      back: 'sashimono',
+      plinth: 'boulder'
+    },
+    customHexColors: ['#D6E0EE', '#D02430', '#EEB830', '#1E222B', '#FFFFFF']
   },
+  snapshot: null,
+  yaw: 0.46,
+  pitch: 0.24,
+  scale: 3.85,
   spinning: true,
   dragging: false,
   lastX: 0,
@@ -1676,7 +1889,6 @@ const CustomForge = {
   rafId: null,
 
   init() {
-    // Populate Tier dropdown in Custom Forge
     const tSel = document.getElementById('forge-tier-sel');
     const tHtml = [];
     for (let i = 0; i < TIERS.length; i++) {
@@ -1686,69 +1898,113 @@ const CustomForge = {
     }
     tSel.innerHTML = tHtml.join('');
 
-    // Render 5 Paint Zone Swatch Rows
+    const zContainer = document.getElementById('hex-studio-zones');
+    const zHtml = [];
     for (let z = 0; z < 5; z++) {
-      const row = document.getElementById(`swatches-zone-${z}`);
-      const sHtml = [];
-      for (let c = 0; c < PAINT_SWATCHES.length; c++) {
-        const sw = PAINT_SWATCHES[c];
-        const active = this.previewUnit.customColors[z] === c ? 'active' : '';
-        sHtml.push(`<div class="color-swatch ${active}" style="background:${sw.hex};" title="${sw.name}" onclick="CustomForge.selectColor(${z}, ${c})"></div>`);
+      const initHex = this.previewUnit.customHexColors[z];
+      const swHtml = [];
+      for (let s = 0; s < QUICK_SWATCHES.length; s++) {
+        const hx = QUICK_SWATCHES[s];
+        swHtml.push(`<div class="color-swatch" style="background:${hx};" title="${hx}" onclick="CustomForge.setHexColor(${z}, '${hx}')"></div>`);
       }
-      row.innerHTML = sHtml.join('');
+      zHtml.push(`
+        <div style="margin-bottom:${z < 4 ? '10px' : '0'}; padding-bottom:${z < 4 ? '8px' : '0'}; border-bottom:${z < 4 ? '1px solid #1e2433' : 'none'};">
+          <div class="control-label">
+            <span>${ZONE_TITLES[z]}</span>
+            <code id="hex-badge-${z}" style="color:var(--gold);">${initHex}</code>
+          </div>
+          <div class="paint-zone-row">
+            <input type="text" class="hex-input" id="hex-text-${z}" value="${initHex}" maxlength="7" placeholder="#RRGGBB" oninput="CustomForge.onHexTextInput(${z}, this.value)" />
+            <input type="color" class="color-wheel-input" id="hex-wheel-${z}" value="${initHex}" oninput="CustomForge.setHexColor(${z}, this.value)" />
+            <div class="swatch-row">${swHtml.join('')}</div>
+          </div>
+        </div>
+      `);
     }
+    zContainer.innerHTML = zHtml.join('');
+
+    document.getElementById('forge-pose-sel').value = this.previewUnit.customParts.pose;
+    document.getElementById('forge-armor-sel').value = this.previewUnit.customParts.armor;
+    document.getElementById('forge-helm-sel').value = this.previewUnit.customParts.helm;
+    document.getElementById('forge-weapon-sel').value = this.previewUnit.customParts.weapon;
+    document.getElementById('forge-back-sel').value = this.previewUnit.customParts.back;
+    document.getElementById('forge-plinth-sel').value = this.previewUnit.customParts.plinth;
 
     this.bindCanvasEvents();
     this.updateConfig();
   },
 
-  selectColor(zoneIdx, colorIdx) {
-    this.previewUnit.customColors[zoneIdx] = colorIdx;
-    document.getElementById(`lbl-zone-${zoneIdx}`).textContent = PAINT_SWATCHES[colorIdx].name;
-    const row = document.getElementById(`swatches-zone-${zoneIdx}`);
-    const children = row.children;
-    for (let i = 0; i < children.length; i++) {
-      children[i].classList.toggle('active', i === colorIdx);
+  setHexColor(zoneIdx, hexStr) {
+    let clean = hexStr.trim().toUpperCase();
+    if (!clean.startsWith('#')) clean = '#' + clean;
+    if (!/^#[0-9A-F]{6}$/.test(clean)) return;
+
+    this.previewUnit.customHexColors[zoneIdx] = clean;
+    const txt = document.getElementById(`hex-text-${zoneIdx}`);
+    const whl = document.getElementById(`hex-wheel-${zoneIdx}`);
+    const bdg = document.getElementById(`hex-badge-${zoneIdx}`);
+    if (txt && txt.value.toUpperCase() !== clean) txt.value = clean;
+    if (whl && whl.value.toUpperCase() !== clean) whl.value = clean;
+    if (bdg) bdg.textContent = clean;
+
+    this.snapshot = VoxelEngine.bakeUnitToSnapshot(this.previewUnit);
+  },
+
+  onHexTextInput(zoneIdx, val) {
+    let clean = val.trim().toUpperCase();
+    if (!clean.startsWith('#')) clean = '#' + clean;
+    if (/^#[0-9A-F]{6}$/.test(clean)) {
+      this.setHexColor(zoneIdx, clean);
     }
-    StudioEngine.buildUnitModel(this.previewUnit);
   },
 
   updateConfig() {
     const tier = parseInt(document.getElementById('forge-tier-sel').value, 10) || 0;
+    const pose = document.getElementById('forge-pose-sel').value;
+    const armor = document.getElementById('forge-armor-sel').value;
     const helm = document.getElementById('forge-helm-sel').value;
     const weapon = document.getElementById('forge-weapon-sel').value;
     const back = document.getElementById('forge-back-sel').value;
     const plinth = document.getElementById('forge-plinth-sel').value;
 
     this.previewUnit.tier = tier;
-    this.previewUnit.customParts = { helm, weapon, back, plinth };
+    this.previewUnit.customParts = { pose, armor, helm, weapon, back, plinth };
 
     const craftCost = Math.round(TIERS[tier].val * 0.9);
     const supCost = 15 * (tier + 1);
     document.getElementById('forge-cost-label').textContent = `Forge Cost: ◈${craftCost.toLocaleString()} + ${supCost} Supply`;
 
-    StudioEngine.buildUnitModel(this.previewUnit);
+    this.snapshot = VoxelEngine.bakeUnitToSnapshot(this.previewUnit);
   },
 
   randomizeDesign() {
-    const helms = ['tvisor', 'crest', 'owl', 'heavy', 'horns', 'spikes'];
-    const weaps = ['darksaber', 'amban', 'rotary', 'dual', 'spear', 'hammer', 'pyro', 'blades', 'eweb'];
-    const backs = ['both', 'jetpack', 'cape', 'fly'];
-    const plinths = ['lava', 'anvil', 'smoke', 'air', 'ruins'];
+    const poses = ['heroic', 'rock_perch', 'hover', 'leap', 'kneel', 'iaijutsu', 'spire', 'strafe'];
+    const armors = ['standard', 'samurai', 'ronin', 'heavy', 'fur', 'skirmish'];
+    const helms = ['tvisor', 'kabuto', 'oni', 'crest', 'owl', 'heavy', 'horns', 'spikes', 'cowl', 'dome'];
+    const weaps = ['darksaber', 'katana', 'naginata', 'amban', 'rotary', 'dual', 'spear', 'hammer', 'pyro', 'blades', 'eweb'];
+    const backs = ['both', 'sashimono', 'jetpack', 'cape', 'fly', 'katanas'];
+    const plinths = ['boulder', 'spire', 'lava', 'anvil', 'smoke', 'ruins'];
 
+    document.getElementById('forge-pose-sel').value = poses[(Math.random() * poses.length) | 0];
+    document.getElementById('forge-armor-sel').value = armors[(Math.random() * armors.length) | 0];
     document.getElementById('forge-helm-sel').value = helms[(Math.random() * helms.length) | 0];
     document.getElementById('forge-weapon-sel').value = weaps[(Math.random() * weaps.length) | 0];
     document.getElementById('forge-back-sel').value = backs[(Math.random() * backs.length) | 0];
     document.getElementById('forge-plinth-sel').value = plinths[(Math.random() * plinths.length) | 0];
 
     for (let z = 0; z < 5; z++) {
-      const c = (Math.random() * PAINT_SWATCHES.length) | 0;
-      this.selectColor(z, c);
+      const randHex = '#' + Math.floor(Math.random() * 0xffffff).toString(16).toUpperCase().padStart(6, '0');
+      this.setHexColor(z, randHex);
     }
     this.updateConfig();
   },
 
   rollArtisanGrade() {
+    if (State.godMode) {
+      const mw = ARTISAN_GRADES[4];
+      const mult = +(mw.minM + Math.random() * (mw.maxM - mw.minM)).toFixed(2);
+      return { grade: mw, mult };
+    }
     const r = Math.random();
     let acc = 0;
     let chosen = ARTISAN_GRADES[0];
@@ -1779,28 +2035,27 @@ const CustomForge = {
     State.funds -= craftCost;
     State.fuelReserve -= supCost;
 
-    // Roll Artisan Commission Grade (1.35x Craft up to 25x-50x Mand'alor Masterwork!)
     const { grade, mult } = this.rollArtisanGrade();
     const tData = TIERS[tier];
     const customNameInput = document.getElementById('forge-custom-name').value.trim();
-    const baseTitle = customNameInput || `${PAINT_SWATCHES[this.previewUnit.customColors[0]].name} Beskar Hunter`;
+    const baseTitle = customNameInput || `${this.previewUnit.customParts.armor === 'samurai' ? 'Ronin Beskar' : 'Custom Beskar'} Champion`;
 
     const appraisedVal = Math.round(tData.val * mult);
-    const statBoost = 1 + Math.min(1.5, (mult - 1) * 0.08);
+    const statBoost = 1 + Math.min(2.0, (mult - 1) * 0.08);
 
     const newUnit = {
       id: 'U' + (NEXT_ID++),
       name: `${baseTitle} [${grade.name}]`,
       tier,
-      division: 0,
-      faction: 0,
+      division: 3,
+      faction: 6,
       finish: tier,
       isCustom: true,
       artisanGrade: grade.name,
       artisanMult: mult,
       artisanColor: grade.color,
       customParts: { ...this.previewUnit.customParts },
-      customColors: [...this.previewUnit.customColors],
+      customHexColors: [...this.previewUnit.customHexColors],
       value: appraisedVal,
       hp: Math.round(tData.hp * statBoost),
       maxHp: Math.round(tData.hp * statBoost),
@@ -1839,7 +2094,7 @@ const CustomForge = {
   },
 
   toggleSpin() { this.spinning = !this.spinning; },
-  zoom(d) { StudioEngine.scale = Math.max(2.2, Math.min(6.2, StudioEngine.scale + d)); },
+  zoom(d) { this.scale = Math.max(2.2, Math.min(6.2, this.scale + d)); },
 
   startLoop() {
     if (this.rafId) cancelAnimationFrame(this.rafId);
@@ -1847,9 +2102,9 @@ const CustomForge = {
     const step = () => {
       if (UI.activeTab !== 'tab-forge') return;
       if (this.spinning && !this.dragging) {
-        StudioEngine.yaw += 0.012;
+        this.yaw += 0.012;
       }
-      StudioEngine.render(canvas);
+      VoxelEngine.renderSnapshot(this.snapshot, canvas, this.yaw, this.pitch, this.scale);
       this.rafId = requestAnimationFrame(step);
     };
     this.rafId = requestAnimationFrame(step);
@@ -1860,8 +2115,8 @@ const CustomForge = {
     const down = (x, y) => { this.dragging = true; this.lastX = x; this.lastY = y; };
     const move = (x, y) => {
       if (!this.dragging) return;
-      StudioEngine.yaw += (x - this.lastX) * 0.01;
-      StudioEngine.pitch = Math.max(-0.5, Math.min(1.0, StudioEngine.pitch + (y - this.lastY) * 0.01));
+      this.yaw += (x - this.lastX) * 0.01;
+      this.pitch = Math.max(-0.5, Math.min(1.0, this.pitch + (y - this.lastY) * 0.01));
       this.lastX = x; this.lastY = y;
     };
     const up = () => { this.dragging = false; };
@@ -1881,9 +2136,30 @@ const CustomForge = {
 };
 
 /* ============================================================================
-   5. CORE GAMEPLAY & DUAL AUCTION LOGIC
+   5. CORE GAMEPLAY, GOD MODE & DUAL AUCTION LOGIC
    ============================================================================ */
 const Game = {
+  activateGodMode() {
+    State.godMode = !State.godMode;
+    const btn = document.getElementById('hud-god-btn');
+    if (State.godMode) {
+      State.funds += 10000000;
+      State.stats.lifetimeCredits += 10000000;
+      State.fuelReserve += 100000;
+      State.tech.yieldLvl = Math.max(State.tech.yieldLvl, 25);
+      State.tech.supplyLvl = 35;
+      State.tech.combatLvl = Math.max(State.tech.combatLvl, 25);
+      State.tech.salvageLvl = Math.max(State.tech.salvageLvl, 25);
+      if (btn) btn.textContent = '⚡ GOD MODE: ON (MASTERWORK 100%)';
+      UI.toast('⚡ GOD MODE ACTIVATED! +◈10,000,000 Credits, +100,000 Supply & 100% Masterwork Forge Rolls!');
+    } else {
+      if (btn) btn.textContent = '⚡ GOD MODE: OFF';
+      UI.toast('God Mode toggled OFF (Resources kept).');
+    }
+    UI.renderAllActive();
+    SaveSystem.saveToLocal(false);
+  },
+
   createUnit(opts = {}, skipImage = false) {
     const tier = opts.tier !== undefined ? (opts.tier % 10) : 0;
     const division = opts.division !== undefined ? (opts.division % 10) : ((Math.random() * 10) | 0);
@@ -1905,7 +2181,7 @@ const Game = {
       artisanMult: opts.artisanMult || 1,
       artisanColor: opts.artisanColor || null,
       customParts: opts.customParts || null,
-      customColors: opts.customColors || null,
+      customHexColors: opts.customHexColors || null,
       value: opts.value || tData.val,
       hp: opts.hp || tData.hp,
       maxHp: opts.maxHp || tData.hp,
@@ -1926,8 +2202,15 @@ const Game = {
     return unit;
   },
 
+  ensureUnitThumbnail(u) {
+    if (!u.imgData) {
+      u.imgData = VoxelEngine.renderThumbnail(u);
+    }
+    return u.imgData;
+  },
+
   addUnitToFleet(u) {
-    if (!u.imgData) u.imgData = VoxelEngine.renderThumbnail(u);
+    this.ensureUnitThumbnail(u);
     if (!u.isCustom) State.codexUnlocked[u.dexNum] = true;
     State.fleet.push(u);
   },
@@ -2403,11 +2686,10 @@ const Game = {
 /* ============================================================================
    6. CRASH-PROOF SAVE & LOAD SYSTEM (`localStorage` + PORTABLE STRING)
    ============================================================================ */
-const SAVE_KEY = 'MANDO_WARFORGE_DARKSABER_V1';
+const SAVE_KEY = 'MANDO_WARFORGE_MASTER_V2';
 
 const SaveSystem = {
   serialize() {
-    // Strip cached base64 thumbnails (`imgData`) so save payload stays <15KB
     const cleanFleet = State.fleet.map(u => {
       const copy = { ...u };
       delete copy.imgData;
@@ -2416,6 +2698,7 @@ const SaveSystem = {
     const payload = {
       funds: State.funds,
       fuelReserve: State.fuelReserve,
+      godMode: State.godMode,
       fleet: cleanFleet,
       pilots: State.pilots,
       codexUnlocked: State.codexUnlocked,
@@ -2446,6 +2729,7 @@ const SaveSystem = {
 
       State.funds = data.funds ?? 500;
       State.fuelReserve = data.fuelReserve ?? 1000;
+      State.godMode = !!data.godMode;
       State.pilots = data.pilots || [];
       State.codexUnlocked = data.codexUnlocked || {};
       State.claimedMilestones = data.claimedMilestones || {};
@@ -2456,11 +2740,13 @@ const SaveSystem = {
       if (data.stats) Object.assign(State.stats, data.stats);
       NEXT_ID = data.nextId || (data.fleet.length + 50);
 
-      // Re-bake 128x128 thumbnails cleanly
       State.fleet = data.fleet.map(u => {
-        u.imgData = VoxelEngine.renderThumbnail(u);
+        u.imgData = null;
         return u;
       });
+
+      const gBtn = document.getElementById('hud-god-btn');
+      if (gBtn) gBtn.textContent = State.godMode ? '⚡ GOD MODE: ON (MASTERWORK 100%)' : '⚡ GOD MODE: OFF';
 
       if (showToast) UI.toast('📥 Save Loaded Successfully!');
       UI.renderAllActive();
@@ -2533,6 +2819,7 @@ const Arena = {
     this.playerTeam = [];
     for (let i = 0; i < count; i++) {
       const src = sorted[i % sorted.length];
+      Game.ensureUnitThumbnail(src);
       this.playerTeam.push({
         ...src,
         slotId: 'P' + i,
@@ -2686,10 +2973,14 @@ const Arena = {
 };
 
 /* ============================================================================
-   8. 512x512 60 FPS 3D VOXEL INSPECTOR MODAL CONTROLLER
+   8. 512x512 60 FPS 3D VOXEL INSPECTOR MODAL (ISOLATED SNAPSHOT BUFFER)
    ============================================================================ */
 const Inspector = {
   openUnit: null,
+  snapshot: null,
+  yaw: 0.46,
+  pitch: 0.24,
+  scale: 3.85,
   spinning: true,
   dragging: false,
   lastX: 0,
@@ -2704,24 +2995,26 @@ const Inspector = {
     if (!u) return;
 
     this.openUnit = u;
-    VoxelEngine.yaw = 0.46;
-    VoxelEngine.pitch = 0.24;
-    VoxelEngine.scale = 3.95;
-    VoxelEngine.buildUnitModel(u);
+    this.yaw = 0.46;
+    this.pitch = 0.24;
+    this.scale = 3.85;
+    this.snapshot = VoxelEngine.bakeUnitToSnapshot(u);
 
     const tData = TIERS[u.tier];
     const arch = ARCHETYPES[u.division || 0];
     const dexStr = TradeCodec.formatDex(u.dexNum, u.isCustom);
+    const poseName = u.customParts ? u.customParts.pose.toUpperCase() : arch.pose.toUpperCase();
     document.getElementById('insp-name').textContent = `${dexStr} ${u.name}`;
     document.getElementById('insp-sub').textContent = u.isCustom
       ? `${tData.code} Custom Commission • ${u.artisanGrade} (${u.artisanMult}x)`
       : `${tData.code} ${tData.name} • ${tData.finish} • ${arch.name}`;
     document.getElementById('insp-code').textContent = TradeCodec.encodeUnit(u);
-    document.getElementById('inspect-vox-stats').textContent = `Surface Voxels: ${VoxelEngine.surfCount.toLocaleString()} / 92-Voxel Heroic Scale`;
+    document.getElementById('inspect-vox-stats').textContent = `Isolated Snapshot: ${this.snapshot.surfCount.toLocaleString()} Surface Voxels`;
 
     document.getElementById('insp-details').innerHTML = [
       `<div><b>Edition Classification:</b> <span class="val-gold">${u.isCustom ? `${u.artisanGrade} (${u.artisanMult}x Multiplier)` : `Collector ${dexStr} / #1000`}</span></div>`,
       `<div><b>Appraised Valuation:</b> <span class="val-gold">◈${u.value.toLocaleString()}</span></div>`,
+      `<div><b>Stance &amp; Elevation:</b> ${poseName}</div>`,
       `<div><b>Beskar Armor Integrity:</b> ${u.hp} / ${u.maxHp} HP</div>`,
       `<div><b>Combat Telemetry:</b> ${u.atk} ATK | Range ${u.range}m | Counter Group <b>${u.group}</b></div>`
     ].join('');
@@ -2735,21 +3028,22 @@ const Inspector = {
     if (this.rafId) cancelAnimationFrame(this.rafId);
     this.rafId = null;
     this.openUnit = null;
+    this.snapshot = null;
   },
 
   toggleSpin() { this.spinning = !this.spinning; },
-  zoom(delta) { VoxelEngine.scale = Math.max(2.0, Math.min(6.5, VoxelEngine.scale + delta)); },
-  resetCam() { VoxelEngine.yaw = 0.46; VoxelEngine.pitch = 0.24; VoxelEngine.scale = 3.95; },
+  zoom(delta) { this.scale = Math.max(2.0, Math.min(6.5, this.scale + delta)); },
+  resetCam() { this.yaw = 0.46; this.pitch = 0.24; this.scale = 3.85; },
 
   startLoop() {
     if (this.rafId) cancelAnimationFrame(this.rafId);
     const canvas = document.getElementById('inspect-canvas');
     const step = () => {
-      if (!this.openUnit) return;
+      if (!this.openUnit || !this.snapshot) return;
       if (this.spinning && !this.dragging) {
-        VoxelEngine.yaw += 0.012;
+        this.yaw += 0.012;
       }
-      VoxelEngine.render(canvas);
+      VoxelEngine.renderSnapshot(this.snapshot, canvas, this.yaw, this.pitch, this.scale);
       this.rafId = requestAnimationFrame(step);
     };
     this.rafId = requestAnimationFrame(step);
@@ -2760,8 +3054,8 @@ const Inspector = {
     const down = (x, y) => { this.dragging = true; this.lastX = x; this.lastY = y; };
     const move = (x, y) => {
       if (!this.dragging) return;
-      VoxelEngine.yaw += (x - this.lastX) * 0.01;
-      VoxelEngine.pitch = Math.max(-0.5, Math.min(1.0, VoxelEngine.pitch + (y - this.lastY) * 0.01));
+      this.yaw += (x - this.lastX) * 0.01;
+      this.pitch = Math.max(-0.5, Math.min(1.0, this.pitch + (y - this.lastY) * 0.01));
       this.lastX = x; this.lastY = y;
     };
     const up = () => { this.dragging = false; };
@@ -2932,6 +3226,7 @@ const UI = {
         `);
       } else {
         const u = slot.unit;
+        Game.ensureUnitThumbnail(u);
         const t = TIERS[u.tier];
         const dexStr = TradeCodec.formatDex(u.dexNum, u.isCustom);
         const pctOfVal = Math.round((slot.currentBid / u.value) * 100);
@@ -2984,6 +3279,7 @@ const UI = {
     const html = [];
     for (let i = 0; i < list.length; i++) {
       const u = list[i];
+      Game.ensureUnitThumbnail(u);
       const t = TIERS[u.tier];
       const d = ARCHETYPES[u.division || 0];
       const hpPct = Math.round((u.hp / u.maxHp) * 100);
@@ -3276,7 +3572,6 @@ let autoSaveCounter = 0;
 function gameTick() {
   const dt = 0.2;
 
-  // Periodic Auto-Save every 5.0 seconds
   autoSaveCounter += dt;
   if (autoSaveCounter >= 5.0) {
     autoSaveCounter = 0;
@@ -3433,12 +3728,12 @@ window.addEventListener('DOMContentLoaded', () => {
   Inspector.bindEvents();
   CustomForge.init();
 
-  // Attempt to load existing save from localStorage; otherwise seed starter Covert force
   const loaded = SaveSystem.loadFromLocal();
   if (!loaded) {
+    // Seed 3 Iconic Starters including Samurai Ronin Kabuto Blademaster (#0164)
     Game.addUnitToFleet(Game.createUnit({ tier: 0, faction: 0, division: 0 }, false));
-    Game.addUnitToFleet(Game.createUnit({ tier: 1, faction: 1, division: 5 }, false));
-    Game.addUnitToFleet(Game.createUnit({ tier: 2, faction: 3, division: 2 }, false));
+    Game.addUnitToFleet(Game.createUnit({ tier: 1, faction: 6, division: 3 }, false));
+    Game.addUnitToFleet(Game.createUnit({ tier: 2, faction: 3, division: 4 }, false));
     State.pilots.push(Game.createPilot(0));
   }
 
