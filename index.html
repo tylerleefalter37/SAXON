@@ -3,84 +3,44 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>MANDALORIAN WARFORGE // Holonet Tactical Collector</title>
+<title>MANDALORIAN WARFORGE // Darksaber Edition</title>
 <style>
   :root {
-    --bg-void: #04060a;
-    --bg-deep: #080c14;
-    --bg-panel: rgba(12, 19, 31, 0.88);
-    --bg-card: rgba(18, 27, 43, 0.90);
-    --bg-elev: #1c2940;
-    --border: #263854;
-    --border-bright: #38bdf8;
-    --beskar: #d8e4f0;
-    --gold: #ffb703;
-    --amber: #fb8500;
-    --cyan: #00e5ff;
-    --crimson: #ff2a54;
-    --emerald: #00f59b;
-    --purple: #b565f7;
-    --text-main: #f0f6fc;
-    --text-dim: #8b9eb7;
+    --bg-void: #030406;
+    --bg-deep: #07080c;
+    --bg-panel: #0d0f15;
+    --bg-card: #12151e;
+    --bg-elev: #1b202d;
+    --border: #2c3344;
+    --silver: #d8e0ec;
+    --silver-dim: #8e9bb0;
+    --white-glow: #ffffff;
+    --gold: #f5b041;
+    --amber: #ff7f50;
+    --crimson: #ef4444;
+    --emerald: #10b981;
+    --purple: #a855f7;
+    --text-main: #f4f7fb;
+    --text-dim: #8b96a8;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
     margin: 0; padding: 0;
-    background-color: var(--bg-void);
-    background-image:
-      radial-gradient(circle at 50% 18%, rgba(0, 229, 255, 0.08) 0%, transparent 60%),
-      radial-gradient(circle at 50% 85%, rgba(255, 183, 3, 0.05) 0%, transparent 60%),
-      linear-gradient(180deg, #050811 0%, #090e18 50%, #04060b 100%);
+    background: radial-gradient(circle at 50% 0%, #181c26 0%, var(--bg-void) 75%);
     color: var(--text-main);
     font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
     user-select: none;
-    position: relative;
   }
 
-  /* SUBTLE STAR WARS HOLONET SCANLINE OVERLAY */
-  body::before {
-    content: "";
-    position: fixed; inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      rgba(0, 229, 255, 0.018) 0px,
-      rgba(0, 229, 255, 0.018) 1px,
-      transparent 1px,
-      transparent 3px
-    );
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  /* GIANT BACKGROUND MYTHOSAUR SKULL EMBLEM */
-  .mythosaur-bg {
-    position: fixed;
-    top: 54%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: min(86vw, 760px);
-    height: min(86vw, 760px);
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.13;
-    filter: drop-shadow(0 0 35px rgba(0, 229, 255, 0.35));
-  }
-
-  /* FOREGROUND CONTENT LAYERING */
-  .hud-header, .main-wrap, .modal-backdrop, #toast-wrap {
-    position: relative;
-    z-index: 10;
-  }
-
-  /* TOP HOLONET HUD */
+  /* TOP DARKSABER HUD */
   .hud-header {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(6, 10, 18, 0.94);
+    background: rgba(5, 6, 9, 0.96);
     backdrop-filter: blur(12px);
-    border-bottom: 2px solid #1e324d;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.75), 0 1px 0 rgba(0, 229, 255, 0.25);
+    border-bottom: 1px solid var(--silver);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.85), 0 1px 10px rgba(255, 255, 255, 0.15);
     padding: 8px 12px;
   }
   .hud-top-row {
@@ -89,74 +49,74 @@
   }
   .brand-title {
     display: flex; align-items: center; gap: 10px;
-    font-weight: 900; letter-spacing: 1.5px; font-size: 14px; color: var(--beskar);
+    font-weight: 900; letter-spacing: 1.5px; font-size: 14px; color: #fff;
     text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(0, 229, 255, 0.35);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
   }
   .brand-badge {
-    background: linear-gradient(135deg, #d90429, #690214);
+    background: #050608;
     color: #fff; padding: 4px 9px; font-size: 10px; font-weight: 900;
     letter-spacing: 1.2px;
-    border: 1px solid #ff4d6d;
+    border: 1px solid #fff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
     clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
   }
   .hud-stats {
     display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
   }
   .stat-pill {
-    background: rgba(14, 23, 38, 0.95);
-    border: 1px solid #294060;
-    border-left: 3px solid var(--cyan);
+    background: #0c0e14;
+    border: 1px solid #2e3646;
+    border-left: 3px solid var(--silver);
     padding: 5px 10px;
     font-size: 11px;
-    letter-spacing: 0.4px;
     display: flex; align-items: center; gap: 6px;
     clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
   }
-  .stat-pill b { font-family: "Courier New", monospace; font-size: 13px; letter-spacing: 0.5px; }
-  .val-gold { color: var(--gold); text-shadow: 0 0 8px rgba(255, 183, 3, 0.3); }
-  .val-cyan { color: var(--cyan); text-shadow: 0 0 8px rgba(0, 229, 255, 0.3); }
-  .val-emerald { color: var(--emerald); text-shadow: 0 0 8px rgba(0, 245, 155, 0.3); }
+  .stat-pill b { font-family: "Courier New", monospace; font-size: 13px; }
+  .val-gold { color: var(--gold); }
+  .val-silver { color: var(--silver); text-shadow: 0 0 6px rgba(255,255,255,0.25); }
+  .val-emerald { color: var(--emerald); }
   .val-purple { color: var(--purple); }
 
-  /* STREAMLINED 5-TAB NAVIGATION BAR */
+  /* 2 ROWS x 3 COLUMNS (6-TAB) DARKSABER NAVIGATION GRID */
   .nav-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 7px;
     max-width: 1440px;
     margin: 9px auto 0;
   }
-  @media (max-width: 680px) {
+  @media (max-width: 560px) {
     .nav-grid { grid-template-columns: repeat(2, 1fr); }
   }
   .nav-btn {
-    background: linear-gradient(180deg, rgba(20, 31, 49, 0.95) 0%, rgba(11, 18, 29, 0.95) 100%);
+    background: linear-gradient(180deg, #161a24 0%, #0b0d13 100%);
     color: var(--text-dim);
-    border: 1px solid #293e5c;
-    padding: 9px 6px;
+    border: 1px solid #2c3344;
+    padding: 9px 8px;
     font-size: 11px;
     font-weight: 900;
     letter-spacing: 0.8px;
     text-transform: uppercase;
     cursor: pointer;
     text-align: center;
-    transition: all 0.15s ease;
+    transition: all 0.14s ease;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
   }
-  .nav-btn:hover { border-color: var(--cyan); color: #fff; }
+  .nav-btn:hover { border-color: var(--silver); color: #fff; }
   .nav-btn.active {
-    background: linear-gradient(180deg, #0d3b5c 0%, #071f36 100%);
+    background: linear-gradient(180deg, #2b3242 0%, #10131b 100%);
     color: #fff;
-    border-color: var(--cyan);
-    box-shadow: inset 0 0 14px rgba(0, 229, 255, 0.35), 0 0 12px rgba(0, 229, 255, 0.2);
+    border-color: #fff;
+    box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.28), 0 0 12px rgba(255, 255, 255, 0.22);
   }
   .nav-badge {
-    display: inline-block; background: rgba(0, 0, 0, 0.6); color: var(--gold);
-    border: 1px solid rgba(255, 183, 3, 0.4);
+    display: inline-block; background: #050608; color: var(--silver);
+    border: 1px solid #475569;
     padding: 1px 6px; border-radius: 3px; font-size: 10px; margin-left: 4px;
     font-family: "Courier New", monospace;
   }
@@ -165,7 +125,7 @@
   .main-wrap {
     max-width: 1440px;
     margin: 0 auto;
-    padding: 14px 12px 40px;
+    padding: 14px 12px 44px;
   }
   .tab-pane { display: none; }
   .tab-pane.active { display: block; }
@@ -175,18 +135,18 @@
     gap: 10px; margin-bottom: 12px;
     background: var(--bg-panel);
     border: 1px solid var(--border);
-    border-left: 4px solid var(--gold);
+    border-left: 4px solid #fff;
     padding: 10px 14px;
     clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
   }
   .section-title {
-    font-size: 14px; font-weight: 900; color: var(--beskar);
+    font-size: 14px; font-weight: 900; color: var(--silver);
     letter-spacing: 1px; text-transform: uppercase;
   }
   .section-sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
 
-  /* CHAMFERED STAR WARS UNIT CARDS & GRIDS */
+  /* CARDS & GRIDS */
   .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
@@ -204,14 +164,13 @@
     transition: border-color 0.12s ease, box-shadow 0.12s ease;
   }
   .unit-card:hover {
-    border-color: var(--cyan);
-    box-shadow: 0 0 14px rgba(0, 229, 255, 0.12);
+    border-color: var(--silver);
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.08);
   }
   .unit-thumb-wrap {
     width: 100%; height: 152px;
-    background:
-      radial-gradient(circle at 50% 55%, rgba(0, 229, 255, 0.16) 0%, rgba(9, 13, 22, 0.95) 85%);
-    border: 1px solid #22354f;
+    background: radial-gradient(circle at 50% 55%, #222836 0%, #07080c 85%);
+    border: 1px solid #262d3d;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer; position: relative; overflow: hidden;
   }
@@ -224,81 +183,161 @@
     position: absolute; top: 6px; left: 6px;
     padding: 2px 7px;
     font-size: 10px; font-weight: 900; letter-spacing: 0.8px;
-    background: rgba(4, 8, 15, 0.88); border: 1px solid currentColor;
+    background: rgba(4, 5, 8, 0.9); border: 1px solid currentColor;
   }
   .dex-tag {
     position: absolute; bottom: 5px; left: 6px;
     padding: 2px 6px;
     font-size: 10px; font-weight: 800; font-family: "Courier New", monospace;
-    background: rgba(4, 8, 15, 0.88); color: var(--gold); border: 1px solid #475569;
+    background: rgba(4, 5, 8, 0.9); color: var(--gold); border: 1px solid #475569;
   }
   .finish-tag {
     position: absolute; top: 6px; right: 6px;
     padding: 2px 6px;
     font-size: 10px; font-weight: 700;
-    background: rgba(12, 20, 35, 0.9); color: var(--beskar);
+    background: rgba(12, 15, 22, 0.92); color: var(--silver);
     border: 1px solid #334155;
   }
   .inspect-hint {
     position: absolute; bottom: 5px; right: 6px;
-    font-size: 10px; color: var(--cyan); background: rgba(4, 8, 15, 0.85);
-    border: 1px solid rgba(0, 229, 255, 0.35);
+    font-size: 10px; color: #fff; background: rgba(4, 5, 8, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.35);
     padding: 2px 6px;
   }
-  .unit-title { font-size: 13px; font-weight: 800; color: #fff; line-height: 1.25; letter-spacing: 0.3px; }
+  .unit-title { font-size: 13px; font-weight: 800; color: #fff; line-height: 1.25; }
   .unit-meta { font-size: 11px; color: var(--text-dim); display: flex; justify-content: space-between; }
   .stat-row {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
-    background: rgba(8, 13, 22, 0.85); border: 1px solid #1e2d44;
+    background: #080a0f; border: 1px solid #1f2533;
     padding: 5px; font-size: 11px; text-align: center;
   }
   .hp-bar-outer {
-    width: 100%; height: 6px; background: #060a10; overflow: hidden; border: 1px solid #1d2b40;
+    width: 100%; height: 6px; background: #050608; overflow: hidden; border: 1px solid #222836;
   }
   .hp-bar-inner { height: 100%; background: var(--emerald); transition: width 0.2s; }
 
-  /* SCI-FI ANGLED BUTTONS & INPUTS */
+  /* DARKSABER BUTTONS & INPUTS */
   .btn {
     background: var(--bg-elev); color: var(--text-main);
-    border: 1px solid #344c70;
+    border: 1px solid #3c465c;
     padding: 7px 11px; font-size: 11px; font-weight: 800;
     letter-spacing: 0.5px; text-transform: uppercase;
     cursor: pointer; transition: all 0.12s;
     display: inline-flex; align-items: center; justify-content: center; gap: 5px;
     clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
   }
-  .btn:hover:not(:disabled) { border-color: var(--cyan); color: #fff; filter: brightness(1.15); }
+  .btn:hover:not(:disabled) { border-color: #fff; color: #fff; box-shadow: 0 0 8px rgba(255,255,255,0.2); }
   .btn:active:not(:disabled) { transform: scale(0.98); }
-  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-  .btn-gold { background: linear-gradient(180deg, #e08e00, #8c5300); border-color: #ffb703; color: #fff; }
-  .btn-cyan { background: linear-gradient(180deg, #0077b6, #034078); border-color: #00e5ff; color: #fff; }
-  .btn-emerald { background: linear-gradient(180deg, #059669, #064e3b); border-color: #00f59b; color: #fff; }
-  .btn-crimson { background: linear-gradient(180deg, #d90429, #690214); border-color: #ff4d6d; color: #fff; }
+  .btn:disabled { opacity: 0.42; cursor: not-allowed; }
+  .btn-silver { background: linear-gradient(180deg, #333b4d, #161a24); border-color: #fff; color: #fff; }
+  .btn-gold { background: linear-gradient(180deg, #d97706, #78350f); border-color: #f59e0b; color: #fff; }
+  .btn-emerald { background: linear-gradient(180deg, #059669, #064e3b); border-color: #34d399; color: #fff; }
+  .btn-crimson { background: linear-gradient(180deg, #dc2626, #7f1d1d); border-color: #f87171; color: #fff; }
   .btn-purple { background: linear-gradient(180deg, #7e22ce, #4c1d95); border-color: #c084fc; color: #fff; }
   .btn-row { display: flex; flex-wrap: wrap; gap: 5px; }
 
   select, input[type="text"] {
-    background: #070b12; color: var(--text-main);
-    border: 1px solid #2b4060;
+    background: #07080c; color: var(--text-main);
+    border: 1px solid #333c4f;
     padding: 6px 8px; font-size: 11px;
   }
   label.chk-pill {
     display: inline-flex; align-items: center; gap: 6px;
-    background: #070b12; border: 1px solid var(--gold);
+    background: #07080c; border: 1px solid var(--gold);
     color: var(--gold); padding: 5px 10px;
     font-size: 11px; font-weight: 800; cursor: pointer;
   }
 
   /* ========================================================================
-     SNIPE AUCTION SPOTLIGHT + 3.0s INTERMISSION STATES
+     TAB 2: CUSTOM FORGE & 5-ZONE PAINT STUDIO LAYOUT
      ======================================================================== */
-  @keyframes holoLockIn {
-    0%   { opacity: 0.25; transform: scale(0.985); filter: brightness(2.2) hue-rotate(20deg); }
-    100% { opacity: 1; transform: scale(1); filter: brightness(1) hue-rotate(0deg); }
+  .forge-studio-grid {
+    display: grid;
+    grid-template-columns: 440px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  @media (max-width: 960px) {
+    .forge-studio-grid { grid-template-columns: 1fr; }
+  }
+  .forge-preview-box {
+    background: var(--bg-panel);
+    border: 2px solid var(--silver);
+    padding: 12px;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    box-shadow: 0 0 28px rgba(255, 255, 255, 0.08);
+  }
+  #forge-canvas {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: radial-gradient(circle at 50% 55%, #252b3b 0%, #050609 85%);
+    border: 1px solid var(--border);
+    cursor: grab;
+    touch-action: none;
+  }
+  #forge-canvas:active { cursor: grabbing; }
+  .forge-controls-box {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .control-group {
+    background: var(--bg-card);
+    border: 1px solid #242a38;
+    padding: 10px;
+  }
+  .control-label {
+    font-size: 11px;
+    font-weight: 900;
+    color: var(--silver);
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .swatch-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .color-swatch {
+    width: 28px;
+    height: 28px;
+    border: 2px solid #2c3344;
+    cursor: pointer;
+    transition: transform 0.1s, border-color 0.1s;
+    clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  }
+  .color-swatch:hover { transform: scale(1.1); }
+  .color-swatch.active {
+    border-color: #fff;
+    box-shadow: 0 0 10px #fff;
+    transform: scale(1.12);
+  }
+  .artisan-banner {
+    background: linear-gradient(90deg, #161922 0%, #242a3a 50%, #161922 100%);
+    border: 1px solid var(--silver);
+    padding: 10px 12px;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* SNIPE AUCTION SPOTLIGHT + 3.0s INTERMISSION */
+  @keyframes darksaberLock {
+    0%   { opacity: 0.3; transform: scale(0.985); filter: brightness(2.2); }
+    100% { opacity: 1; transform: scale(1); filter: brightness(1); }
   }
   .snipe-spotlight {
-    background: linear-gradient(135deg, rgba(14, 25, 45, 0.94) 0%, rgba(8, 14, 26, 0.96) 100%);
-    border: 2px solid var(--cyan);
+    background: linear-gradient(135deg, #12151f 0%, #090b10 100%);
+    border: 2px solid var(--silver);
     padding: 14px;
     margin-bottom: 18px;
     display: grid;
@@ -306,18 +345,11 @@
     gap: 16px;
     align-items: center;
     clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
-    box-shadow: 0 0 30px rgba(0, 229, 255, 0.16);
-    animation: holoLockIn 0.28s ease-out;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 28px rgba(255, 255, 255, 0.12);
+    animation: darksaberLock 0.26s ease-out;
   }
-  .snipe-spotlight.phase-won {
-    border-color: var(--emerald);
-    box-shadow: 0 0 35px rgba(0, 245, 155, 0.28);
-  }
-  .snipe-spotlight.phase-lost {
-    border-color: var(--crimson);
-    box-shadow: 0 0 30px rgba(255, 42, 84, 0.22);
-  }
+  .snipe-spotlight.phase-won { border-color: var(--emerald); box-shadow: 0 0 32px rgba(16, 185, 129, 0.28); }
+  .snipe-spotlight.phase-lost { border-color: var(--crimson); box-shadow: 0 0 28px rgba(239, 68, 68, 0.24); }
   @media (max-width: 640px) {
     .snipe-spotlight { grid-template-columns: 1fr; }
   }
@@ -344,58 +376,53 @@
   .arena-side, .arena-center {
     background: var(--bg-panel); border: 1px solid var(--border);
     padding: 12px;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
   }
   .arena-center {
     display: flex; flex-direction: column; gap: 10px; align-items: center;
   }
-  .dice-tray {
-    display: flex; gap: 14px; justify-content: center; align-items: center;
-    margin: 4px 0;
-  }
+  .dice-tray { display: flex; gap: 14px; justify-content: center; margin: 4px 0; }
   .die-box {
     width: 52px; height: 52px;
-    background: linear-gradient(145deg, #16243a, #09101c);
-    border: 2px solid var(--gold); color: var(--gold);
+    background: linear-gradient(145deg, #1f2430, #090b10);
+    border: 2px solid #fff; color: #fff;
     font-size: 25px; font-weight: 900;
     display: flex; align-items: center; justify-content: center;
-    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+    box-shadow: 0 0 12px rgba(255,255,255,0.2);
   }
   .combat-log {
     width: 100%; height: 180px; overflow-y: auto;
-    background: #05080f; border: 1px solid var(--border);
+    background: #050609; border: 1px solid var(--border);
     padding: 8px; font-size: 11px;
     font-family: "Courier New", monospace; line-height: 1.45;
   }
   .fighter-slot {
     background: var(--bg-card); border: 1px solid var(--border);
     padding: 8px; margin-bottom: 8px;
-    display: flex; align-items: center; gap: 10px; position: relative;
+    display: flex; align-items: center; gap: 10px;
   }
   .fighter-slot.dead { opacity: 0.35; filter: grayscale(1); }
 
-  /* 3D INSPECTOR MODAL */
+  /* MODALS */
   .modal-backdrop {
     position: fixed; inset: 0; z-index: 999;
-    background: rgba(3, 6, 12, 0.90);
+    background: rgba(2, 3, 6, 0.90);
     backdrop-filter: blur(8px);
     display: none; align-items: center; justify-content: center;
     padding: 12px;
   }
   .modal-backdrop.open { display: flex; }
   .modal-box {
-    background: #0c1422; border: 2px solid var(--cyan);
+    background: #0b0d13; border: 2px solid #fff;
     max-width: 860px; width: 100%;
     padding: 14px; display: grid; grid-template-columns: 512px 1fr; gap: 14px;
-    box-shadow: 0 0 40px rgba(0, 229, 255, 0.25);
-    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
   }
   @media (max-width: 860px) {
     .modal-box { grid-template-columns: 1fr; max-height: 94vh; overflow-y: auto; }
   }
   #inspect-canvas {
     width: 100%; max-width: 512px; aspect-ratio: 1 / 1;
-    background: radial-gradient(circle at 50% 55%, #1c2d47 0%, #05080e 85%);
+    background: radial-gradient(circle at 50% 55%, #232938 0%, #050609 85%);
     border: 1px solid var(--border);
     cursor: grab; touch-action: none;
   }
@@ -407,81 +434,42 @@
     display: flex; flex-direction: column; gap: 6px; pointer-events: none;
   }
   .toast-msg {
-    background: rgba(10, 17, 29, 0.96); color: #fff;
-    border-left: 4px solid var(--cyan); border-top: 1px solid var(--border);
+    background: rgba(10, 12, 18, 0.96); color: #fff;
+    border-left: 4px solid #fff; border-top: 1px solid var(--border);
     border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
     padding: 9px 14px; font-size: 12px; font-weight: 700;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.65);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.75);
   }
 </style>
 </head>
 <body>
 
-<!-- GIANT MANDALORIAN MYTHOSAUR SKULL WATERMARK IN BACKGROUND -->
-<svg class="mythosaur-bg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="beskarGrad" x1="0" y1="0" x2="0" y2="500" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.75" />
-      <stop offset="50%" stop-color="#94a3b8" stop-opacity="0.45" />
-      <stop offset="100%" stop-color="#ffb703" stop-opacity="0.65" />
-    </linearGradient>
-  </defs>
-  <!-- Outer Targeting Holoring -->
-  <circle cx="250" cy="250" r="236" stroke="url(#beskarGrad)" stroke-width="2" stroke-dasharray="18 8 4 8" />
-  <circle cx="250" cy="250" r="218" stroke="#00e5ff" stroke-opacity="0.25" stroke-width="1" />
-  <!-- Iconic Mythosaur Cranium, Sweeping Tusks, Eye Sockets & Snout -->
-  <path d="M250 38
-           L295 46 L342 74 L366 112
-           C418 118, 468 158, 480 232
-           C490 296, 460 374, 412 428
-           C436 364, 442 292, 422 238
-           C406 196, 378 182, 356 184
-           L348 258 L372 326 L344 378 L314 334
-           L298 446 L272 478 L260 402
-           L250 418
-           L240 402 L228 478 L202 446
-           L186 334 L156 378 L128 326 L152 258
-           L144 184
-           C122 182, 94 196, 78 238
-           C58 292, 64 364, 88 428
-           C40 374, 10 296, 20 232
-           C32 158, 82 118, 134 112
-           L158 74 L205 46 Z"
-        fill="url(#beskarGrad)" fill-opacity="0.18"
-        stroke="url(#beskarGrad)" stroke-width="5" stroke-linejoin="bevel" />
-  <!-- Cranium Battle Fissure -->
-  <path d="M250 38 L242 82 L262 114 L246 152 L250 185" stroke="#00e5ff" stroke-width="3.5" />
-  <!-- Angled Mythosaur Eye Sockets -->
-  <polygon points="168,188 226,208 214,244 156,226" fill="#04060a" stroke="#00e5ff" stroke-width="3.5" />
-  <polygon points="332,188 274,208 286,244 344,226" fill="#04060a" stroke="#00e5ff" stroke-width="3.5" />
-  <!-- Nasal Cavity Ridge -->
-  <polygon points="250,256 232,318 250,306 268,318" fill="#04060a" stroke="#ffb703" stroke-width="3" />
-</svg>
-
-<!-- TOP HOLONET HUD -->
+<!-- TOP DARKSABER HUD -->
 <header class="hud-header">
   <div class="hud-top-row">
     <div class="brand-title">
-      <span class="brand-badge">HOLONET // 128³</span>
+      <span class="brand-badge">DARKSABER // 128³</span>
       <span>MANDALORIAN WARFORGE : COVERT COMMAND</span>
     </div>
     <div class="hud-stats">
       <div class="stat-pill"><span>Imperial Credits:</span> <b class="val-gold" id="hud-funds">◈500</b></div>
-      <div class="stat-pill"><span>Beskar &amp; Tibanna:</span> <b class="val-cyan" id="hud-fuel">1,000</b></div>
+      <div class="stat-pill"><span>Beskar &amp; Tibanna:</span> <b class="val-silver" id="hud-fuel">1,000</b></div>
       <div class="stat-pill"><span>Covert Racks:</span> <b class="val-emerald" id="hud-fleet">0</b></div>
       <div class="stat-pill"><span>1,000 Codex:</span> <b class="val-gold" id="hud-codex">0/1000</b></div>
       <div class="stat-pill"><span>Creed Trials:</span> <b class="val-purple" id="hud-miles">0/150</b></div>
-      <button class="btn btn-cyan" onclick="UI.openCodeModal()">📡 Holonet Codes</button>
+      <button class="btn btn-silver" onclick="UI.openCodeModal()">📡 Codes</button>
+      <button class="btn btn-emerald" onclick="UI.openSaveModal()">💾 Save / Load</button>
     </div>
   </div>
 
-  <!-- STREAMLINED 5-TAB NAVIGATION BAR -->
+  <!-- 2 ROWS x 3 COLUMNS (6-TAB) NAVIGATION GRID -->
   <nav class="nav-grid" id="nav-grid">
     <button class="nav-btn active" data-tab="tab-racks" onclick="UI.switchTab('tab-racks')">1. 🛡️ Covert Racks <span class="nav-badge" id="rack-count">0</span></button>
-    <button class="nav-btn" data-tab="tab-boxes" onclick="UI.switchTab('tab-boxes')">2. 📦 Great Forge Crates</button>
-    <button class="nav-btn" data-tab="tab-auctions" onclick="UI.switchTab('tab-auctions')">3. 🔨 Holonet Auctions <span class="nav-badge" id="auc-timer">10s</span></button>
-    <button class="nav-btn" data-tab="tab-arena" onclick="UI.switchTab('tab-arena')">4. ⚔️ Battle &amp; Patrols</button>
-    <button class="nav-btn" data-tab="tab-command" onclick="UI.switchTab('tab-command')">5. 📜 High Command</button>
+    <button class="nav-btn" data-tab="tab-forge" onclick="UI.switchTab('tab-forge')">2. 🎨 Custom Forge &amp; Paint</button>
+    <button class="nav-btn" data-tab="tab-boxes" onclick="UI.switchTab('tab-boxes')">3. 📦 Great Forge Crates</button>
+    <button class="nav-btn" data-tab="tab-auctions" onclick="UI.switchTab('tab-auctions')">4. 🔨 Auction House <span class="nav-badge" id="auc-timer">10s</span></button>
+    <button class="nav-btn" data-tab="tab-arena" onclick="UI.switchTab('tab-arena')">5. ⚔️ Battle &amp; Patrols</button>
+    <button class="nav-btn" data-tab="tab-command" onclick="UI.switchTab('tab-command')">6. 📜 High Command</button>
   </nav>
 </header>
 
@@ -493,8 +481,8 @@
   <section id="tab-racks" class="tab-pane active">
     <div class="section-bar">
       <div>
-        <div class="section-title">1. COVERT RACKS // 1,000 HEROIC-SCALE MANDALORIAN MINIATURES</div>
-        <div class="section-sub">Each miniature is a 92-voxel-tall Heroic Character (`#0001–#1000`) with full *Kar'ta Beskar* anatomy. Lock favorites, list in your 5 Seller Auction lanes, or inspect in 3D.</div>
+        <div class="section-title">1. COVERT RACKS // HEROIC-SCALE MANDALORIAN MINIATURES</div>
+        <div class="section-sub">Manage your numbered Collector Miniatures (`#0001–#1000`) and Custom-Forged Masterworks. Lock favorites, auction off in Tab 4, or inspect in 3D.</div>
       </div>
       <div class="btn-row">
         <label class="chk-pill">
@@ -538,18 +526,146 @@
   </section>
 
   <!-- ======================================================================
-       TAB 2: WARFORGE CRATES & SUPPLY DEPOT
+       TAB 2: CUSTOM FORGE & 5-ZONE PAINT STUDIO (WITH 1.35x - 50x ARTISAN ROLL)
+       ====================================================================== -->
+  <section id="tab-forge" class="tab-pane">
+    <div class="section-bar">
+      <div>
+        <div class="section-title">2. 🎨 GREAT FORGE CUSTOM MINIATURE BUILDER &amp; 5-ZONE PAINT STUDIO</div>
+        <div class="section-sub">Assemble custom 92-voxel-tall Mandalorian Hunters, hand-paint 5 armor zones, and roll an Artisan Commission Multiplier from <b>1.35x (Craft)</b> up to <b>25x–50x (Mand'alor Masterwork)</b>!</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-silver" onclick="CustomForge.randomizeDesign()">🎲 Randomize Sculpt &amp; Paint</button>
+      </div>
+    </div>
+
+    <div class="forge-studio-grid">
+      <!-- LEFT: LIVE 60 FPS 3D TURNTABLE PREVIEW -->
+      <div class="forge-preview-box">
+        <canvas id="forge-canvas" width="512" height="512"></canvas>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:11px; color:var(--text-dim);">
+          <span>🖱️ Drag to Orbit 3D Sculpt</span>
+          <div class="btn-row">
+            <button class="btn" onclick="CustomForge.toggleSpin()">🔄 Spin</button>
+            <button class="btn" onclick="CustomForge.zoom(0.3)">➕</button>
+            <button class="btn" onclick="CustomForge.zoom(-0.3)">➖</button>
+          </div>
+        </div>
+        <div class="artisan-banner" style="margin-top:10px;" id="forge-last-roll-banner">
+          <span><b>Artisan Appraisal Odds:</b> Craft (1.35x–1.75x) • Journeyman (2x–3.5x) • Artisan (4.5x–8x) • Relic (10x–18x) • <b class="val-gold">★ MASTERWORK (25x–50x!)</b></span>
+        </div>
+      </div>
+
+      <!-- RIGHT: MODULAR PARTS + 5-ZONE PAINT PALETTE + FORGE BUTTON -->
+      <div class="forge-controls-box">
+        <div class="control-group">
+          <div class="control-label">
+            <span>1. Custom Miniature Title &amp; Beskar Grade</span>
+            <span class="val-gold" id="forge-cost-label">Cost: ◈20 + 25 Supply</span>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+            <input type="text" id="forge-custom-name" placeholder="Enter Custom Hunter Name (or leave blank)" maxlength="32" />
+            <select id="forge-tier-sel" onchange="CustomForge.updateConfig()"></select>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label"><span>2. Modular Armor &amp; Weapon Assembly</span></div>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:8px;">
+            <div>
+              <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">HELMET &amp; VISOR PATTERN</div>
+              <select id="forge-helm-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
+                <option value="tvisor">Classic T-Visor Stalker</option>
+                <option value="crest">Mand'alor War-Crest</option>
+                <option value="owl">Nite Owl Angled Visor</option>
+                <option value="heavy">Heavy Juggernaut Brow</option>
+                <option value="horns">Armorer Forged Horns</option>
+                <option value="spikes">Supercommando Spikes</option>
+              </select>
+            </div>
+            <div>
+              <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">SIGNATURE WEAPON SYSTEM</div>
+              <select id="forge-weapon-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
+                <option value="darksaber">Crackling Void Darksaber</option>
+                <option value="amban">Amban Phase-Pulse Sniper</option>
+                <option value="rotary">Paz Heavy Rotary Cannon</option>
+                <option value="dual">Dual Westar-35 Pistols</option>
+                <option value="spear">Beskar Spear + Energy Shield</option>
+                <option value="hammer">Forge Hammer &amp; Molten Ingot</option>
+                <option value="pyro">Flamethrower + Whistling Birds</option>
+                <option value="blades">Dual Wrist Vibro-Blades</option>
+                <option value="eweb">Heavy Assault Blaster</option>
+              </select>
+            </div>
+            <div>
+              <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">BACK &amp; FLIGHT RIG</div>
+              <select id="forge-back-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
+                <option value="both">Z-6 Jetpack + Flowing Cape</option>
+                <option value="jetpack">Z-6 Combat Jetpack Only</option>
+                <option value="cape">Draped Bounty Cape Only</option>
+                <option value="fly">Mid-Air Rocket Plume Thrusters</option>
+              </select>
+            </div>
+            <div>
+              <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">SCENIC DISPLAY PLINTH</div>
+              <select id="forge-plinth-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
+                <option value="lava">Nevarro Molten Lava River</option>
+                <option value="anvil">Sacred Great Forge Anvil</option>
+                <option value="smoke">Billowing Thermal Smoke</option>
+                <option value="air">Jetpack Exhaust Blast Plume</option>
+                <option value="ruins">Sundari Ruins &amp; Droid Trophy</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5-ZONE PAINT STUDIO -->
+        <div class="control-group">
+          <div class="control-label"><span>Zone A: Primary Beskar Armor Plates</span><span id="lbl-zone-0">Pure Beskar Silver</span></div>
+          <div class="swatch-row" id="swatches-zone-0"></div>
+        </div>
+        <div class="control-group">
+          <div class="control-label"><span>Zone B: Pauldrons, Mandibles &amp; Knee Poleyns</span><span id="lbl-zone-1">Darksaber Void</span></div>
+          <div class="swatch-row" id="swatches-zone-1"></div>
+        </div>
+        <div class="control-group">
+          <div class="control-label"><span>Zone C: Kar'ta Beskar Iron Heart &amp; Trim</span><span id="lbl-zone-2">Armorer Gold</span></div>
+          <div class="swatch-row" id="swatches-zone-2"></div>
+        </div>
+        <div class="control-group">
+          <div class="control-label"><span>Zone D: Woven Cape &amp; Flightsuit Cloth</span><span id="lbl-zone-3">Viszla Crimson</span></div>
+          <div class="swatch-row" id="swatches-zone-3"></div>
+        </div>
+        <div class="control-group">
+          <div class="control-label"><span>Zone E: Darksaber / Plasma / Whistling Bird Glow</span><span id="lbl-zone-4">Darksaber Ice White</span></div>
+          <div class="swatch-row" id="swatches-zone-4"></div>
+        </div>
+
+        <div class="btn-row" style="margin-top:4px;">
+          <button class="btn btn-silver" style="flex:1; padding:12px; font-size:13px;" onclick="CustomForge.forgeAndCommission(false)">
+            🔨 FORGE TO COVERT RACKS
+          </button>
+          <button class="btn btn-gold" style="flex:1; padding:12px; font-size:13px;" onclick="CustomForge.forgeAndCommission(true)">
+            💰 FORGE &amp; SEND STRAIGHT TO AUCTION
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       TAB 3: GREAT FORGE CRATES & SUPPLY DEPOT
        ====================================================================== -->
   <section id="tab-boxes" class="tab-pane">
     <div class="section-bar">
       <div>
-        <div class="section-title">2. GREAT FORGE BESKAR CRATES &amp; TIBANNA SUPPLY DEPOT</div>
+        <div class="section-title">3. GREAT FORGE BESKAR CRATES &amp; TIBANNA SUPPLY DEPOT</div>
         <div class="section-sub">Unbox Heroic-Scale 128³ Mandalorian Miniatures (`#0001–#1000`) in 1x / 5x / 10x batches, recruit Master Armorers, or replenish Upkeep Supply.</div>
       </div>
       <div class="btn-row">
-        <button class="btn btn-cyan" onclick="Game.buyFuel(500)">⚡ +500 Supply (◈125)</button>
-        <button class="btn btn-cyan" onclick="Game.buyFuel(2500)">⚡ +2,500 Supply (◈625)</button>
-        <button class="btn btn-cyan" onclick="Game.buyFuel(10000)">⚡ +10,000 Supply (◈2,500)</button>
+        <button class="btn btn-silver" onclick="Game.buyFuel(500)">⚡ +500 Supply (◈125)</button>
+        <button class="btn btn-silver" onclick="Game.buyFuel(2500)">⚡ +2,500 Supply (◈625)</button>
+        <button class="btn btn-silver" onclick="Game.buyFuel(10000)">⚡ +10,000 Supply (◈2,500)</button>
       </div>
     </div>
     <div class="card-grid" id="warbox-list"></div>
@@ -564,17 +680,16 @@
   </section>
 
   <!-- ======================================================================
-       TAB 3: HOLONET AUCTION HOUSE (1-LANE SNIPE BUYER + 5-LANE PLAYER SELLER)
+       TAB 4: HOLONET AUCTION HOUSE (1-LANE SNIPE BUYER + 5-LANE PLAYER SELLER)
        ====================================================================== -->
   <section id="tab-auctions" class="tab-pane">
     <div class="section-bar">
       <div>
-        <div class="section-title">3A. 🎯 1-LANE HOLONET BARGAIN SNIPE AUCTION (10.0s LIVE + 3.0s COOLDOWN // +◈1 BIDS)</div>
+        <div class="section-title">4A. 🎯 1-LANE BARGAIN SNIPE AUCTION (10.0s LIVE + 3.0s COOLDOWN // +◈1 BIDS)</div>
         <div class="section-sub">Heavily discounted single-lot feed! As long as any time remains (&gt;0.0s), you can out-snipe anyone for +◈1. Features a 3.0s intermission between lots so you always see the outcome!</div>
       </div>
     </div>
 
-    <!-- PERSISTENT DOM CONTAINER FOR ZERO-DROP SNIPING -->
     <div class="snipe-spotlight" id="buyer-spotlight-card">
       <div class="unit-thumb-wrap" style="height:165px;" onclick="Inspector.open('BUYER', 0)">
         <img class="unit-thumb" id="buyer-thumb" src="" alt="Bargain Lot" />
@@ -584,21 +699,20 @@
       </div>
       <div style="display:flex; flex-direction:column; gap:9px;">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-          <div class="unit-title" style="font-size:16px;" id="buyer-unit-title">Loading Holonet Lot...</div>
-          <span id="buyer-timer-badge" style="background:#0077b6; border:1px solid var(--cyan); color:#fff; padding:5px 12px; font-weight:900; font-size:13px; font-family:'Courier New',monospace;">
+          <div class="unit-title" style="font-size:16px;" id="buyer-unit-title">Loading Lot...</div>
+          <span id="buyer-timer-badge" style="background:#1e293b; border:1px solid #fff; color:#fff; padding:5px 12px; font-weight:900; font-size:13px; font-family:'Courier New',monospace;">
             ⏱️ 10.0s
           </span>
         </div>
 
-        <!-- 3-SECOND INTERMISSION VERDICT BANNER -->
         <div class="intermission-banner" id="buyer-verdict-banner">
           <span id="buyer-verdict-text">LOT CLOSED</span>
           <span id="buyer-verdict-countdown" style="font-family:'Courier New',monospace;">NEXT LOT IN 3.0s</span>
         </div>
 
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:8px; background:rgba(6, 10, 18, 0.85); border:1px solid var(--border); padding:10px;">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:8px; background:#07080c; border:1px solid var(--border); padding:10px;">
           <div>Guide Valuation: <b class="val-gold" id="buyer-true-val">◈0</b></div>
-          <div>Current Bid: <b class="val-cyan" id="buyer-cur-bid">◈0</b></div>
+          <div>Current Bid: <b class="val-silver" id="buyer-cur-bid">◈0</b></div>
           <div>Est. Flip Profit: <b class="val-emerald" id="buyer-flip-profit">+◈0</b></div>
           <div>High Bidder: <b id="buyer-high-bidder">Scrapper</b></div>
         </div>
@@ -607,15 +721,15 @@
           <button class="btn btn-emerald" id="buyer-bid-btn" style="font-size:13px; padding:11px 20px; flex:1;" onclick="Game.bidOnBuyerAuction()">
             ⚡ SNIPE BID +◈1
           </button>
-          <button class="btn btn-cyan" style="padding:11px 14px;" onclick="Inspector.open('BUYER', 0)">🔍 Inspect 3D</button>
+          <button class="btn btn-silver" style="padding:11px 14px;" onclick="Inspector.open('BUYER', 0)">🔍 Inspect 3D</button>
         </div>
       </div>
     </div>
 
     <div class="section-bar">
       <div>
-        <div class="section-title">3B. 💰 YOUR 5-LANE SYNDICATE SELLER AUCTIONS (SELL HIGH // 2x–20x BID WARS!)</div>
-        <div class="section-sub">List up to 5 of your own miniatures! 20.0s timer | 40% opening bid | 10% NPC bid chance/tick | 1.5% chance for 2x–20x [BID WAR] Spike! | &lt;=1.0s overtime resets to 2.0s.</div>
+        <div class="section-title">4B. 💰 YOUR 5-LANE SYNDICATE SELLER AUCTIONS (SELL STANDARD &amp; CUSTOM MINIS // 2x–20x BID WARS!)</div>
+        <div class="section-sub">List up to 5 of your own miniatures (including Custom Masterworks)! 20.0s timer | 40% opening bid | 10% NPC bid chance/tick | 1.5% chance for 2x–20x [BID WAR] Spike! | &lt;=1.0s overtime resets to 2.0s.</div>
       </div>
       <div class="btn-row">
         <button class="btn btn-gold" onclick="Game.autoFillSellerLanes()">🔨 Auto-List Unvaulted Idle Units</button>
@@ -625,16 +739,16 @@
   </section>
 
   <!-- ======================================================================
-       TAB 4: TABLETOP WARGAME ARENA & OUTER RIM SECTOR PATROLS
+       TAB 5: TABLETOP WARGAME ARENA & OUTER RIM SECTOR PATROLS
        ====================================================================== -->
   <section id="tab-arena" class="tab-pane">
     <div class="section-bar">
       <div>
-        <div class="section-title">4A. ⚔️ 1v1 / 3v3 / 5v5 TABLETOP WARGAME ARENA</div>
+        <div class="section-title">5A. ⚔️ 1v1 / 3v3 / 5v5 TABLETOP WARGAME ARENA</div>
         <div class="section-sub">2D6 Dice Combat + 5 Tactical Orders + 3-Way Counter Triangle (+45% DMG). Win 55% of enemy army value + 45% base chance to capture an enemy miniature!</div>
       </div>
       <div class="btn-row">
-        <button class="btn btn-cyan" onclick="Arena.startMatch(1)">⚔️ Start 1v1 Duel</button>
+        <button class="btn btn-silver" onclick="Arena.startMatch(1)">⚔️ Start 1v1 Duel</button>
         <button class="btn btn-gold" onclick="Arena.startMatch(3)">⚔️ Start 3v3 Skirmish</button>
         <button class="btn btn-crimson" onclick="Arena.startMatch(5)">⚔️ Start 5v5 Grand Battle</button>
       </div>
@@ -660,7 +774,7 @@
         </div>
         <div class="btn-row" style="justify-content:center; width:100%;">
           <button class="btn btn-crimson" onclick="Arena.issueOrder('CHARGE')">🗡️ Jetpack Charge (+30%)</button>
-          <button class="btn btn-cyan" onclick="Arena.issueOrder('VOLLEY')">🔫 Blaster Volley (Pierce)</button>
+          <button class="btn btn-silver" onclick="Arena.issueOrder('VOLLEY')">🔫 Blaster Volley (Pierce)</button>
           <button class="btn btn-purple" onclick="Arena.issueOrder('ARCANE')">🐉 Whistling Birds (Splash)</button>
           <button class="btn btn-gold" onclick="Arena.issueOrder('WALL')">🛡️ Beskar Shield Wall</button>
           <button class="btn btn-emerald" onclick="Arena.issueOrder('RALLY')">🚩 Darksaber Rally (+HP)</button>
@@ -677,7 +791,7 @@
     <!-- OUTER RIM SECTOR PATROLS -->
     <div class="section-bar" style="margin-top:18px;">
       <div>
-        <div class="section-title">4B. 🎯 OUTER RIM SECTOR PATROLS (PASSIVE BOUNTY DISPATCH)</div>
+        <div class="section-title">5B. 🎯 OUTER RIM SECTOR PATROLS (PASSIVE BOUNTY DISPATCH)</div>
         <div class="section-sub">Assign Covert Hunters to patrol iconic Mandalorian sectors for recurring Imperial Credit payouts.</div>
       </div>
       <div class="btn-row">
@@ -689,12 +803,12 @@
   </section>
 
   <!-- ======================================================================
-       TAB 5: HIGH COMMAND (AUTOMATIONS, 6 COMMISSIONS & 150 MILESTONES)
+       TAB 6: HIGH COMMAND (AUTOMATIONS, 6 COMMISSIONS & 150 MILESTONES)
        ====================================================================== -->
   <section id="tab-command" class="tab-pane">
     <div class="section-bar">
       <div>
-        <div class="section-title">5. COVERT HIGH COMMAND: AUTOMATIONS &amp; GUILD COMMISSIONS</div>
+        <div class="section-title">6. COVERT HIGH COMMAND: AUTOMATIONS &amp; GUILD COMMISSIONS</div>
         <div class="section-sub">Toggle Covert Automations, fulfill 6 rotating Guild Client Commissions (Credits + Free Voxel Miniature), and claim 150 Creed Milestones.</div>
       </div>
       <div class="btn-row">
@@ -748,13 +862,13 @@
       </div>
       <div style="display:flex; flex-direction:column; gap:6px;">
         <div class="btn-row">
-          <button class="btn btn-cyan" onclick="Inspector.toggleSpin()">🔄 Toggle Auto-Turntable</button>
+          <button class="btn btn-silver" onclick="Inspector.toggleSpin()">🔄 Toggle Auto-Turntable</button>
           <button class="btn btn-gold" onclick="Inspector.zoom(0.35)">➕ Zoom In</button>
           <button class="btn btn-gold" onclick="Inspector.zoom(-0.35)">➖ Zoom Out</button>
           <button class="btn" onclick="Inspector.resetCam()">🎯 Reset Camera</button>
         </div>
         <div style="background:var(--bg-deep); padding:8px; border:1px solid var(--border); font-size:11px;">
-          <div><b>Base36 Collector Code:</b> <code id="insp-code" style="color:var(--cyan);">WF-000</code></div>
+          <div><b>Base36 Collector Code:</b> <code id="insp-code" style="color:#fff;">WF-000</code></div>
         </div>
         <button class="btn btn-crimson" style="padding:10px;" onclick="Inspector.close()">✖ Close 3D Inspector</button>
       </div>
@@ -766,15 +880,37 @@
 <div class="modal-backdrop" id="code-modal">
   <div class="modal-box" style="grid-template-columns: 1fr; max-width: 520px;">
     <div>
-      <div class="section-title">📡 HOLONET BASE36 TRADE CODE TRANSCEIVER</div>
+      <div class="section-title">📡 BASE36 TRADE CODE TRANSCEIVER</div>
       <div class="section-sub" style="margin:6px 0 12px;">
-        Import any Collector Miniature Code (<code>WF-XXX</code> encoding Collector `#0001–#1000`) or Commander Code (<code>CMD-XXXX</code>).
+        Import any Collector Miniature Code (<code>WF-XXX</code>), Custom Forge Code (<code>WFC-...</code>), or Commander Code (<code>CMD-XXXX</code>).
       </div>
       <div style="display:flex; gap:8px; margin-bottom:12px;">
-        <input type="text" id="trade-code-input" placeholder="Paste WF-... or CMD-... code here" style="flex:1; font-size:13px;" />
+        <input type="text" id="trade-code-input" placeholder="Paste WF-..., WFC-..., or CMD-... code here" style="flex:1; font-size:13px;" />
         <button class="btn btn-emerald" onclick="Game.importTradeCode()">📥 Import Code</button>
       </div>
       <button class="btn btn-crimson" onclick="document.getElementById('code-modal').classList.remove('open')">Close Transceiver</button>
+    </div>
+  </div>
+</div>
+
+<!-- SAVE / LOAD / BACKUP MODAL -->
+<div class="modal-backdrop" id="save-modal">
+  <div class="modal-box" style="grid-template-columns: 1fr; max-width: 560px;">
+    <div>
+      <div class="section-title">💾 COVERT COMMAND SAVE &amp; DATA VAULT</div>
+      <div class="section-sub" style="margin:6px 0 12px;">
+        Your progress auto-saves to browser storage every 5 seconds. You can also force a manual save, export a portable Save String for backup, or reset your campaign.
+      </div>
+      <div class="btn-row" style="margin-bottom:12px;">
+        <button class="btn btn-emerald" style="flex:1; padding:10px;" onclick="SaveSystem.saveToLocal(true)">💾 Force Manual Save Now</button>
+        <button class="btn btn-silver" style="flex:1; padding:10px;" onclick="SaveSystem.exportSaveString()">📤 Export Save String</button>
+        <button class="btn btn-gold" style="flex:1; padding:10px;" onclick="SaveSystem.importSaveString()">📥 Load Save String</button>
+      </div>
+      <textarea id="save-string-box" rows="4" placeholder="Click 'Export Save String' to copy your backup code, or paste a backup code here and click 'Load Save String'..." style="width:100%; background:#050608; color:#fff; border:1px solid var(--border); padding:8px; font-family:monospace; font-size:11px; margin-bottom:12px;"></textarea>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <button class="btn btn-crimson" onclick="SaveSystem.hardReset()">⚠️ Wipe Save &amp; Reset Game</button>
+        <button class="btn btn-silver" onclick="document.getElementById('save-modal').classList.remove('open')">✖ Close</button>
+      </div>
     </div>
   </div>
 </div>
@@ -783,24 +919,24 @@
 
 <script>
 /* ============================================================================
-   1. EXACT 1,000 COLLECTOR MINIATURE MATRIX (10 CLASSES x 10 CLANS x 10 TIERS)
+   1. EXACT 1,000 COLLECTOR MINIATURE MATRIX & 12 CUSTOM PAINT SWATCHES
    ============================================================================ */
 const TIERS = [
-  { id: 0, code: 'T1',  name: 'Foundling Initiate',       finish: 'Raw Durasteel',         val: 15,     hp: 110,  atk: 15,  color: '#94a3b8', palShift: [115, 125, 138], emissive: [56, 189, 248] },
-  { id: 1, code: 'T2',  name: 'Covert Bounty Tracker',    finish: 'Weathered Beskar',      val: 45,     hp: 165,  atk: 24,  color: '#64748b', palShift: [158, 170, 184], emissive: [245, 158, 11] },
-  { id: 2, code: 'T3',  name: 'Outer Rim Enforcer',       finish: 'Pure Beskar Silver',    val: 135,    hp: 250,  atk: 38,  color: '#22c55e', palShift: [212, 224, 238], emissive: [56, 189, 248] },
+  { id: 0, code: 'T1',  name: 'Foundling Initiate',       finish: 'Raw Durasteel',         val: 15,     hp: 110,  atk: 15,  color: '#94a3b8', palShift: [115, 125, 138], emissive: [220, 230, 242] },
+  { id: 1, code: 'T2',  name: 'Covert Bounty Tracker',    finish: 'Weathered Beskar',      val: 45,     hp: 165,  atk: 24,  color: '#cbd5e1', palShift: [158, 170, 184], emissive: [245, 158, 11] },
+  { id: 2, code: 'T3',  name: 'Outer Rim Enforcer',       finish: 'Pure Beskar Silver',    val: 135,    hp: 250,  atk: 38,  color: '#22c55e', palShift: [212, 224, 238], emissive: [255, 255, 255] },
   { id: 3, code: 'T4',  name: 'Journeyman Protector',     finish: 'Nevarro Lava Forged',   val: 420,    hp: 390,  atk: 60,  color: '#10b981', palShift: [188, 76, 52],   emissive: [255, 110, 30] },
   { id: 4, code: 'T5',  name: 'Shrieking Hawk Veteran',   finish: 'Nite Owl Cobalt',       val: 1300,   hp: 620,  atk: 95,  color: '#38bdf8', palShift: [55, 122, 210],  emissive: [125, 211, 252] },
-  { id: 5, code: 'T6',  name: 'Super Commando Captain',   finish: 'Armorer Gold Leaf',     val: 4200,   hp: 1020, atk: 150, color: '#0ea5e9', palShift: [230, 180, 58],  emissive: [253, 224, 71] },
+  { id: 5, code: 'T6',  name: 'Super Commando Captain',   finish: 'Armorer Gold Leaf',     val: 4200,   hp: 1020, atk: 150, color: '#facc15', palShift: [230, 180, 58],  emissive: [253, 224, 71] },
   { id: 6, code: 'T7',  name: 'House Vizsla Champion',    finish: 'Crimson Supercommando', val: 13500,  hp: 1680, atk: 245, color: '#a855f7', palShift: [200, 42, 52],   emissive: [255, 75, 75] },
   { id: 7, code: 'T8',  name: 'Darksaber Honor Guard',    finish: 'Mythosaur Bone',        val: 42000,  hp: 2800, atk: 405, color: '#d946ef', palShift: [222, 212, 186], emissive: [74, 222, 128] },
   { id: 8, code: 'T9',  name: 'Great Forge High Armorer', finish: 'Beskar Damascus',       val: 110000, hp: 4700, atk: 660, color: '#f59e0b', palShift: [152, 188, 220], emissive: [192, 132, 252] },
-  { id: 9, code: 'T10', name: 'Mythic Mand\'alor Host',   finish: 'Darksaber Obsidian',    val: 250000, hp: 8000, atk: 1120,color: '#ef4444', palShift: [42, 48, 62],    emissive: [255, 255, 255] }
+  { id: 9, code: 'T10', name: 'Mythic Mand\'alor Host',   finish: 'Darksaber Obsidian',    val: 250000, hp: 8000, atk: 1120,color: '#ef4444', palShift: [36, 40, 50],    emissive: [255, 255, 255] }
 ];
 
 const FACTIONS = [
   { id: 0, name: 'Clan Mudhorn',          accent: [217, 119, 6],  cape: [120, 65, 25] },
-  { id: 1, name: 'Children of the Watch', accent: [56, 189, 248], cape: [30, 58, 95] },
+  { id: 1, name: 'Children of the Watch', accent: [180, 195, 210],cape: [30, 42, 65] },
   { id: 2, name: 'Clan Kryze Nite Owls',  accent: [37, 99, 235],  cape: [28, 45, 88] },
   { id: 3, name: 'House Vizsla',          accent: [220, 38, 38],  cape: [95, 22, 28] },
   { id: 4, name: 'Clan Wren',             accent: [234, 179, 8],  cape: [110, 85, 20] },
@@ -808,7 +944,7 @@ const FACTIONS = [
   { id: 6, name: 'Clan Rook',             accent: [168, 85, 247], cape: [68, 32, 98] },
   { id: 7, name: 'Clan Eldar',            accent: [20, 184, 166], cape: [22, 78, 74] },
   { id: 8, name: 'Clan Saxon',            accent: [244, 63, 94],  cape: [88, 20, 38] },
-  { id: 9, name: 'Heirs of Mand\'alor',   accent: [245, 158, 11], cape: [45, 45, 55] }
+  { id: 9, name: 'Heirs of Mand\'alor',   accent: [245, 158, 11], cape: [35, 38, 46] }
 ];
 
 const ARCHETYPES = [
@@ -819,9 +955,34 @@ const ARCHETYPES = [
   { id: 4, key: 'BESKAR_SPEARMAN', group: 'A', range: 20, helm: 'tvisor', weapon: 'spear',     cape: true,  jetpack: true,  plinth: 'lava',  name: 'Beskar Vibro-Spear Duelist' },
   { id: 5, key: 'FORGE_ARMORER',   group: 'A', range: 30, helm: 'horns',  weapon: 'hammer',    cape: true,  jetpack: false, plinth: 'anvil', name: 'Great Forge High Armorer' },
   { id: 6, key: 'WHISTLING_PYRO',  group: 'C', range: 40, helm: 'tvisor', weapon: 'pyro',      cape: true,  jetpack: true,  plinth: 'lava',  name: 'Whistling Bird Flame-Enforcer' },
-  { id: 7, key: 'HAWK_INTERCEPT',  group: 'B', range: 65, helm: 'owl',    weapon: 'carbine',   cape: false, jetpack: 'fly', plinth: 'air',   name: 'Shrieking Hawk Flight Interceptor' },
+  { id: 7, key: 'HAWK_INTERCEPT',  group: 'B', range: 65, helm: 'owl',    weapon: 'eweb',      cape: false, jetpack: 'fly', plinth: 'air',   name: 'Shrieking Hawk Flight Interceptor' },
   { id: 8, key: 'SHADOW_ASSASSIN', group: 'C', range: 35, helm: 'spikes', weapon: 'blades',    cape: true,  jetpack: false, plinth: 'smoke', name: 'Shadow Covert Vibro-Assassin' },
   { id: 9, key: 'REMNANT_COMMANDO',group: 'C', range: 75, helm: 'spikes', weapon: 'eweb',      cape: true,  jetpack: true,  plinth: 'ruins', name: 'Supercommando Siege Gunner' }
+];
+
+// 12 Paint Studio Color Swatches
+const PAINT_SWATCHES = [
+  { id: 0,  name: 'Pure Beskar Silver', rgb: [214, 224, 238], hex: '#d6e0ee' },
+  { id: 1,  name: 'Darksaber Void',     rgb: [32, 36, 44],    hex: '#20242c' },
+  { id: 2,  name: 'Brushed Gunmetal',   rgb: [108, 118, 132], hex: '#6c7684' },
+  { id: 3,  name: 'Armorer Gold',       rgb: [238, 184, 48],  hex: '#eeb830' },
+  { id: 4,  name: 'Vizsla Crimson',     rgb: [208, 36, 48],   hex: '#d02430' },
+  { id: 5,  name: 'Nite Owl Cobalt',    rgb: [45, 115, 218],  hex: '#2d73da' },
+  { id: 6,  name: 'Mythosaur Bone',     rgb: [224, 212, 184], hex: '#e0d4b8' },
+  { id: 7,  name: 'Concord Emerald',    rgb: [28, 172, 96],   hex: '#1cac60' },
+  { id: 8,  name: 'Nevarro Magma',      rgb: [242, 96, 32],   hex: '#f26020' },
+  { id: 9,  name: 'Wren Royal Purple',  rgb: [158, 72, 232],  hex: '#9e48e8' },
+  { id: 10, name: 'Tatooine Ochre',     rgb: [188, 138, 68],  hex: '#bc8a44' },
+  { id: 11, name: 'Darksaber Ice White',rgb: [245, 250, 255], hex: '#f5faff' }
+];
+
+// Artisan Custom Commission Grading Table (1.35x Craft up to 25x-50x Masterwork!)
+const ARTISAN_GRADES = [
+  { id: 0, name: 'Foundling Craft',          minM: 1.35, maxM: 1.75, chance: 0.50, color: '#94a3b8' },
+  { id: 1, name: 'Journeyman Forged',        minM: 2.00, maxM: 3.50, chance: 0.25, color: '#34d399' },
+  { id: 2, name: 'Covert Artisan',           minM: 4.50, maxM: 8.00, chance: 0.14, color: '#38bdf8' },
+  { id: 3, name: 'High Armorer Relic',       minM: 10.0, maxM: 18.0, chance: 0.07, color: '#c084fc' },
+  { id: 4, name: '★ MAND\'ALOR MASTERWORK ★',minM: 25.0, maxM: 50.0, chance: 0.04, color: '#f5b041' }
 ];
 
 const SECTORS = [
@@ -834,7 +995,7 @@ const SECTORS = [
 ];
 
 /* ============================================================================
-   2. ULTRA-DETAILED 128³ HEROIC CHARACTER VOXEL ENGINE
+   2. ULTRA-DETAILED 128³ HEROIC CHARACTER VOXEL ENGINE (SUPPORTS CUSTOM PAINT)
    ============================================================================ */
 class VoxelWarforgeEngine {
   constructor(canvas) {
@@ -895,7 +1056,7 @@ class VoxelWarforgeEngine {
 
   setupPalette(unit) {
     const tData = TIERS[unit.tier] || TIERS[0];
-    const fac = FACTIONS[unit.faction] || FACTIONS[0];
+    const fac = FACTIONS[unit.faction || 0] || FACTIONS[0];
     this.isEmissive.fill(0);
     this.materialPriority.fill(1);
 
@@ -909,18 +1070,25 @@ class VoxelWarforgeEngine {
       }
     };
 
-    fillRamp(1, 15, 34, 40, 50, 1, 0);
-    fillRamp(16, 16, 76, 70, 64, 2, 0);
-    fillRamp(32, 16, tData.palShift[0], tData.palShift[1], tData.palShift[2], 6, 0);
-    fillRamp(48, 16, fac.accent[0], fac.accent[1], fac.accent[2], 7, 0);
-    fillRamp(64, 16, 22, 26, 34, 5, 0);
-    fillRamp(80, 16, 62, 70, 82, 7, 0);
-    fillRamp(96, 16, 238, 184, 52, 8, 0);
-    fillRamp(112, 16, 114, 72, 42, 6, 0);
-    fillRamp(128, 16, tData.emissive[0], tData.emissive[1], tData.emissive[2], 10, 1);
-    fillRamp(144, 16, fac.cape[0], fac.cape[1], fac.cape[2], 4, 0);
-    fillRamp(160, 16, 255, 105, 25, 10, 1);
-    fillRamp(176, 16, 165, 175, 188, 3, 0);
+    // Determine RGB for the 5 customizable zones (Custom Paint overrides or Standard Clan/Tier)
+    const cPrim  = unit.customColors ? PAINT_SWATCHES[unit.customColors[0]].rgb : tData.palShift;
+    const cSec   = unit.customColors ? PAINT_SWATCHES[unit.customColors[1]].rgb : fac.accent;
+    const cHeart = unit.customColors ? PAINT_SWATCHES[unit.customColors[2]].rgb : [238, 184, 52];
+    const cCape  = unit.customColors ? PAINT_SWATCHES[unit.customColors[3]].rgb : fac.cape;
+    const cGlow  = unit.customColors ? PAINT_SWATCHES[unit.customColors[4]].rgb : tData.emissive;
+
+    fillRamp(1, 15, 34, 38, 46, 1, 0);                        // Plinth Rim
+    fillRamp(16, 16, 76, 70, 64, 2, 0);                       // Terrain Stone
+    fillRamp(32, 16, cPrim[0], cPrim[1], cPrim[2], 6, 0);     // Zone A: Primary Beskar
+    fillRamp(48, 16, cSec[0], cSec[1], cSec[2], 7, 0);        // Zone B: Secondary Pauldrons/Trim
+    fillRamp(64, 16, 20, 23, 30, 5, 0);                       // Flightsuit & T-Visor Black
+    fillRamp(80, 16, 62, 70, 82, 7, 0);                       // Weapon Gunmetal
+    fillRamp(96, 16, cHeart[0], cHeart[1], cHeart[2], 8, 0);  // Zone C: Kar'ta Beskar & Trim
+    fillRamp(112, 16, 114, 72, 42, 6, 0);                     // Leather Bandolier & Belt
+    fillRamp(128, 16, cGlow[0], cGlow[1], cGlow[2], 10, 1);   // Zone E: Plasma / Darksaber Glow
+    fillRamp(144, 16, cCape[0], cCape[1], cCape[2], 4, 0);    // Zone D: Woven Cape Cloth
+    fillRamp(160, 16, 255, 105, 25, 10, 1);                   // Lava / Thruster Fire
+    fillRamp(176, 16, 165, 175, 188, 3, 0);                   // Thermal Smoke
   }
 
   setVoxel(x, y, z, colIdx) {
@@ -1063,10 +1231,16 @@ class VoxelWarforgeEngine {
     this.clearGrid();
     this.setupPalette(unit);
 
-    const arch = ARCHETYPES[unit.division] || ARCHETYPES[0];
-    this.buildHeroicPlinth(arch.plinth);
+    const arch = ARCHETYPES[unit.division || 0] || ARCHETYPES[0];
+    // Support custom overrides from Tab 2 Custom Forge
+    const helmType = unit.customParts ? unit.customParts.helm : arch.helm;
+    const weapType = unit.customParts ? unit.customParts.weapon : arch.weapon;
+    const backType = unit.customParts ? unit.customParts.back : (arch.jetpack === 'fly' ? 'fly' : (arch.cape && arch.jetpack ? 'both' : (arch.cape ? 'cape' : 'jetpack')));
+    const plinthType = unit.customParts ? unit.customParts.plinth : arch.plinth;
 
-    const flyOffset = arch.jetpack === 'fly' ? 12 : 0;
+    this.buildHeroicPlinth(plinthType);
+
+    const flyOffset = backType === 'fly' ? 12 : 0;
     const by = 18 + flyOffset;
 
     const lx = 55, rx = 73, lz = 64, rz = 62;
@@ -1129,7 +1303,7 @@ class VoxelWarforgeEngine {
       }
     }
 
-    if (arch.cape) {
+    if (backType === 'cape' || backType === 'both') {
       for (let cy = by + 8; cy <= ty1 - 1; cy++) {
         const t = (ty1 - cy) / (ty1 - by);
         const flare = Math.round(t * 10);
@@ -1142,7 +1316,7 @@ class VoxelWarforgeEngine {
         }
       }
     }
-    if (arch.jetpack) {
+    if (backType === 'jetpack' || backType === 'both' || backType === 'fly') {
       this.fillShellBox(54, ty0 + 4, 47, 74, ty1 - 1, 56, 34, 12);
       this.fillShellCylinder(57, ty0 + 2, 50, 4, 18, 48, 10);
       this.fillShellCylinder(71, ty0 + 2, 50, 4, 18, 48, 10);
@@ -1151,7 +1325,7 @@ class VoxelWarforgeEngine {
       this.setVoxel(71, ty0, 50, 164);
     }
 
-    const pSize = arch.helm === 'heavy' ? 9 : 7;
+    const pSize = helmType === 'heavy' ? 9 : 7;
     this.fillEllipsoid(44, ty1 - 4, 63, pSize, 7, 8, 48, 12);
     this.fillEllipsoid(84, ty1 - 4, 63, pSize, 7, 8, 48, 12);
     this.fillShellBox(44 - pSize, ty1 - 5, 61, 44 - pSize + 2, ty1 - 1, 65, 98, 8);
@@ -1174,7 +1348,7 @@ class VoxelWarforgeEngine {
     this.fillShellBox(69, hy0 + 3, 69, 74, hy0 + 9, 74, 48, 10);
 
     for (let vx = 56; vx <= 72; vx++) {
-      const owlDip = (arch.helm === 'owl' && (vx < 60 || vx > 68)) ? -1 : 0;
+      const owlDip = (helmType === 'owl' && (vx < 60 || vx > 68)) ? -1 : 0;
       this.setVoxel(vx, hy0 + 10 + owlDip, 73, 64);
       this.setVoxel(vx, hy0 + 9 + owlDip, 73, 64);
       this.setVoxel(vx, hy0 + 10 + owlDip, 74, 64);
@@ -1189,52 +1363,52 @@ class VoxelWarforgeEngine {
     this.fillShellBox(71, hy0 + 22, 62, 76, hy0 + 24, 66, 98, 8);
     this.setVoxel(72, hy0 + 23, 67, 134);
 
-    if (arch.helm === 'horns') {
+    if (helmType === 'horns') {
       const hPts = [[-6, 6], [-3, 8], [0, 9], [3, 8], [6, 6]];
       for (const [hx, hz] of hPts) {
         this.drawRod(64 + hx, hy0 + 16, 63 + hz, 64 + hx * 1.3, hy0 + 23, 63 + hz + 2, 1.4, 98);
       }
-    } else if (arch.helm === 'spikes') {
+    } else if (helmType === 'spikes') {
       const sPts = [[-7, 4], [-4, 6], [0, 7], [4, 6], [7, 4], [-5, 0], [5, 0]];
       for (const [sx, sz] of sPts) {
         this.drawRod(64 + sx, hy0 + 17, 63 + sz, 64 + sx * 1.2, hy0 + 24, 63 + sz, 1.3, 98);
       }
-    } else if (arch.helm === 'crest') {
+    } else if (helmType === 'crest') {
       this.fillShellBox(61, hy0 + 16, 52, 67, hy0 + 25, 73, 98, 10);
     }
 
     const wxR = 89, wyR = ty0 + 4, wzR = 74;
     const wxL = 39, wyL = ty0 + 4, wzL = 74;
 
-    if (arch.weapon === 'darksaber') {
+    if (weapType === 'darksaber') {
       this.drawRod(wxR, wyR - 2, wzR, wxR, wyR + 6, wzR + 4, 2.0, 98);
       this.drawRod(wxR, wyR + 6, wzR + 4, wxR - 6, wyR + 46, wzR + 22, 2.3, 134);
       this.drawRod(wxR, wyR + 6, wzR + 3, wxR - 6, wyR + 44, wzR + 21, 1.4, 64);
-    } else if (arch.weapon === 'amban') {
+    } else if (weapType === 'amban') {
       this.drawRod(wxR, wyR - 8, wzR - 10, wxR, wyR + 2, wzR + 28, 2.0, 114);
       this.drawRod(wxR, wyR + 2, wzR + 4, wxR, wyR + 6, wzR + 44, 1.4, 82);
       this.drawRod(wxR, wyR + 5, wzR + 12, wxR, wyR + 5, wzR + 22, 1.5, 98);
       this.drawRod(wxR - 2, wyR + 6, wzR + 44, wxR - 2, wyR + 7, wzR + 50, 1.0, 132);
       this.drawRod(wxR + 2, wyR + 6, wzR + 44, wxR + 2, wyR + 7, wzR + 50, 1.0, 132);
-    } else if (arch.weapon === 'rotary') {
+    } else if (weapType === 'rotary') {
       this.fillShellCylinder(64, wyR - 4, wzR + 10, 6, 22, 82, 10);
       this.drawRod(52, wyR - 2, wzR + 6, 84, wyR - 4, wzR + 28, 4.2, 82);
       this.fillShellCylinder(84, wyR - 4, wzR + 28, 4.5, 6, 162, 10);
-    } else if (arch.weapon === 'dual') {
+    } else if (weapType === 'dual') {
       this.drawRod(wxL, wyL, wzL, wxL, wyL + 2, wzL + 16, 1.8, 82);
       this.drawRod(wxR, wyR, wzR, wxR, wyR + 2, wzR + 16, 1.8, 82);
       this.fillShellCylinder(wxL, wyL + 2, wzL + 18, 2.5, 4, 132, 6);
       this.fillShellCylinder(wxR, wyR + 2, wzR + 18, 2.5, 4, 132, 6);
-    } else if (arch.weapon === 'spear') {
+    } else if (weapType === 'spear') {
       this.drawRod(wxR + 2, by + 2, wzR - 8, wxR + 2, by + 88, wzR + 12, 1.6, 36);
       this.drawRod(wxR + 2, by + 82, wzR + 10, wxR + 2, by + 95, wzR + 14, 2.2, 132);
       this.fillShellCylinder(wxL - 4, wyL - 2, wzL + 4, 10, 2, 130, 8);
-    } else if (arch.weapon === 'hammer') {
+    } else if (weapType === 'hammer') {
       this.drawRod(wxR, wyR - 6, wzR, wxR, wyR + 22, wzR + 8, 1.8, 98);
       this.fillShellBox(wxR - 6, wyR + 20, wzR + 2, wxR + 6, wyR + 27, wzR + 14, 98, 10);
       this.drawRod(wxL, wyL, wzL, wxL - 2, wyL + 16, wzL + 12, 1.5, 82);
       this.fillShellBox(wxL - 5, wyL + 15, wzL + 12, wxL + 1, wyL + 19, wzL + 18, 162, 8);
-    } else if (arch.weapon === 'pyro') {
+    } else if (weapType === 'pyro') {
       for (let f = 1; f <= 10; f++) {
         this.fillEllipsoid(wxL, wyL + f * 1.2, wzL + f * 3, 2 + f * 0.7, 2 + f * 0.6, 3, 160, 12);
       }
@@ -1244,7 +1418,7 @@ class VoxelWarforgeEngine {
         const byW = (ty0 + 18 + Math.sin(ang) * 18) | 0;
         this.fillShellBox(bx - 2, byW - 2, 84, bx + 2, byW + 2, 89, 132, 6);
       }
-    } else if (arch.weapon === 'blades') {
+    } else if (weapType === 'blades') {
       this.drawRod(wxL, wyL + 2, wzL + 2, wxL - 4, wyL + 16, wzL + 22, 1.8, 36);
       this.drawRod(wxR, wyR + 2, wzR + 2, wxR + 4, wyR + 16, wzR + 22, 1.8, 36);
       this.drawRod(wxL, wyL + 3, wzL + 3, wxL - 4, wyL + 17, wzL + 23, 1.0, 134);
@@ -1387,10 +1561,14 @@ class VoxelWarforgeEngine {
 }
 
 const VoxelEngine = new VoxelWarforgeEngine();
+// Separate dedicated Voxel instance for Tab 2 Live Turntable so thumbnails never interrupt live spin
+const StudioEngine = new VoxelWarforgeEngine();
 
 /* ============================================================================
-   3. UNIVERSAL GAME STATE & 1,000-COLLECTOR BASE36 CODEC
+   3. UNIVERSAL GAME STATE & BASE36 CODEC
    ============================================================================ */
+let NEXT_ID = 1;
+
 const State = {
   funds: 500,
   fuelReserve: 1000,
@@ -1398,7 +1576,7 @@ const State = {
   pilots: [],
   codexUnlocked: {},
   buyerAuction: null,
-  buyerPhase: 'ACTIVE', // 'ACTIVE' (10.0s bidding) or 'COOLDOWN' (3.0s intermission)
+  buyerPhase: 'ACTIVE',
   buyerTimer: 10.0,
   buyerLastOutcome: '',
   buyerWonLast: false,
@@ -1420,23 +1598,37 @@ const State = {
     unitsCaptured: 0,
     cratesOpened: 0,
     auctionsWon: 0,
-    auctionsSold: 0
+    auctionsSold: 0,
+    customForged: 0
   }
 };
 
 const TradeCodec = {
   getCollectorNumber(u) {
-    return (u.tier * 100) + (u.faction * 10) + (u.division % 10) + 1;
+    return (u.tier * 100) + ((u.faction || 0) * 10) + ((u.division || 0) % 10) + 1;
   },
-  formatDex(num) {
+  formatDex(num, isCustom = false) {
+    if (isCustom) return '★CUST';
     return '#' + String(num).padStart(4, '0');
   },
   encodeUnit(u) {
+    if (u.isCustom && u.customColors) {
+      const cStr = u.customColors.map(c => c.toString(36)).join('');
+      return `WFC-${u.tier}${u.division}-${cStr}`.toUpperCase();
+    }
     const dex = this.getCollectorNumber(u);
     return `WF-${dex.toString(36).toUpperCase().padStart(3, '0')}`;
   },
   decodeUnit(code) {
     const clean = code.trim().toUpperCase();
+    if (clean.startsWith('WFC-')) {
+      const parts = clean.split('-');
+      if (!parts[1] || !parts[2] || parts[2].length < 5) return null;
+      const tier = parseInt(parts[1][0], 10) || 0;
+      const division = parseInt(parts[1][1], 10) || 0;
+      const customColors = parts[2].slice(0, 5).split('').map(ch => Math.min(11, parseInt(ch, 36) || 0));
+      return { tier, faction: 0, division, isCustom: true, customColors };
+    }
     if (!clean.startsWith('WF-')) return null;
     const dex = parseInt(clean.slice(3), 36);
     if (isNaN(dex) || dex < 1 || dex > 1000) return null;
@@ -1466,10 +1658,231 @@ const TradeCodec = {
 };
 
 /* ============================================================================
-   4. CORE GAMEPLAY & DUAL AUCTION LOGIC (GUARANTEED SNIPE + 3s INTERMISSION)
+   4. TAB 2: CUSTOM FORGE & 5-ZONE PAINT STUDIO CONTROLLER
    ============================================================================ */
-let NEXT_ID = 1;
+const CustomForge = {
+  previewUnit: {
+    tier: 0,
+    division: 0,
+    faction: 0,
+    isCustom: true,
+    customParts: { helm: 'crest', weapon: 'darksaber', back: 'both', plinth: 'lava' },
+    customColors: [0, 1, 3, 4, 11] // Pure Beskar, Darksaber Void, Armorer Gold, Vizsla Crimson, Ice White
+  },
+  spinning: true,
+  dragging: false,
+  lastX: 0,
+  lastY: 0,
+  rafId: null,
 
+  init() {
+    // Populate Tier dropdown in Custom Forge
+    const tSel = document.getElementById('forge-tier-sel');
+    const tHtml = [];
+    for (let i = 0; i < TIERS.length; i++) {
+      const craftCost = Math.round(TIERS[i].val * 0.9);
+      const supCost = 15 * (i + 1);
+      tHtml.push(`<option value="${i}">${TIERS[i].code} ${TIERS[i].name} (Forge: ◈${craftCost.toLocaleString()} + ${supCost} Sup)</option>`);
+    }
+    tSel.innerHTML = tHtml.join('');
+
+    // Render 5 Paint Zone Swatch Rows
+    for (let z = 0; z < 5; z++) {
+      const row = document.getElementById(`swatches-zone-${z}`);
+      const sHtml = [];
+      for (let c = 0; c < PAINT_SWATCHES.length; c++) {
+        const sw = PAINT_SWATCHES[c];
+        const active = this.previewUnit.customColors[z] === c ? 'active' : '';
+        sHtml.push(`<div class="color-swatch ${active}" style="background:${sw.hex};" title="${sw.name}" onclick="CustomForge.selectColor(${z}, ${c})"></div>`);
+      }
+      row.innerHTML = sHtml.join('');
+    }
+
+    this.bindCanvasEvents();
+    this.updateConfig();
+  },
+
+  selectColor(zoneIdx, colorIdx) {
+    this.previewUnit.customColors[zoneIdx] = colorIdx;
+    document.getElementById(`lbl-zone-${zoneIdx}`).textContent = PAINT_SWATCHES[colorIdx].name;
+    const row = document.getElementById(`swatches-zone-${zoneIdx}`);
+    const children = row.children;
+    for (let i = 0; i < children.length; i++) {
+      children[i].classList.toggle('active', i === colorIdx);
+    }
+    StudioEngine.buildUnitModel(this.previewUnit);
+  },
+
+  updateConfig() {
+    const tier = parseInt(document.getElementById('forge-tier-sel').value, 10) || 0;
+    const helm = document.getElementById('forge-helm-sel').value;
+    const weapon = document.getElementById('forge-weapon-sel').value;
+    const back = document.getElementById('forge-back-sel').value;
+    const plinth = document.getElementById('forge-plinth-sel').value;
+
+    this.previewUnit.tier = tier;
+    this.previewUnit.customParts = { helm, weapon, back, plinth };
+
+    const craftCost = Math.round(TIERS[tier].val * 0.9);
+    const supCost = 15 * (tier + 1);
+    document.getElementById('forge-cost-label').textContent = `Forge Cost: ◈${craftCost.toLocaleString()} + ${supCost} Supply`;
+
+    StudioEngine.buildUnitModel(this.previewUnit);
+  },
+
+  randomizeDesign() {
+    const helms = ['tvisor', 'crest', 'owl', 'heavy', 'horns', 'spikes'];
+    const weaps = ['darksaber', 'amban', 'rotary', 'dual', 'spear', 'hammer', 'pyro', 'blades', 'eweb'];
+    const backs = ['both', 'jetpack', 'cape', 'fly'];
+    const plinths = ['lava', 'anvil', 'smoke', 'air', 'ruins'];
+
+    document.getElementById('forge-helm-sel').value = helms[(Math.random() * helms.length) | 0];
+    document.getElementById('forge-weapon-sel').value = weaps[(Math.random() * weaps.length) | 0];
+    document.getElementById('forge-back-sel').value = backs[(Math.random() * backs.length) | 0];
+    document.getElementById('forge-plinth-sel').value = plinths[(Math.random() * plinths.length) | 0];
+
+    for (let z = 0; z < 5; z++) {
+      const c = (Math.random() * PAINT_SWATCHES.length) | 0;
+      this.selectColor(z, c);
+    }
+    this.updateConfig();
+  },
+
+  rollArtisanGrade() {
+    const r = Math.random();
+    let acc = 0;
+    let chosen = ARTISAN_GRADES[0];
+    for (let i = 0; i < ARTISAN_GRADES.length; i++) {
+      acc += ARTISAN_GRADES[i].chance;
+      if (r <= acc) {
+        chosen = ARTISAN_GRADES[i];
+        break;
+      }
+    }
+    const mult = +(chosen.minM + Math.random() * (chosen.maxM - chosen.minM)).toFixed(2);
+    return { grade: chosen, mult };
+  },
+
+  forgeAndCommission(sendDirectlyToAuction = false) {
+    const tier = this.previewUnit.tier;
+    const craftCost = Math.round(TIERS[tier].val * 0.9);
+    const supCost = 15 * (tier + 1);
+
+    if (State.funds < craftCost) return UI.toast(`Need ◈${craftCost.toLocaleString()} Imperial Credits to forge!`);
+    if (State.fuelReserve < supCost) return UI.toast(`Need ${supCost} Beskar & Tibanna Supply to forge!`);
+
+    if (sendDirectlyToAuction) {
+      const freeLane = State.sellerLanes.findIndex(x => x === null);
+      if (freeLane === -1) return UI.toast('All 5 Seller Auction lanes are full! Forge to Racks instead.');
+    }
+
+    State.funds -= craftCost;
+    State.fuelReserve -= supCost;
+
+    // Roll Artisan Commission Grade (1.35x Craft up to 25x-50x Mand'alor Masterwork!)
+    const { grade, mult } = this.rollArtisanGrade();
+    const tData = TIERS[tier];
+    const customNameInput = document.getElementById('forge-custom-name').value.trim();
+    const baseTitle = customNameInput || `${PAINT_SWATCHES[this.previewUnit.customColors[0]].name} Beskar Hunter`;
+
+    const appraisedVal = Math.round(tData.val * mult);
+    const statBoost = 1 + Math.min(1.5, (mult - 1) * 0.08);
+
+    const newUnit = {
+      id: 'U' + (NEXT_ID++),
+      name: `${baseTitle} [${grade.name}]`,
+      tier,
+      division: 0,
+      faction: 0,
+      finish: tier,
+      isCustom: true,
+      artisanGrade: grade.name,
+      artisanMult: mult,
+      artisanColor: grade.color,
+      customParts: { ...this.previewUnit.customParts },
+      customColors: [...this.previewUnit.customColors],
+      value: appraisedVal,
+      hp: Math.round(tData.hp * statBoost),
+      maxHp: Math.round(tData.hp * statBoost),
+      atk: Math.round(tData.atk * statBoost),
+      range: 55,
+      group: ['A', 'B', 'C'][(Math.random() * 3) | 0],
+      pilotId: null,
+      sectorId: null,
+      patrolProg: 0,
+      vaulted: false,
+      dexNum: 1000,
+      imgData: null
+    };
+
+    newUnit.imgData = VoxelEngine.renderThumbnail(newUnit);
+    State.stats.customForged = (State.stats.customForged || 0) + 1;
+
+    const banner = document.getElementById('forge-last-roll-banner');
+    banner.innerHTML = `
+      <div>
+        <span style="color:${grade.color}; font-weight:900; font-size:14px;">🔨 FORGED: ${grade.name.toUpperCase()} (${mult}x VALUE BONUS!)</span><br/>
+        <span>Base ${tData.code} Val: ◈${tData.val.toLocaleString()} ➔ Appraised Custom Valuation: <b class="val-gold">◈${appraisedVal.toLocaleString()}</b></span>
+      </div>
+    `;
+
+    Game.addUnitToFleet(newUnit);
+
+    if (sendDirectlyToAuction) {
+      Game.sendUnitToSellerAuction(newUnit.id);
+      UI.switchTab('tab-auctions');
+    } else {
+      UI.toast(`🎨 Forged ${grade.name} (${mult}x)! Appraised at ◈${appraisedVal.toLocaleString()}!`);
+      UI.renderAllActive();
+    }
+    SaveSystem.saveToLocal(false);
+  },
+
+  toggleSpin() { this.spinning = !this.spinning; },
+  zoom(d) { StudioEngine.scale = Math.max(2.2, Math.min(6.2, StudioEngine.scale + d)); },
+
+  startLoop() {
+    if (this.rafId) cancelAnimationFrame(this.rafId);
+    const canvas = document.getElementById('forge-canvas');
+    const step = () => {
+      if (UI.activeTab !== 'tab-forge') return;
+      if (this.spinning && !this.dragging) {
+        StudioEngine.yaw += 0.012;
+      }
+      StudioEngine.render(canvas);
+      this.rafId = requestAnimationFrame(step);
+    };
+    this.rafId = requestAnimationFrame(step);
+  },
+
+  bindCanvasEvents() {
+    const c = document.getElementById('forge-canvas');
+    const down = (x, y) => { this.dragging = true; this.lastX = x; this.lastY = y; };
+    const move = (x, y) => {
+      if (!this.dragging) return;
+      StudioEngine.yaw += (x - this.lastX) * 0.01;
+      StudioEngine.pitch = Math.max(-0.5, Math.min(1.0, StudioEngine.pitch + (y - this.lastY) * 0.01));
+      this.lastX = x; this.lastY = y;
+    };
+    const up = () => { this.dragging = false; };
+
+    c.addEventListener('mousedown', e => down(e.clientX, e.clientY));
+    window.addEventListener('mousemove', e => move(e.clientX, e.clientY));
+    window.addEventListener('mouseup', up);
+
+    c.addEventListener('touchstart', e => {
+      if (e.touches.length === 1) down(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    c.addEventListener('touchmove', e => {
+      if (e.touches.length === 1) move(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    c.addEventListener('touchend', up);
+  }
+};
+
+/* ============================================================================
+   5. CORE GAMEPLAY & DUAL AUCTION LOGIC
+   ============================================================================ */
 const Game = {
   createUnit(opts = {}, skipImage = false) {
     const tier = opts.tier !== undefined ? (opts.tier % 10) : 0;
@@ -1482,15 +1895,21 @@ const Game = {
 
     const unit = {
       id: 'U' + (NEXT_ID++),
-      name: `${facData.name} ${arch.name}`,
+      name: opts.name || `${facData.name} ${arch.name}`,
       tier,
       division,
       faction,
       finish: tier,
-      value: tData.val,
-      hp: tData.hp,
-      maxHp: tData.hp,
-      atk: tData.atk,
+      isCustom: !!opts.isCustom,
+      artisanGrade: opts.artisanGrade || null,
+      artisanMult: opts.artisanMult || 1,
+      artisanColor: opts.artisanColor || null,
+      customParts: opts.customParts || null,
+      customColors: opts.customColors || null,
+      value: opts.value || tData.val,
+      hp: opts.hp || tData.hp,
+      maxHp: opts.maxHp || tData.hp,
+      atk: opts.atk || tData.atk,
       range: arch.range,
       group: arch.group,
       pilotId: null,
@@ -1509,7 +1928,7 @@ const Game = {
 
   addUnitToFleet(u) {
     if (!u.imgData) u.imgData = VoxelEngine.renderThumbnail(u);
-    State.codexUnlocked[u.dexNum] = true;
+    if (!u.isCustom) State.codexUnlocked[u.dexNum] = true;
     State.fleet.push(u);
   },
 
@@ -1529,7 +1948,6 @@ const Game = {
     };
   },
 
-  // 1-LANE DISCOUNTED BUYER AUCTION (10.0s active + 3.0s intermission cooldown)
   spawnBuyerAuction() {
     const maxUnlockedTier = Math.min(9, Math.max(2, Math.floor(Math.log10(Math.max(50, State.stats.lifetimeCredits)))));
     const tier = (Math.random() * (maxUnlockedTier + 1)) | 0;
@@ -1546,32 +1964,28 @@ const Game = {
     State.buyerTimer = 10.0;
     State.buyerLastOutcome = '';
 
-    // Trigger holoprojector lock-in visual cue
     const card = document.getElementById('buyer-spotlight-card');
     if (card) {
       card.style.animation = 'none';
       void card.offsetWidth;
-      card.style.animation = 'holoLockIn 0.28s ease-out';
+      card.style.animation = 'darksaberLock 0.26s ease-out';
     }
     UI.updateBuyerSpotlightDOM();
   },
 
-  // Guaranteed Sniping: As long as phase === 'ACTIVE' and buyerTimer > 0, player can ALWAYS bid +◈1!
   bidOnBuyerAuction() {
     const b = State.buyerAuction;
     if (!b || State.buyerPhase !== 'ACTIVE' || State.buyerTimer <= 0) return;
 
-    const nextBid = b.currentBid + 1; // Strictly +◈1 increment
+    const nextBid = b.currentBid + 1;
     if (State.funds < nextBid) return UI.toast(`Need ◈${nextBid.toLocaleString()} Credits to snipe!`);
 
     b.currentBid = nextBid;
     b.highBidder = 'YOU';
-    // Put rival AI on a 1.6s stun cooldown so player can cleanly snipe at any time
     b.rivalCooldown = 1.6;
     UI.updateBuyerSpotlightDOM();
   },
 
-  // 5-LANE PLAYER SELLER AUCTIONS
   sendUnitToSellerAuction(unitId) {
     const idx = State.fleet.findIndex(x => x.id === unitId);
     if (idx === -1) return;
@@ -1602,6 +2016,7 @@ const Game = {
 
     UI.toast(`Listed ${u.name} in Seller Lane #${freeLane + 1} (Opening Bid: ◈${startBid.toLocaleString()})!`);
     UI.renderAllActive();
+    SaveSystem.saveToLocal(false);
   },
 
   autoFillSellerLanes() {
@@ -1639,6 +2054,7 @@ const Game = {
 
     UI.toast(`Unboxed ${count}x Crate(s)! Best: ${TradeCodec.formatDex(bestUnit.dexNum)} ${bestUnit.name}`);
     UI.renderAllActive();
+    SaveSystem.saveToLocal(false);
   },
 
   recruitPilotBox(tier) {
@@ -1649,6 +2065,7 @@ const Game = {
     State.pilots.push(p);
     UI.toast(`Recruited ${p.name}!`);
     UI.renderAllActive();
+    SaveSystem.saveToLocal(false);
   },
 
   buyFuel(amt) {
@@ -1693,6 +2110,7 @@ const Game = {
     u.vaulted = !u.vaulted;
     UI.toast(u.vaulted ? `🔒 Locked ${u.name} in Vault.` : `🔓 Unlocked ${u.name}.`);
     UI.renderAllActive();
+    SaveSystem.saveToLocal(false);
   },
 
   disbandUnit(id) {
@@ -1710,6 +2128,7 @@ const Game = {
     State.fleet.splice(idx, 1);
     UI.toast(`Salvaged miniature for ◈${salvage.toLocaleString()} Credits.`);
     UI.renderAllActive();
+    SaveSystem.saveToLocal(false);
   },
 
   assignPilot(unitId, pilotId) {
@@ -1823,11 +2242,11 @@ const Game = {
         cashReward, rewardTier
       };
     } else if (type === 4) {
-      const targetCrates = State.stats.cratesOpened + 2;
+      const targetCustom = (State.stats.customForged || 0) + 1;
       return {
-        id: 'C' + (NEXT_ID++), client, type: 'CRATES', targetCrates,
-        title: `${client}: Beskar Supply Uncrating`,
-        desc: `Reach ${targetCrates} total Warforge Crates opened.`,
+        id: 'C' + (NEXT_ID++), client, type: 'CUSTOM_FORGE', targetCustom,
+        title: `${client}: Beskar Custom Commission`,
+        desc: `Forge & paint ${targetCustom} custom miniature(s) in Tab 2 (Custom Forge).`,
         cashReward, rewardTier
       };
     } else {
@@ -1845,7 +2264,7 @@ const Game = {
     if (c.type === 'CLAN') return State.fleet.some(u => u.faction === c.targetClan);
     if (c.type === 'ARENA_WIN') return State.stats.arenaWins >= c.targetWins;
     if (c.type === 'AUCTION_SELL') return State.stats.auctionsSold >= c.targetSold;
-    if (c.type === 'CRATES') return State.stats.cratesOpened >= c.targetCrates;
+    if (c.type === 'CUSTOM_FORGE') return (State.stats.customForged || 0) >= c.targetCustom;
     if (c.type === 'TIER_CHECK') return State.fleet.some(u => u.tier >= c.minTier);
     return false;
   },
@@ -1860,13 +2279,14 @@ const Game = {
     State.commissions[idx] = this.generateCommission(idx);
     UI.toast(`Commission Complete! +◈${c.cashReward.toLocaleString()} + Free ${freeUnit.name}!`);
     UI.renderAllActive();
+    SaveSystem.saveToLocal(false);
   },
 
   getMilestones() {
     if (this._cachedMilestones) return this._cachedMilestones;
     const list = [];
     const books = [
-      { id: 0, name: 'Book I: Way of the Foundling',     metric: () => Object.keys(State.codexUnlocked).length, scale: i => i * 2, unit: 'Codex Unlocked' },
+      { id: 0, name: 'Book I: Way of the Foundling',     metric: () => Object.keys(State.codexUnlocked).length + (State.stats.customForged || 0), scale: i => i * 2, unit: 'Codex & Custom' },
       { id: 1, name: 'Book II: Secrets of the Forge',    metric: () => State.fleet.reduce((m, u) => Math.max(m, u.tier + 1), 0) * 3 + State.fleet.length, scale: i => i * 2, unit: 'Forge Score' },
       { id: 2, name: 'Book III: Blood of the Arena',     metric: () => State.stats.arenaWins, scale: i => i, unit: 'Arena Wins' },
       { id: 3, name: 'Book IV: Guild Ledger & Fortune',  metric: () => State.stats.lifetimeCredits, scale: i => Math.round(250 * Math.pow(1.35, i)), unit: 'Lifetime Credits' },
@@ -1907,6 +2327,7 @@ const Game = {
     State.fuelReserve += m.rewardFuel;
     UI.toast(`Creed Trial #${id} Claimed! +◈${m.rewardCredits.toLocaleString()} & +${m.rewardFuel} Supply!`);
     UI.renderAllActive();
+    SaveSystem.saveToLocal(false);
   },
 
   claimAllMilestones() {
@@ -1925,6 +2346,7 @@ const Game = {
     }
     UI.toast(count > 0 ? `Claimed ${count} Creed Trials for +◈${creds.toLocaleString()}!` : 'No new Trials ready to claim yet.');
     UI.renderAllActive();
+    SaveSystem.saveToLocal(false);
   },
 
   toggleAuto(key) {
@@ -1941,22 +2363,24 @@ const Game = {
     State.tech[key]++;
     UI.toast('Armory Tech Upgraded!');
     UI.renderAllActive();
+    SaveSystem.saveToLocal(false);
   },
 
   importTradeCode() {
     const raw = document.getElementById('trade-code-input').value.trim();
     if (!raw) return;
-    if (raw.toUpperCase().startsWith('WF-')) {
+    if (raw.toUpperCase().startsWith('WF')) {
       const decoded = TradeCodec.decodeUnit(raw);
-      if (!decoded) return UI.toast('Invalid WF-XXX Collector Code!');
+      if (!decoded) return UI.toast('Invalid WF-XXX / WFC-XXX Code!');
       const cost = Math.round(TIERS[decoded.tier].val * 0.5);
       if (State.funds < cost) return UI.toast(`Need ◈${cost.toLocaleString()} Beskar Replication Fee!`);
       State.funds -= cost;
       const u = this.createUnit(decoded, false);
       this.addUnitToFleet(u);
-      UI.toast(`Replicated ${TradeCodec.formatDex(u.dexNum)} ${u.name}!`);
+      UI.toast(`Replicated ${u.name}!`);
       document.getElementById('code-modal').classList.remove('open');
       UI.renderAllActive();
+      SaveSystem.saveToLocal(false);
     } else if (raw.toUpperCase().startsWith('CMD-')) {
       const decoded = TradeCodec.decodePilot(raw);
       if (!decoded) return UI.toast('Invalid CMD-XXXX Commander Code!');
@@ -1969,14 +2393,120 @@ const Game = {
       UI.toast(`Imported Commander ${p.name}!`);
       document.getElementById('code-modal').classList.remove('open');
       UI.renderAllActive();
+      SaveSystem.saveToLocal(false);
     } else {
-      UI.toast('Code must start with WF- or CMD-');
+      UI.toast('Code must start with WF-, WFC-, or CMD-');
     }
   }
 };
 
 /* ============================================================================
-   5. 1v1 / 3v3 / 5v5 TABLETOP WARGAME ARENA ENGINE
+   6. CRASH-PROOF SAVE & LOAD SYSTEM (`localStorage` + PORTABLE STRING)
+   ============================================================================ */
+const SAVE_KEY = 'MANDO_WARFORGE_DARKSABER_V1';
+
+const SaveSystem = {
+  serialize() {
+    // Strip cached base64 thumbnails (`imgData`) so save payload stays <15KB
+    const cleanFleet = State.fleet.map(u => {
+      const copy = { ...u };
+      delete copy.imgData;
+      return copy;
+    });
+    const payload = {
+      funds: State.funds,
+      fuelReserve: State.fuelReserve,
+      fleet: cleanFleet,
+      pilots: State.pilots,
+      codexUnlocked: State.codexUnlocked,
+      claimedMilestones: State.claimedMilestones,
+      autoMarch: State.autoMarch,
+      autoRepair: State.autoRepair,
+      autoSupply: State.autoSupply,
+      tech: State.tech,
+      stats: State.stats,
+      nextId: NEXT_ID
+    };
+    return JSON.stringify(payload);
+  },
+
+  saveToLocal(showToast = false) {
+    try {
+      localStorage.setItem(SAVE_KEY, this.serialize());
+      if (showToast) UI.toast('💾 Game Saved to Browser Storage!');
+    } catch (e) {
+      if (showToast) UI.toast('⚠️ Storage quota warning — use Export Save String.');
+    }
+  },
+
+  loadFromJSON(jsonStr, showToast = false) {
+    try {
+      const data = JSON.parse(jsonStr);
+      if (!data || !Array.isArray(data.fleet)) return false;
+
+      State.funds = data.funds ?? 500;
+      State.fuelReserve = data.fuelReserve ?? 1000;
+      State.pilots = data.pilots || [];
+      State.codexUnlocked = data.codexUnlocked || {};
+      State.claimedMilestones = data.claimedMilestones || {};
+      State.autoMarch = !!data.autoMarch;
+      State.autoRepair = !!data.autoRepair;
+      State.autoSupply = !!data.autoSupply;
+      if (data.tech) Object.assign(State.tech, data.tech);
+      if (data.stats) Object.assign(State.stats, data.stats);
+      NEXT_ID = data.nextId || (data.fleet.length + 50);
+
+      // Re-bake 128x128 thumbnails cleanly
+      State.fleet = data.fleet.map(u => {
+        u.imgData = VoxelEngine.renderThumbnail(u);
+        return u;
+      });
+
+      if (showToast) UI.toast('📥 Save Loaded Successfully!');
+      UI.renderAllActive();
+      return true;
+    } catch (e) {
+      if (showToast) UI.toast('⚠️ Invalid Save Data String!');
+      return false;
+    }
+  },
+
+  loadFromLocal() {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return false;
+    return this.loadFromJSON(raw, false);
+  },
+
+  exportSaveString() {
+    const encoded = btoa(unescape(encodeURIComponent(this.serialize())));
+    const box = document.getElementById('save-string-box');
+    box.value = encoded;
+    box.select();
+    UI.toast('📤 Save String generated! Copy the text box above.');
+  },
+
+  importSaveString() {
+    const raw = document.getElementById('save-string-box').value.trim();
+    if (!raw) return UI.toast('Paste your backup Save String first!');
+    try {
+      const jsonStr = decodeURIComponent(escape(atob(raw)));
+      if (this.loadFromJSON(jsonStr, true)) {
+        this.saveToLocal(false);
+        document.getElementById('save-modal').classList.remove('open');
+      }
+    } catch (e) {
+      UI.toast('⚠️ Could not decode Save String!');
+    }
+  },
+
+  hardReset() {
+    localStorage.removeItem(SAVE_KEY);
+    location.reload();
+  }
+};
+
+/* ============================================================================
+   7. 1v1 / 3v3 / 5v5 TABLETOP WARGAME ARENA ENGINE
    ============================================================================ */
 const Arena = {
   active: false,
@@ -1994,7 +2524,7 @@ const Arena = {
   },
 
   startMatch(count) {
-    if (State.fleet.length === 0) return UI.toast('Recruit or snipe at least 1 miniature first!');
+    if (State.fleet.length === 0) return UI.toast('Recruit, snipe, or forge at least 1 miniature first!');
     this.mode = count;
     this.active = true;
     this.logLines = [];
@@ -2140,6 +2670,7 @@ const Arena = {
       this.log(`🏆 VICTORY! Earned ◈${payout.toLocaleString()} Spoils${capMsg}`);
       UI.toast(`Arena Victory! +◈${payout.toLocaleString()}${capMsg}`);
       UI.renderAllActive();
+      SaveSystem.saveToLocal(false);
       return true;
     }
 
@@ -2155,7 +2686,7 @@ const Arena = {
 };
 
 /* ============================================================================
-   6. 512x512 60 FPS 3D VOXEL INSPECTOR MODAL CONTROLLER
+   8. 512x512 60 FPS 3D VOXEL INSPECTOR MODAL CONTROLLER
    ============================================================================ */
 const Inspector = {
   openUnit: null,
@@ -2179,19 +2710,20 @@ const Inspector = {
     VoxelEngine.buildUnitModel(u);
 
     const tData = TIERS[u.tier];
-    const arch = ARCHETYPES[u.division];
-    const dexStr = TradeCodec.formatDex(u.dexNum);
+    const arch = ARCHETYPES[u.division || 0];
+    const dexStr = TradeCodec.formatDex(u.dexNum, u.isCustom);
     document.getElementById('insp-name').textContent = `${dexStr} ${u.name}`;
-    document.getElementById('insp-sub').textContent = `${tData.code} ${tData.name} • ${tData.finish} • ${arch.name}`;
+    document.getElementById('insp-sub').textContent = u.isCustom
+      ? `${tData.code} Custom Commission • ${u.artisanGrade} (${u.artisanMult}x)`
+      : `${tData.code} ${tData.name} • ${tData.finish} • ${arch.name}`;
     document.getElementById('insp-code').textContent = TradeCodec.encodeUnit(u);
     document.getElementById('inspect-vox-stats').textContent = `Surface Voxels: ${VoxelEngine.surfCount.toLocaleString()} / 92-Voxel Heroic Scale`;
 
     document.getElementById('insp-details').innerHTML = [
-      `<div><b>Collector Edition Index:</b> <span class="val-gold">${dexStr} / #1000</span></div>`,
-      `<div><b>Guide Valuation:</b> <span class="val-gold">◈${u.value.toLocaleString()}</span></div>`,
+      `<div><b>Edition Classification:</b> <span class="val-gold">${u.isCustom ? `${u.artisanGrade} (${u.artisanMult}x Multiplier)` : `Collector ${dexStr} / #1000`}</span></div>`,
+      `<div><b>Appraised Valuation:</b> <span class="val-gold">◈${u.value.toLocaleString()}</span></div>`,
       `<div><b>Beskar Armor Integrity:</b> ${u.hp} / ${u.maxHp} HP</div>`,
-      `<div><b>Combat Telemetry:</b> ${u.atk} ATK | Range ${u.range}m | Counter Group <b>${u.group}</b></div>`,
-      `<div><b>Anatomical Features:</b> Hexagonal <i>Kar'ta Beskar</i> Iron Heart, 5-Grooved Whistling Bird Gauntlet, ${arch.helm.toUpperCase()} Visor</div>`
+      `<div><b>Combat Telemetry:</b> ${u.atk} ATK | Range ${u.range}m | Counter Group <b>${u.group}</b></div>`
     ].join('');
 
     document.getElementById('inspect-modal').classList.add('open');
@@ -2249,7 +2781,7 @@ const Inspector = {
 };
 
 /* ============================================================================
-   7. CRASH-PROOF 5-TAB UI RENDERER & ZERO-FLICKER AUCTION DOM UPDATER
+   9. CRASH-PROOF 6-TAB UI RENDERER & ZERO-FLICKER AUCTION DOM UPDATER
    ============================================================================ */
 const UI = {
   activeTab: 'tab-racks',
@@ -2264,6 +2796,9 @@ const UI = {
     for (let i = 0; i < panes.length; i++) {
       panes[i].classList.toggle('active', panes[i].id === tabId);
     }
+    if (tabId === 'tab-forge') {
+      CustomForge.startLoop();
+    }
     this.renderAllActive();
   },
 
@@ -2276,9 +2811,8 @@ const UI = {
     setTimeout(() => div.remove(), 3200);
   },
 
-  openCodeModal() {
-    document.getElementById('code-modal').classList.add('open');
-  },
+  openCodeModal() { document.getElementById('code-modal').classList.add('open'); },
+  openSaveModal() { document.getElementById('save-modal').classList.add('open'); },
 
   renderHUD() {
     document.getElementById('hud-funds').textContent = '◈' + Math.floor(State.funds).toLocaleString();
@@ -2318,13 +2852,12 @@ const UI = {
     }
   },
 
-  // ZERO-FLICKER BUYER AUCTION UPDATER (Never destroys the button mid-click!)
   updateBuyerSpotlightDOM() {
     const b = State.buyerAuction;
     if (!b) return;
     const u = b.unit;
     const t = TIERS[u.tier];
-    const dexStr = TradeCodec.formatDex(u.dexNum);
+    const dexStr = TradeCodec.formatDex(u.dexNum, u.isCustom);
     const estProfit = Math.max(0, u.value - (b.currentBid + 1));
 
     const card = document.getElementById('buyer-spotlight-card');
@@ -2355,18 +2888,17 @@ const UI = {
       card.classList.remove('phase-won', 'phase-lost');
       verdictBanner.classList.remove('show');
       timerBadge.textContent = `⏱️ ${State.buyerTimer.toFixed(1)}s LIVE`;
-      timerBadge.style.background = State.buyerTimer <= 3.0 ? '#d90429' : '#0077b6';
+      timerBadge.style.background = State.buyerTimer <= 3.0 ? '#dc2626' : '#1e293b';
 
       bidBtn.disabled = false;
       if (b.highBidder === 'YOU') {
         bidBtn.textContent = `✅ YOU LEAD AT ◈${b.currentBid.toLocaleString()} (CLICK TO RAISE +◈1)`;
-        bidBtn.className = 'btn btn-cyan';
+        bidBtn.className = 'btn btn-silver';
       } else {
         bidBtn.textContent = `⚡ SNIPE BID +◈1 (TAKE LEAD FOR ◈${(b.currentBid + 1).toLocaleString()})`;
         bidBtn.className = 'btn btn-emerald';
       }
     } else {
-      // 3.0-SECOND INTERMISSION COOLDOWN STATE
       card.classList.toggle('phase-won', State.buyerWonLast);
       card.classList.toggle('phase-lost', !State.buyerWonLast);
 
@@ -2375,13 +2907,13 @@ const UI = {
 
       verdictBanner.classList.add('show');
       verdictBanner.style.color = State.buyerWonLast ? 'var(--emerald)' : 'var(--crimson)';
-      verdictBanner.style.background = State.buyerWonLast ? 'rgba(0, 245, 155, 0.12)' : 'rgba(255, 42, 84, 0.12)';
+      verdictBanner.style.background = State.buyerWonLast ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)';
       verdictText.textContent = State.buyerLastOutcome;
-      verdictCount.textContent = `NEW HOLONET LOT IN ${State.buyerTimer.toFixed(1)}s...`;
+      verdictCount.textContent = `NEW LOT IN ${State.buyerTimer.toFixed(1)}s...`;
 
       bidBtn.disabled = true;
       bidBtn.className = 'btn';
-      bidBtn.textContent = `⏳ PREPARING NEXT HOLONET LOT (${State.buyerTimer.toFixed(1)}s)...`;
+      bidBtn.textContent = `⏳ PREPARING NEXT LOT (${State.buyerTimer.toFixed(1)}s)...`;
     }
   },
 
@@ -2394,14 +2926,14 @@ const UI = {
           <div class="unit-card" style="border-style:dashed; justify-content:center; align-items:center; min-height:240px; text-align:center;">
             <div class="unit-title" style="color:var(--text-dim);">Seller Lane #${i + 1} — Open</div>
             <div style="font-size:11px; color:var(--text-dim); margin:6px 0;">
-              Click <b>"🔨 Auction Off"</b> on any miniature in Covert Racks (Tab 1) or click Auto-List above!
+              Click <b>"🔨 Auction Off"</b> on any miniature in Covert Racks (Tab 1) or Forge &amp; Auction in Tab 2!
             </div>
           </div>
         `);
       } else {
         const u = slot.unit;
         const t = TIERS[u.tier];
-        const dexStr = TradeCodec.formatDex(u.dexNum);
+        const dexStr = TradeCodec.formatDex(u.dexNum, u.isCustom);
         const pctOfVal = Math.round((slot.currentBid / u.value) * 100);
         sHtml.push(`
           <div class="unit-card" style="border-color:var(--gold);">
@@ -2413,12 +2945,12 @@ const UI = {
             </div>
             <div class="unit-title">${u.name}</div>
             <div class="unit-meta">
-              <span>Guide Val: ◈${u.value.toLocaleString()}</span>
+              <span>Appraised: ◈${u.value.toLocaleString()}</span>
               <span>Bids: <b>${slot.bidCount}</b></span>
             </div>
             <div style="background:var(--bg-panel); padding:7px; border:1px solid var(--border); font-size:11px;">
               <div>Live Offer: <b class="val-gold" style="font-size:14px;">◈${slot.currentBid.toLocaleString()}</b> (${pctOfVal}%)</div>
-              <div>High Bidder: <b class="val-cyan">${slot.highBidder}</b></div>
+              <div>High Bidder: <b class="val-silver">${slot.highBidder}</b></div>
               ${slot.spikeNotice ? `<div style="color:var(--amber); font-weight:900; margin-top:3px;">${slot.spikeNotice}</div>` : ''}
             </div>
           </div>
@@ -2453,9 +2985,10 @@ const UI = {
     for (let i = 0; i < list.length; i++) {
       const u = list[i];
       const t = TIERS[u.tier];
-      const d = ARCHETYPES[u.division];
+      const d = ARCHETYPES[u.division || 0];
       const hpPct = Math.round((u.hp / u.maxHp) * 100);
-      const dexStr = TradeCodec.formatDex(u.dexNum);
+      const dexStr = TradeCodec.formatDex(u.dexNum, u.isCustom);
+      const badgeLabel = u.isCustom ? `${u.artisanMult}x ${u.artisanGrade}` : t.finish;
 
       const pilotOpts = ['<option value="">-- No Commander --</option>'];
       for (let p = 0; p < State.pilots.length; p++) {
@@ -2472,17 +3005,17 @@ const UI = {
       }
 
       html.push(`
-        <div class="unit-card" style="${u.vaulted ? 'border-color:var(--gold);' : ''}">
+        <div class="unit-card" style="${u.vaulted ? 'border-color:var(--gold);' : (u.isCustom ? 'border-color:#fff;' : '')}">
           <div class="unit-thumb-wrap" onclick="Inspector.open('FLEET', '${u.id}')">
             <img class="unit-thumb" src="${u.imgData}" alt="${u.name}" />
             <span class="tier-tag" style="color:${t.color};">${t.code}</span>
-            <span class="finish-tag">${t.finish}</span>
+            <span class="finish-tag" style="${u.isCustom ? `color:${u.artisanColor || '#fff'};` : ''}">${badgeLabel}</span>
             <span class="dex-tag">${dexStr}</span>
             <span class="inspect-hint">🔍 512² 3D</span>
           </div>
           <div class="unit-title">${u.name}</div>
           <div class="unit-meta">
-            <span>${d.name}</span>
+            <span>${u.isCustom ? 'Custom Forge' : d.name}</span>
             <span class="val-gold">◈${u.value.toLocaleString()}</span>
           </div>
           <div class="stat-row">
@@ -2495,14 +3028,14 @@ const UI = {
           <select onchange="Game.assignSector('${u.id}', this.value)">${secOpts.join('')}</select>
           <div class="btn-row">
             <button class="btn btn-gold" style="flex:1;" onclick="Game.sendUnitToSellerAuction('${u.id}')">🔨 Auction Off</button>
-            <button class="btn btn-cyan" onclick="Game.toggleVault('${u.id}')">${u.vaulted ? '🔒' : '🔓'}</button>
+            <button class="btn btn-silver" onclick="Game.toggleVault('${u.id}')">${u.vaulted ? '🔒' : '🔓'}</button>
             <button class="btn btn-emerald" onclick="Game.repairUnit('${u.id}')">🔧</button>
             <button class="btn btn-crimson" onclick="Game.disbandUnit('${u.id}')">♻️</button>
           </div>
         </div>
       `);
     }
-    document.getElementById('rack-list').innerHTML = html.length ? html.join('') : '<div class="section-sub">No miniatures match current filter. Snipe discounted units in Tab 3 (Holonet Auctions) or unbox Crates in Tab 2!</div>';
+    document.getElementById('rack-list').innerHTML = html.length ? html.join('') : '<div class="section-sub">No miniatures match current filter. Forge a Custom Hunter in Tab 2 or Snipe in Tab 4!</div>';
   },
 
   renderTech() {
@@ -2539,7 +3072,7 @@ const UI = {
           <div class="unit-title">${p.name}</div>
           <div class="stat-row" style="grid-template-columns: repeat(2, 1fr);">
             <div>YIELD <b class="val-gold">+${p.yieldBuff}%</b></div>
-            <div>SPEED <b class="val-cyan">+${p.speedBuff}%</b></div>
+            <div>SPEED <b class="val-silver">+${p.speedBuff}%</b></div>
             <div>SUPPLY <b class="val-emerald">-${p.supplyBuff}%</b></div>
             <div>ARMOR <b class="val-purple">+${p.armorBuff}%</b></div>
           </div>
@@ -2550,13 +3083,13 @@ const UI = {
         </div>
       `);
     }
-    document.getElementById('pilot-list').innerHTML = html.length ? html.join('') : '<div class="section-sub">No Commanders recruited yet. Recruit Armorers & Tacticians in Tab 2!</div>';
+    document.getElementById('pilot-list').innerHTML = html.length ? html.join('') : '<div class="section-sub">No Commanders recruited yet. Recruit Armorers & Tacticians in Tab 3!</div>';
   },
 
   renderBoxes() {
     const boxes = [
       { tier: 0, name: 'Foundling Munitions Crate', cost: 20,    tiers: 'T1 - T3 (#0001–#0300)', color: '#94a3b8' },
-      { tier: 1, name: 'Covert Beskar Warbox',      cost: 200,   tiers: 'T2 - T5 (#0101–#0500)', color: '#38bdf8' },
+      { tier: 1, name: 'Covert Beskar Warbox',      cost: 200,   tiers: 'T2 - T5 (#0101–#0500)', color: '#d8e0ec' },
       { tier: 2, name: 'Imperial Remnant Vault Box',cost: 2000,  tiers: 'T4 - T8 (#0301–#0800)', color: '#a855f7' },
       { tier: 3, name: 'Mythic Mand\'alor Reliquary',cost:15000, tiers: 'T6 - T10 (#0501–#1000)',color: '#f59e0b' }
     ];
@@ -2569,7 +3102,7 @@ const UI = {
           <div class="unit-meta"><span>Collector Pool: <b>${b.tiers}</b></span></div>
           <div class="btn-row" style="margin-top:6px;">
             <button class="btn btn-gold" style="flex:1;" onclick="Game.openWarbox(${b.tier}, 1)">1x (◈${b.cost.toLocaleString()})</button>
-            <button class="btn btn-cyan" style="flex:1;" onclick="Game.openWarbox(${b.tier}, 5)">5x (◈${(b.cost*5).toLocaleString()})</button>
+            <button class="btn btn-silver" style="flex:1;" onclick="Game.openWarbox(${b.tier}, 5)">5x (◈${(b.cost*5).toLocaleString()})</button>
             <button class="btn btn-purple" style="flex:1;" onclick="Game.openWarbox(${b.tier}, 10)">10x (◈${(b.cost*10).toLocaleString()})</button>
           </div>
         </div>
@@ -2606,7 +3139,7 @@ const UI = {
         <div class="fighter-slot ${u.curHp <= 0 ? 'dead' : ''}">
           <img src="${u.imgData}" style="width:48px;height:48px;image-rendering:pixelated;border:1px solid #334155;" />
           <div style="flex:1;">
-            <div style="font-size:12px;font-weight:800;">${TradeCodec.formatDex(u.dexNum)} ${u.name} ${u.fortified ? '🛡️' : ''}</div>
+            <div style="font-size:12px;font-weight:800;">${TradeCodec.formatDex(u.dexNum, u.isCustom)} ${u.name} ${u.fortified ? '🛡️' : ''}</div>
             <div style="font-size:11px;color:var(--text-dim);">ATK ${u.atk} | Group ${u.group} | HP ${u.curHp}/${u.maxHp}</div>
             <div class="hp-bar-outer" style="margin-top:4px;"><div class="hp-bar-inner" style="width:${hpPct}%;"></div></div>
           </div>
@@ -2648,7 +3181,7 @@ const UI = {
           <div style="font-size:11px;color:var(--text-dim);">${s.desc}</div>
           <div class="stat-row">
             <div>Base <b class="val-gold">◈${s.baseReward}</b></div>
-            <div>Upkeep <b class="val-cyan">${s.fuelCost} Sup</b></div>
+            <div>Upkeep <b class="val-silver">${s.fuelCost} Sup</b></div>
             <div>Hunters <b class="val-emerald">${assigned.length}</b></div>
           </div>
         </div>
@@ -2701,13 +3234,13 @@ const UI = {
 
       html.push(`
         <div class="unit-card" style="opacity:${claimed ? 0.55 : 1}; border-color:${done && !claimed ? 'var(--gold)' : 'var(--border)'};">
-          <div style="font-size:10px;color:var(--cyan);font-weight:700;">${m.bookName}</div>
+          <div style="font-size:10px;color:var(--silver);font-weight:700;">${m.bookName}</div>
           <div class="unit-title">${m.title}</div>
           <div class="unit-meta">
             <span>${Math.min(cur, m.target).toLocaleString()} / ${m.target.toLocaleString()} ${m.unitLabel}</span>
             <span class="val-gold">+◈${m.rewardCredits.toLocaleString()}</span>
           </div>
-          <div class="hp-bar-outer"><div class="hp-bar-inner" style="width:${pct}%;background:${claimed ? 'var(--cyan)' : 'var(--gold)'};"></div></div>
+          <div class="hp-bar-outer"><div class="hp-bar-inner" style="width:${pct}%;background:${claimed ? 'var(--silver)' : 'var(--gold)'};"></div></div>
           <button class="btn ${done && !claimed ? 'btn-gold' : ''}" ${(!done || claimed) ? 'disabled' : ''} onclick="Game.claimMilestone(${m.id})">
             ${claimed ? '✓ Trial Claimed' : (done ? '🏆 Claim Reward' : 'Locked')}
           </button>
@@ -2719,7 +3252,7 @@ const UI = {
 };
 
 /* ============================================================================
-   8. MASTER SIMULATION TICK (0.2s INTERVAL) & INITIALIZATION
+   10. MASTER SIMULATION TICK (0.2s INTERVAL) & INITIALIZATION
    ============================================================================ */
 function populateFilterDropdowns() {
   const divSel = document.getElementById('filter-div');
@@ -2738,9 +3271,17 @@ function populateFilterDropdowns() {
 }
 
 const SYNDICATE_BIDDERS = ['Pyke Collector', 'Hutt Cartel Envoy', 'Crimson Dawn Broker', 'Corellian Museum', 'Nevarro Guildmaster', 'Coruscant Noble'];
+let autoSaveCounter = 0;
 
 function gameTick() {
   const dt = 0.2;
+
+  // Periodic Auto-Save every 5.0 seconds
+  autoSaveCounter += dt;
+  if (autoSaveCounter >= 5.0) {
+    autoSaveCounter = 0;
+    SaveSystem.saveToLocal(false);
+  }
 
   // 1. 1-Lane Bargain Buyer Auction State Machine ('ACTIVE' 10.0s -> 'COOLDOWN' 3.0s)
   if (State.buyerAuction) {
@@ -2749,7 +3290,6 @@ function gameTick() {
       State.buyerTimer = Math.max(0, State.buyerTimer - dt);
       if (b.rivalCooldown > 0) b.rivalCooldown = Math.max(0, b.rivalCooldown - dt);
 
-      // Rival AI can only counter-bid if > 1.8s remains AND rivalCooldown <= 0, so player can ALWAYS out-snipe!
       if (State.buyerTimer > 1.8 &&
           b.rivalCooldown <= 0 &&
           b.highBidder === 'YOU' &&
@@ -2760,10 +3300,9 @@ function gameTick() {
       }
 
       if (State.buyerTimer <= 0) {
-        // Hammer falls! Enter 3.0-second visual intermission
         State.buyerPhase = 'COOLDOWN';
         State.buyerTimer = 3.0;
-        const dexStr = TradeCodec.formatDex(b.unit.dexNum);
+        const dexStr = TradeCodec.formatDex(b.unit.dexNum, b.unit.isCustom);
 
         if (b.highBidder === 'YOU' && State.funds >= b.currentBid) {
           State.funds -= b.currentBid;
@@ -2773,6 +3312,7 @@ function gameTick() {
           State.buyerLastOutcome = `🏆 SNIPED BY YOU FOR ◈${b.currentBid.toLocaleString()}! (${dexStr} ADDED TO RACKS)`;
           UI.toast(`🎯 Sniped ${dexStr} ${b.unit.name} for ◈${b.currentBid.toLocaleString()}!`);
           if (UI.activeTab === 'tab-racks') UI.renderRacks();
+          SaveSystem.saveToLocal(false);
         } else {
           State.buyerWonLast = false;
           State.buyerLastOutcome = `🔨 LOT CLOSED — SOLD TO ${b.highBidder.toUpperCase()} FOR ◈${b.currentBid.toLocaleString()}`;
@@ -2821,8 +3361,9 @@ function gameTick() {
       State.funds += payout;
       State.stats.lifetimeCredits += payout;
       State.stats.auctionsSold++;
-      UI.toast(`💰 Sold ${TradeCodec.formatDex(s.unit.dexNum)} ${s.unit.name} in Lane #${i + 1} for ◈${payout.toLocaleString()}!`);
+      UI.toast(`💰 Sold ${s.unit.name} in Lane #${i + 1} for ◈${payout.toLocaleString()}!`);
       State.sellerLanes[i] = null;
+      SaveSystem.saveToLocal(false);
     }
   }
 
@@ -2890,12 +3431,16 @@ function gameTick() {
 window.addEventListener('DOMContentLoaded', () => {
   populateFilterDropdowns();
   Inspector.bindEvents();
+  CustomForge.init();
 
-  // Seed 3 Iconic Heroic Scale Starters
-  Game.addUnitToFleet(Game.createUnit({ tier: 0, faction: 0, division: 0 }, false));
-  Game.addUnitToFleet(Game.createUnit({ tier: 1, faction: 1, division: 5 }, false));
-  Game.addUnitToFleet(Game.createUnit({ tier: 2, faction: 3, division: 2 }, false));
-  State.pilots.push(Game.createPilot(0));
+  // Attempt to load existing save from localStorage; otherwise seed starter Covert force
+  const loaded = SaveSystem.loadFromLocal();
+  if (!loaded) {
+    Game.addUnitToFleet(Game.createUnit({ tier: 0, faction: 0, division: 0 }, false));
+    Game.addUnitToFleet(Game.createUnit({ tier: 1, faction: 1, division: 5 }, false));
+    Game.addUnitToFleet(Game.createUnit({ tier: 2, faction: 3, division: 2 }, false));
+    State.pilots.push(Game.createPilot(0));
+  }
 
   Game.spawnBuyerAuction();
   Game.initCommissions();
