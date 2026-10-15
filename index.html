@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 <title>MANDALORIAN WARFORGE // Darksaber Master Template</title>
 <style>
   :root {
@@ -24,80 +24,114 @@
     --text-dim: #8b96a8;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body {
+  html, body {
     margin: 0; padding: 0;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
     background: radial-gradient(circle at 50% 0%, #181c26 0%, var(--bg-void) 75%);
     color: var(--text-main);
     font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
     min-height: 100vh;
-    overflow-x: hidden;
     user-select: none;
   }
 
-  /* TOP DARKSABER HUD */
+  /* ========================================================================
+     ULTRA-COMPACT TOP DARKSABER HUD (<18% OF VERTICAL PHONE SCREEN)
+     ======================================================================== */
   .hud-header {
     position: sticky; top: 0; z-index: 100;
+    width: 100%;
     background: rgba(5, 6, 9, 0.96);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--silver);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.85), 0 1px 10px rgba(255, 255, 255, 0.15);
-    padding: 8px 12px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.85);
+    padding: 5px 8px 6px;
   }
   .hud-top-row {
-    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px;
-    max-width: 1440px; margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    max-width: 1440px;
+    margin: 0 auto 4px;
   }
   .brand-title {
-    display: flex; align-items: center; gap: 10px;
-    font-weight: 900; letter-spacing: 1.5px; font-size: 14px; color: #fff;
+    display: flex; align-items: center; gap: 6px;
+    font-weight: 900; letter-spacing: 0.8px; font-size: 11px; color: #fff;
     text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
   }
   .brand-badge {
     background: #050608;
-    color: #fff; padding: 4px 9px; font-size: 10px; font-weight: 900;
-    letter-spacing: 1.2px;
+    color: #fff; padding: 2px 6px; font-size: 9px; font-weight: 900;
     border: 1px solid #fff;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-    clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+    flex-shrink: 0;
   }
+  .hud-actions {
+    display: flex; gap: 4px; align-items: center; flex-shrink: 0;
+  }
+
+  /* 5-COLUMN SINGLE-ROW TELEMETRY BAR */
   .hud-stats {
-    display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+    max-width: 1440px;
+    margin: 0 auto 5px;
   }
   .stat-pill {
     background: #0c0e14;
     border: 1px solid #2e3646;
-    border-left: 3px solid var(--silver);
-    padding: 5px 10px;
-    font-size: 11px;
-    display: flex; align-items: center; gap: 6px;
-    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
+    border-left: 2px solid var(--silver);
+    padding: 3px 5px;
+    font-size: 9px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    overflow: hidden;
   }
-  .stat-pill b { font-family: "Courier New", monospace; font-size: 13px; }
+  .stat-pill span {
+    color: var(--text-dim);
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .stat-pill b {
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .val-gold { color: var(--gold); }
-  .val-silver { color: var(--silver); text-shadow: 0 0 6px rgba(255,255,255,0.25); }
+  .val-silver { color: var(--silver); }
   .val-emerald { color: var(--emerald); }
   .val-purple { color: var(--purple); }
 
-  /* 2 ROWS x 3 COLUMNS (6-TAB) DARKSABER NAVIGATION GRID */
+  /* LOCKED 2 ROWS x 3 COLUMNS (6-TAB) NAVIGATION GRID ON ALL SCREENS */
   .nav-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 7px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
     max-width: 1440px;
-    margin: 9px auto 0;
-  }
-  @media (max-width: 560px) {
-    .nav-grid { grid-template-columns: repeat(2, 1fr); }
+    margin: 0 auto;
   }
   .nav-btn {
     background: linear-gradient(180deg, #161a24 0%, #0b0d13 100%);
     color: var(--text-dim);
     border: 1px solid #2c3344;
-    padding: 9px 8px;
-    font-size: 11px;
+    padding: 6px 4px;
+    font-size: 10px;
     font-weight: 900;
-    letter-spacing: 0.8px;
+    letter-spacing: 0.3px;
     text-transform: uppercase;
     cursor: pointer;
     text-align: center;
@@ -105,114 +139,128 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
+    min-width: 0;
+    clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
   }
   .nav-btn:hover { border-color: var(--silver); color: #fff; }
   .nav-btn.active {
     background: linear-gradient(180deg, #2b3242 0%, #10131b 100%);
     color: #fff;
     border-color: #fff;
-    box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.28), 0 0 12px rgba(255, 255, 255, 0.22);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.25);
   }
   .nav-badge {
     display: inline-block; background: #050608; color: var(--silver);
     border: 1px solid #475569;
-    padding: 1px 6px; border-radius: 3px; font-size: 10px; margin-left: 4px;
+    padding: 0px 4px; border-radius: 3px; font-size: 9px; margin-left: 2px;
     font-family: "Courier New", monospace;
   }
 
   /* MAIN CONTAINER */
   .main-wrap {
+    width: 100%;
     max-width: 1440px;
     margin: 0 auto;
-    padding: 14px 12px 44px;
+    padding: 8px 8px 40px;
   }
-  .tab-pane { display: none; }
+  .tab-pane { display: none; width: 100%; }
   .tab-pane.active { display: block; }
 
   .section-bar {
     display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
-    gap: 10px; margin-bottom: 12px;
+    gap: 8px; margin-bottom: 10px;
     background: var(--bg-panel);
     border: 1px solid var(--border);
-    border-left: 4px solid #fff;
-    padding: 10px 14px;
-    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    border-left: 3px solid #fff;
+    padding: 8px 10px;
+    width: 100%;
   }
   .section-title {
-    font-size: 14px; font-weight: 900; color: var(--silver);
-    letter-spacing: 1px; text-transform: uppercase;
+    font-size: 12px; font-weight: 900; color: var(--silver);
+    letter-spacing: 0.6px; text-transform: uppercase;
   }
-  .section-sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+  .section-sub { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
 
-  /* CARDS & GRIDS */
+  /* CARDS & GRIDS (2-COLUMN READY ON MOBILE OR FULL WIDTH) */
   .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+    width: 100%;
+  }
+  @media (max-width: 520px) {
+    .card-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
   }
   .unit-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    padding: 10px;
+    padding: 8px;
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 5px;
     position: relative;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-    transition: border-color 0.12s ease, box-shadow 0.12s ease;
-  }
-  .unit-card:hover {
-    border-color: var(--silver);
-    box-shadow: 0 0 14px rgba(255, 255, 255, 0.08);
+    min-width: 0;
+    max-width: 100%;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
   }
   .unit-thumb-wrap {
-    width: 100%; height: 152px;
+    width: 100%; height: 124px;
     background: radial-gradient(circle at 50% 55%, #222836 0%, #07080c 85%);
     border: 1px solid #262d3d;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer; position: relative; overflow: hidden;
   }
   .unit-thumb {
-    width: 138px; height: 138px;
+    width: 114px; height: 114px;
     image-rendering: pixelated;
     object-fit: contain;
   }
   .tier-tag {
-    position: absolute; top: 6px; left: 6px;
-    padding: 2px 7px;
-    font-size: 10px; font-weight: 900; letter-spacing: 0.8px;
+    position: absolute; top: 4px; left: 4px;
+    padding: 1px 5px;
+    font-size: 9px; font-weight: 900;
     background: rgba(4, 5, 8, 0.9); border: 1px solid currentColor;
   }
   .dex-tag {
-    position: absolute; bottom: 5px; left: 6px;
-    padding: 2px 6px;
-    font-size: 10px; font-weight: 800; font-family: "Courier New", monospace;
+    position: absolute; bottom: 4px; left: 4px;
+    padding: 1px 5px;
+    font-size: 9px; font-weight: 800; font-family: "Courier New", monospace;
     background: rgba(4, 5, 8, 0.9); color: var(--gold); border: 1px solid #475569;
   }
   .finish-tag {
-    position: absolute; top: 6px; right: 6px;
-    padding: 2px 6px;
-    font-size: 10px; font-weight: 700;
+    position: absolute; top: 4px; right: 4px;
+    padding: 1px 5px;
+    font-size: 8px; font-weight: 700;
     background: rgba(12, 15, 22, 0.92); color: var(--silver);
     border: 1px solid #334155;
+    max-width: 68%;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .inspect-hint {
-    position: absolute; bottom: 5px; right: 6px;
-    font-size: 10px; color: #fff; background: rgba(4, 5, 8, 0.88);
+    position: absolute; bottom: 4px; right: 4px;
+    font-size: 8px; color: #fff; background: rgba(4, 5, 8, 0.88);
     border: 1px solid rgba(255, 255, 255, 0.35);
-    padding: 2px 6px;
+    padding: 1px 4px;
   }
-  .unit-title { font-size: 13px; font-weight: 800; color: #fff; line-height: 1.25; }
-  .unit-meta { font-size: 11px; color: var(--text-dim); display: flex; justify-content: space-between; }
+  .unit-title {
+    font-size: 11px; font-weight: 800; color: #fff; line-height: 1.2;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .unit-meta {
+    font-size: 10px; color: var(--text-dim);
+    display: flex; justify-content: space-between; gap: 4px;
+    white-space: nowrap; overflow: hidden;
+  }
   .stat-row {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px;
     background: #080a0f; border: 1px solid #1f2533;
-    padding: 5px; font-size: 11px; text-align: center;
+    padding: 4px 2px; font-size: 9px; text-align: center;
   }
   .hp-bar-outer {
-    width: 100%; height: 6px; background: #050608; overflow: hidden; border: 1px solid #222836;
+    width: 100%; height: 5px; background: #050608; overflow: hidden; border: 1px solid #222836;
   }
   .hp-bar-inner { height: 100%; background: var(--emerald); transition: width 0.2s; }
 
@@ -220,13 +268,15 @@
   .btn {
     background: var(--bg-elev); color: var(--text-main);
     border: 1px solid #3c465c;
-    padding: 7px 11px; font-size: 11px; font-weight: 800;
-    letter-spacing: 0.5px; text-transform: uppercase;
+    padding: 5px 8px; font-size: 10px; font-weight: 800;
+    letter-spacing: 0.3px; text-transform: uppercase;
     cursor: pointer; transition: all 0.12s;
-    display: inline-flex; align-items: center; justify-content: center; gap: 5px;
-    clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
+    display: inline-flex; align-items: center; justify-content: center; gap: 3px;
+    clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+    min-width: 0;
   }
-  .btn:hover:not(:disabled) { border-color: #fff; color: #fff; box-shadow: 0 0 8px rgba(255,255,255,0.2); }
+  .btn-xs { padding: 4px 6px; font-size: 9px; }
+  .btn:hover:not(:disabled) { border-color: #fff; color: #fff; }
   .btn:active:not(:disabled) { transform: scale(0.98); }
   .btn:disabled { opacity: 0.42; cursor: not-allowed; }
   .btn-silver { background: linear-gradient(180deg, #333b4d, #161a24); border-color: #fff; color: #fff; }
@@ -237,124 +287,137 @@
   .btn-god {
     background: linear-gradient(135deg, #f59e0b, #b91c1c);
     border-color: #fff; color: #fff;
-    box-shadow: 0 0 14px rgba(245, 158, 11, 0.55);
   }
-  .btn-row { display: flex; flex-wrap: wrap; gap: 5px; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 4px; width: 100%; }
 
   select, input[type="text"] {
     background: #07080c; color: var(--text-main);
     border: 1px solid #333c4f;
-    padding: 6px 8px; font-size: 11px;
+    padding: 5px 6px; font-size: 10px;
+    width: 100%;
+    min-width: 0;
   }
   label.chk-pill {
-    display: inline-flex; align-items: center; gap: 6px;
+    display: inline-flex; align-items: center; gap: 5px;
     background: #07080c; border: 1px solid var(--gold);
-    color: var(--gold); padding: 5px 10px;
-    font-size: 11px; font-weight: 800; cursor: pointer;
+    color: var(--gold); padding: 4px 8px;
+    font-size: 10px; font-weight: 800; cursor: pointer;
   }
 
   /* ========================================================================
-     TAB 2: CUSTOM FORGE & ENDLESS HEX PAINT STUDIO LAYOUT
+     TAB 2: CUSTOM FORGE & ENDLESS HEX PAINT STUDIO (FIT-TO-SCREEN MOBILE)
      ======================================================================== */
   .forge-studio-grid {
     display: grid;
-    grid-template-columns: 440px 1fr;
-    gap: 16px;
+    grid-template-columns: 380px minmax(0, 1fr);
+    gap: 12px;
     align-items: start;
+    width: 100%;
   }
-  @media (max-width: 960px) {
-    .forge-studio-grid { grid-template-columns: 1fr; }
+  @media (max-width: 900px) {
+    .forge-studio-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
   .forge-preview-box {
     background: var(--bg-panel);
-    border: 2px solid var(--silver);
-    padding: 12px;
-    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
-    box-shadow: 0 0 28px rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--silver);
+    padding: 10px;
+    width: 100%;
+    min-width: 0;
   }
   #forge-canvas {
     width: 100%;
+    max-width: 340px;
+    height: auto;
     aspect-ratio: 1 / 1;
+    display: block;
+    margin: 0 auto;
     background: radial-gradient(circle at 50% 55%, #252b3b 0%, #050609 85%);
     border: 1px solid var(--border);
     cursor: grab;
     touch-action: none;
   }
+  @media (max-width: 600px) {
+    #forge-canvas {
+      max-width: 240px;
+    }
+  }
   #forge-canvas:active { cursor: grabbing; }
   .forge-controls-box {
     background: var(--bg-panel);
     border: 1px solid var(--border);
-    padding: 14px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
   }
   .control-group {
     background: var(--bg-card);
     border: 1px solid #242a38;
-    padding: 10px;
+    padding: 8px;
+    width: 100%;
+    min-width: 0;
   }
   .control-label {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 900;
     color: var(--silver);
     text-transform: uppercase;
-    letter-spacing: 0.7px;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 4px;
   }
   .paint-zone-row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
   .hex-input {
-    width: 92px;
+    width: 82px !important;
     font-family: "Courier New", monospace;
     font-weight: 800;
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
     border: 1px solid var(--silver);
     background: #040508;
     color: #fff;
-    padding: 5px 7px;
+    padding: 4px 6px;
+    flex-shrink: 0;
   }
   .color-wheel-input {
-    width: 34px;
-    height: 30px;
+    width: 28px;
+    height: 26px;
     padding: 0;
     border: 1px solid #fff;
     background: none;
     cursor: pointer;
+    flex-shrink: 0;
   }
   .swatch-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 4px;
     flex: 1;
+    min-width: 120px;
   }
   .color-swatch {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     border: 1px solid #3c465c;
     cursor: pointer;
-    transition: transform 0.1s, border-color 0.1s;
   }
-  .color-swatch:hover { transform: scale(1.15); border-color: #fff; }
   .artisan-banner {
     background: linear-gradient(90deg, #161922 0%, #242a3a 50%, #161922 100%);
     border: 1px solid var(--silver);
-    padding: 10px 12px;
-    font-size: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
+    padding: 8px 10px;
+    font-size: 11px;
+    line-height: 1.35;
   }
 
   /* SNIPE AUCTION SPOTLIGHT + 3.0s INTERMISSION */
@@ -365,67 +428,70 @@
   .snipe-spotlight {
     background: linear-gradient(135deg, #12151f 0%, #090b10 100%);
     border: 2px solid var(--silver);
-    padding: 14px;
-    margin-bottom: 18px;
+    padding: 10px;
+    margin-bottom: 14px;
     display: grid;
-    grid-template-columns: 185px 1fr;
-    gap: 16px;
+    grid-template-columns: 135px minmax(0, 1fr);
+    gap: 10px;
     align-items: center;
-    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
-    box-shadow: 0 0 28px rgba(255, 255, 255, 0.12);
+    width: 100%;
     animation: darksaberLock 0.26s ease-out;
   }
-  .snipe-spotlight.phase-won { border-color: var(--emerald); box-shadow: 0 0 32px rgba(16, 185, 129, 0.28); }
-  .snipe-spotlight.phase-lost { border-color: var(--crimson); box-shadow: 0 0 28px rgba(239, 68, 68, 0.24); }
-  @media (max-width: 640px) {
-    .snipe-spotlight { grid-template-columns: 1fr; }
+  .snipe-spotlight.phase-won { border-color: var(--emerald); }
+  .snipe-spotlight.phase-lost { border-color: var(--crimson); }
+  @media (max-width: 480px) {
+    .snipe-spotlight { grid-template-columns: 110px minmax(0, 1fr); gap: 8px; }
   }
   .intermission-banner {
-    padding: 8px 12px;
-    font-size: 13px;
+    padding: 6px 8px;
+    font-size: 10px;
     font-weight: 900;
-    letter-spacing: 0.8px;
     text-transform: uppercase;
     display: none;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
+    gap: 4px;
     border: 1px solid currentColor;
   }
   .intermission-banner.show { display: flex; }
 
   /* ARENA LAYOUT */
   .arena-grid {
-    display: grid; grid-template-columns: 1fr 320px 1fr; gap: 12px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px minmax(0, 1fr);
+    gap: 10px;
+    width: 100%;
   }
-  @media (max-width: 980px) {
-    .arena-grid { grid-template-columns: 1fr; }
+  @media (max-width: 900px) {
+    .arena-grid { grid-template-columns: minmax(0, 1fr); }
   }
   .arena-side, .arena-center {
     background: var(--bg-panel); border: 1px solid var(--border);
-    padding: 12px;
+    padding: 10px;
+    min-width: 0;
   }
   .arena-center {
-    display: flex; flex-direction: column; gap: 10px; align-items: center;
+    display: flex; flex-direction: column; gap: 8px; align-items: center;
   }
-  .dice-tray { display: flex; gap: 14px; justify-content: center; margin: 4px 0; }
+  .dice-tray { display: flex; gap: 12px; justify-content: center; margin: 2px 0; }
   .die-box {
-    width: 52px; height: 52px;
+    width: 44px; height: 44px;
     background: linear-gradient(145deg, #1f2430, #090b10);
     border: 2px solid #fff; color: #fff;
-    font-size: 25px; font-weight: 900;
+    font-size: 22px; font-weight: 900;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 12px rgba(255,255,255,0.2);
   }
   .combat-log {
-    width: 100%; height: 180px; overflow-y: auto;
+    width: 100%; height: 150px; overflow-y: auto;
     background: #050609; border: 1px solid var(--border);
-    padding: 8px; font-size: 11px;
-    font-family: "Courier New", monospace; line-height: 1.45;
+    padding: 6px; font-size: 10px;
+    font-family: "Courier New", monospace; line-height: 1.4;
   }
   .fighter-slot {
     background: var(--bg-card); border: 1px solid var(--border);
-    padding: 8px; margin-bottom: 8px;
-    display: flex; align-items: center; gap: 10px;
+    padding: 6px; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 8px;
   }
   .fighter-slot.dead { opacity: 0.35; filter: grayscale(1); }
 
@@ -435,20 +501,21 @@
     background: rgba(2, 3, 6, 0.90);
     backdrop-filter: blur(8px);
     display: none; align-items: center; justify-content: center;
-    padding: 12px;
+    padding: 10px;
   }
   .modal-backdrop.open { display: flex; }
   .modal-box {
     background: #0b0d13; border: 2px solid #fff;
-    max-width: 860px; width: 100%;
-    padding: 14px; display: grid; grid-template-columns: 512px 1fr; gap: 14px;
-    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+    max-width: 820px; width: 100%;
+    padding: 12px; display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 12px;
+    max-height: 92vh; overflow-y: auto;
   }
-  @media (max-width: 860px) {
-    .modal-box { grid-template-columns: 1fr; max-height: 94vh; overflow-y: auto; }
+  @media (max-width: 760px) {
+    .modal-box { grid-template-columns: minmax(0, 1fr); }
   }
   #inspect-canvas {
-    width: 100%; max-width: 512px; aspect-ratio: 1 / 1;
+    width: 100%; max-width: 280px; height: auto; aspect-ratio: 1 / 1;
+    display: block; margin: 0 auto;
     background: radial-gradient(circle at 50% 55%, #232938 0%, #050609 85%);
     border: 1px solid var(--border);
     cursor: grab; touch-action: none;
@@ -457,46 +524,52 @@
 
   /* TOAST */
   #toast-wrap {
-    position: fixed; bottom: 16px; right: 16px; z-index: 1200;
-    display: flex; flex-direction: column; gap: 6px; pointer-events: none;
+    position: fixed; bottom: 12px; right: 12px; left: 12px; z-index: 1200;
+    display: flex; flex-direction: column; gap: 5px; pointer-events: none;
+    align-items: center;
   }
   .toast-msg {
     background: rgba(10, 12, 18, 0.96); color: #fff;
     border-left: 4px solid #fff; border-top: 1px solid var(--border);
     border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
-    padding: 9px 14px; font-size: 12px; font-weight: 700;
+    padding: 8px 12px; font-size: 11px; font-weight: 700;
     box-shadow: 0 6px 20px rgba(0,0,0,0.75);
+    max-width: 440px; width: 100%;
   }
 </style>
 </head>
 <body>
 
-<!-- TOP DARKSABER HUD -->
+<!-- ULTRA-COMPACT TOP DARKSABER HUD (<18% OF PHONE SCREEN HEIGHT) -->
 <header class="hud-header">
   <div class="hud-top-row">
     <div class="brand-title">
-      <span class="brand-badge">DARKSABER // 128³</span>
-      <span>MANDALORIAN WARFORGE : MASTER EDITION</span>
+      <span class="brand-badge">128³</span>
+      <span>MANDALORIAN WARFORGE</span>
     </div>
-    <div class="hud-stats">
-      <div class="stat-pill"><span>Imperial Credits:</span> <b class="val-gold" id="hud-funds">◈500</b></div>
-      <div class="stat-pill"><span>Beskar &amp; Tibanna:</span> <b class="val-silver" id="hud-fuel">1,000</b></div>
-      <div class="stat-pill"><span>Covert Racks:</span> <b class="val-emerald" id="hud-fleet">0</b></div>
-      <div class="stat-pill"><span>1,000 Codex:</span> <b class="val-gold" id="hud-codex">0/1000</b></div>
-      <div class="stat-pill"><span>Creed Trials:</span> <b class="val-purple" id="hud-miles">0/150</b></div>
-      <button class="btn btn-god" id="hud-god-btn" onclick="Game.activateGodMode()">⚡ GOD MODE: OFF</button>
-      <button class="btn btn-silver" onclick="UI.openCodeModal()">📡 Codes</button>
-      <button class="btn btn-emerald" onclick="UI.openSaveModal()">💾 Save / Load</button>
+    <div class="hud-actions">
+      <button class="btn btn-xs btn-god" id="hud-god-btn" onclick="Game.activateGodMode()">⚡ GOD: OFF</button>
+      <button class="btn btn-xs btn-silver" onclick="UI.openCodeModal()">📡 CODES</button>
+      <button class="btn btn-xs btn-emerald" onclick="UI.openSaveModal()">💾 SAVE</button>
     </div>
   </div>
 
-  <!-- 2 ROWS x 3 COLUMNS (6-TAB) NAVIGATION GRID -->
+  <!-- 5-COLUMN SINGLE-LINE TELEMETRY BAR -->
+  <div class="hud-stats">
+    <div class="stat-pill"><span>Credits</span><b class="val-gold" id="hud-funds">◈500</b></div>
+    <div class="stat-pill"><span>Supply</span><b class="val-silver" id="hud-fuel">1,000</b></div>
+    <div class="stat-pill"><span>Owned Mandos</span><b class="val-emerald" id="hud-fleet">0</b></div>
+    <div class="stat-pill"><span>Codex</span><b class="val-gold" id="hud-codex">0/1000</b></div>
+    <div class="stat-pill"><span>Trials</span><b class="val-purple" id="hud-miles">0/150</b></div>
+  </div>
+
+  <!-- LOCKED 2 ROWS x 3 COLUMNS (6-TAB) NAVIGATION GRID -->
   <nav class="nav-grid" id="nav-grid">
-    <button class="nav-btn active" data-tab="tab-racks" onclick="UI.switchTab('tab-racks')">1. 🛡️ Covert Racks <span class="nav-badge" id="rack-count">0</span></button>
-    <button class="nav-btn" data-tab="tab-forge" onclick="UI.switchTab('tab-forge')">2. 🎨 Custom Forge &amp; Paint</button>
-    <button class="nav-btn" data-tab="tab-boxes" onclick="UI.switchTab('tab-boxes')">3. 📦 Great Forge Crates</button>
-    <button class="nav-btn" data-tab="tab-auctions" onclick="UI.switchTab('tab-auctions')">4. 🔨 Auction House <span class="nav-badge" id="auc-timer">10s</span></button>
-    <button class="nav-btn" data-tab="tab-arena" onclick="UI.switchTab('tab-arena')">5. ⚔️ Battle &amp; Patrols</button>
+    <button class="nav-btn active" data-tab="tab-racks" onclick="UI.switchTab('tab-racks')">1. 🛡️ Owned Mandos <span class="nav-badge" id="rack-count">0</span></button>
+    <button class="nav-btn" data-tab="tab-forge" onclick="UI.switchTab('tab-forge')">2. 🎨 Custom Forge</button>
+    <button class="nav-btn" data-tab="tab-boxes" onclick="UI.switchTab('tab-boxes')">3. 📦 Forge Crates</button>
+    <button class="nav-btn" data-tab="tab-auctions" onclick="UI.switchTab('tab-auctions')">4. 🔨 Auctions <span class="nav-badge" id="auc-timer">10s</span></button>
+    <button class="nav-btn" data-tab="tab-arena" onclick="UI.switchTab('tab-arena')">5. ⚔️ Battle &amp; Patrol</button>
     <button class="nav-btn" data-tab="tab-command" onclick="UI.switchTab('tab-command')">6. 📜 High Command</button>
   </nav>
 </header>
@@ -504,30 +577,30 @@
 <main class="main-wrap">
 
   <!-- ======================================================================
-       TAB 1: COVERT RACKS, VAULT FILTER, ARMORY TECH & ARMORERS
+       TAB 1: OWNED MANDOS, VAULT FILTER, ARMORY TECH & ARMORERS
        ====================================================================== -->
   <section id="tab-racks" class="tab-pane active">
     <div class="section-bar">
       <div>
-        <div class="section-title">1. COVERT RACKS // DYNAMIC POSE &amp; SAMURAI BESKAR MINIATURES</div>
-        <div class="section-sub">Manage your numbered Collector Miniatures (`#0001–#1000`) and Custom-Forged Masterworks. Click any miniature for an isolated 512² 60 FPS 3D inspection.</div>
+        <div class="section-title">1. OWNED MANDOS // HEROIC &amp; SAMURAI BESKAR COLLECTION</div>
+        <div class="section-sub">Tap any miniature for an isolated 512² 60 FPS 3D inspection, lock in Vault, or auction off in Tab 4.</div>
       </div>
       <div class="btn-row">
         <label class="chk-pill">
           <input type="checkbox" id="filter-vault-only" onchange="UI.renderRacks()" />
-          🔒 Show Vaulted Only (<span id="vault-inline-count">0</span>)
+          🔒 Vaulted (<span id="vault-inline-count">0</span>)
         </label>
-        <select id="filter-div" onchange="UI.renderRacks()">
-          <option value="ALL">All 10 Heroic Classes</option>
+        <select id="filter-div" style="width:auto; flex:1;" onchange="UI.renderRacks()">
+          <option value="ALL">All 10 Classes</option>
         </select>
-        <select id="filter-tier" onchange="UI.renderRacks()">
-          <option value="ALL">All 10 Rarity Tiers</option>
+        <select id="filter-tier" style="width:auto; flex:1;" onchange="UI.renderRacks()">
+          <option value="ALL">All 10 Tiers</option>
         </select>
-        <select id="sort-racks" onchange="UI.renderRacks()">
-          <option value="VAL_DESC">Sort: Highest Value</option>
-          <option value="TIER_DESC">Sort: Highest Tier</option>
-          <option value="DEX_ASC">Sort: Collector #0001–#1000</option>
-          <option value="HP_ASC">Sort: Needs Repair</option>
+        <select id="sort-racks" style="width:auto; flex:1;" onchange="UI.renderRacks()">
+          <option value="VAL_DESC">Sort: Value</option>
+          <option value="TIER_DESC">Sort: Tier</option>
+          <option value="DEX_ASC">Sort: #0001–#1000</option>
+          <option value="HP_ASC">Sort: HP</option>
         </select>
         <button class="btn btn-emerald" onclick="Game.repairAll()">🔧 Repair All</button>
       </div>
@@ -535,19 +608,19 @@
     <div class="card-grid" id="rack-list"></div>
 
     <!-- ARMORY TECH UPGRADES -->
-    <div class="section-bar" style="margin-top:18px;">
+    <div class="section-bar" style="margin-top:14px;">
       <div>
         <div class="section-title">⚙️ MANDALORIAN ARMORY TECH UPGRADES</div>
-        <div class="section-sub">Permanently upgrade Covert Payout Yield (+5%/lvl), Beskar Supply Efficiency (-2%/lvl, max 70%), Arena ATK (+4%/lvl), and Capture Nets (+2%/lvl).</div>
+        <div class="section-sub">Permanently upgrade Payout Yield (+5%/lvl), Supply Efficiency (-2%/lvl), Arena ATK (+4%/lvl), and Capture Nets (+2%/lvl).</div>
       </div>
     </div>
     <div class="card-grid" id="tech-list"></div>
 
     <!-- ARMORERS & TACTICIANS ROSTER -->
-    <div class="section-bar" style="margin-top:18px;">
+    <div class="section-bar" style="margin-top:14px;">
       <div>
-        <div class="section-title">🎖️ COVERT ARMORERS &amp; TACTICIANS ROSTER (<span id="pilot-count">0</span>)</div>
-        <div class="section-sub">Recruited Commanders who grant % buffs to YIELD, SPEED, SUPPLY efficiency, and ARMOR durability when assigned to a miniature above.</div>
+        <div class="section-title">🎖️ ARMORERS &amp; TACTICIANS ROSTER (<span id="pilot-count">0</span>)</div>
+        <div class="section-sub">Commanders grant % buffs to YIELD, SPEED, SUPPLY, and ARMOR when assigned to an Owned Mando above.</div>
       </div>
     </div>
     <div class="card-grid" id="pilot-list"></div>
@@ -559,28 +632,26 @@
   <section id="tab-forge" class="tab-pane">
     <div class="section-bar">
       <div>
-        <div class="section-title">2. 🎨 GREAT FORGE CUSTOM STUDIO // POSES, SAMURAI BESKAR &amp; HEX PAINT</div>
-        <div class="section-sub">Select from 8 Dynamic Poses, 10 Helmets, 6 Armor Styles (including Samurai O-Yoroi), 11 Weapons, and type any <code>#RRGGBB</code> Hex color code for endless customization!</div>
+        <div class="section-title">2. 🎨 GREAT FORGE STUDIO // POSES, SAMURAI BESKAR &amp; HEX PAINT</div>
+        <div class="section-sub">Mix 8 Dynamic Poses, 10 Helmets, 6 Armor Styles, 11 Weapons, and any <code>#RRGGBB</code> Hex paint!</div>
       </div>
-      <div class="btn-row">
-        <button class="btn btn-silver" onclick="CustomForge.randomizeDesign()">🎲 Randomize Sculpt, Pose &amp; Hex Paint</button>
-      </div>
+      <button class="btn btn-silver" onclick="CustomForge.randomizeDesign()">🎲 Randomize Sculpt &amp; Hex Paint</button>
     </div>
 
     <div class="forge-studio-grid">
       <!-- LEFT: LIVE 60 FPS 3D TURNTABLE PREVIEW -->
       <div class="forge-preview-box">
         <canvas id="forge-canvas" width="512" height="512"></canvas>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:11px; color:var(--text-dim);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px; font-size:10px; color:var(--text-dim);">
           <span>🖱️ Drag to Orbit 3D Sculpt</span>
-          <div class="btn-row">
-            <button class="btn" onclick="CustomForge.toggleSpin()">🔄 Spin</button>
-            <button class="btn" onclick="CustomForge.zoom(0.3)">➕</button>
-            <button class="btn" onclick="CustomForge.zoom(-0.3)">➖</button>
+          <div style="display:flex; gap:4px;">
+            <button class="btn btn-xs" onclick="CustomForge.toggleSpin()">🔄 Spin</button>
+            <button class="btn btn-xs" onclick="CustomForge.zoom(0.3)">➕</button>
+            <button class="btn btn-xs" onclick="CustomForge.zoom(-0.3)">➖</button>
           </div>
         </div>
-        <div class="artisan-banner" style="margin-top:10px;" id="forge-last-roll-banner">
-          <span><b>Artisan Commission Multipliers:</b> Craft (1.35x–1.75x) • Journeyman (2x–3.5x) • Artisan (4.5x–8x) • Relic (10x–18x) • <b class="val-gold">★ MASTERWORK (25x–50x!)</b></span>
+        <div class="artisan-banner" style="margin-top:8px;" id="forge-last-roll-banner">
+          <span><b>Artisan Multipliers:</b> Craft (1.35x–1.75x) • Journeyman (2x–3.5x) • Artisan (4.5x–8x) • Relic (10x–18x) • <b class="val-gold">★ MASTERWORK (25x–50x!)</b></span>
         </div>
       </div>
 
@@ -588,93 +659,93 @@
       <div class="forge-controls-box">
         <div class="control-group">
           <div class="control-label">
-            <span>1. Custom Miniature Title &amp; Beskar Grade</span>
-            <span class="val-gold" id="forge-cost-label">Cost: ◈20 + 15 Supply</span>
+            <span>1. Custom Name &amp; Beskar Tier</span>
+            <span class="val-gold" id="forge-cost-label">Cost: ◈14 + 15 Sup</span>
           </div>
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-            <input type="text" id="forge-custom-name" placeholder="Enter Custom Hunter Name (or leave blank)" maxlength="34" />
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
+            <input type="text" id="forge-custom-name" placeholder="Custom Name (optional)" maxlength="34" />
             <select id="forge-tier-sel" onchange="CustomForge.updateConfig()"></select>
           </div>
         </div>
 
         <div class="control-group">
-          <div class="control-label"><span>2. Dynamic Pose, Armor Style, Helmet &amp; Weapon Assembly</span></div>
-          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap:8px;">
+          <div class="control-label"><span>2. Pose, Armor, Helmet &amp; Weapon Assembly</span></div>
+          <div style="display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:6px;">
             <div>
-              <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">DYNAMIC POSE &amp; ELEVATION</div>
-              <select id="forge-pose-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
-                <option value="heroic">Heroic Wide Stance (Grounded)</option>
-                <option value="rock_perch">Tactical Rock Perch (Leg Raised)</option>
+              <div style="font-size:9px; color:var(--text-dim); margin-bottom:2px;">DYNAMIC POSE</div>
+              <select id="forge-pose-sel" onchange="CustomForge.updateConfig()">
+                <option value="heroic">Heroic Grounded</option>
+                <option value="rock_perch">Rock Perch (Leg Up)</option>
                 <option value="hover">Mid-Air Jetpack Hover</option>
                 <option value="leap">Airborne Darksaber Leap</option>
-                <option value="kneel">Marksman Kneeling Aim</option>
-                <option value="iaijutsu">Samurai Iaijutsu Duel Stance</option>
-                <option value="spire">Monolith Spire Warlord (High)</option>
+                <option value="kneel">Marksman Kneeling</option>
+                <option value="iaijutsu">Samurai Iaijutsu Stance</option>
+                <option value="spire">Monolith Spire Warlord</option>
                 <option value="strafe">Aerial Banking Strafe</option>
               </select>
             </div>
             <div>
-              <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">ARMOR ARCHITECTURE</div>
-              <select id="forge-armor-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
-                <option value="standard">Standard Beskar'gam Plate</option>
-                <option value="samurai">Samurai O-Yoroi Beskar (Sode)</option>
-                <option value="ronin">Shogunate Ronin Paragon</option>
-                <option value="heavy">Paz Heavy Juggernaut Box-Shield</option>
-                <option value="fur">Armorer Fur-Mantle Cuirass</option>
+              <div style="font-size:9px; color:var(--text-dim); margin-bottom:2px;">ARMOR STYLE</div>
+              <select id="forge-armor-sel" onchange="CustomForge.updateConfig()">
+                <option value="standard">Standard Beskar'gam</option>
+                <option value="samurai">Samurai O-Yoroi (Sode)</option>
+                <option value="ronin">Shogunate Ronin</option>
+                <option value="heavy">Paz Heavy Box-Shield</option>
+                <option value="fur">Armorer Fur-Mantle</option>
                 <option value="skirmish">Agile Recon Skirmisher</option>
               </select>
             </div>
             <div>
-              <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">HELMET &amp; VISOR SCULPT</div>
-              <select id="forge-helm-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
-                <option value="tvisor">Classic T-Visor Stalker</option>
-                <option value="kabuto">Ronin Kabuto + Crescent Horns</option>
-                <option value="oni">Daimyo Oni Masked War-Helm</option>
-                <option value="crest">Mand'alor Royal War-Crest</option>
+              <div style="font-size:9px; color:var(--text-dim); margin-bottom:2px;">HELMET SCULPT</div>
+              <select id="forge-helm-sel" onchange="CustomForge.updateConfig()">
+                <option value="tvisor">Classic T-Visor</option>
+                <option value="kabuto">Ronin Kabuto + Horns</option>
+                <option value="oni">Daimyo Oni War-Helm</option>
+                <option value="crest">Mand'alor Royal Crest</option>
                 <option value="owl">Nite Owl Angled Visor</option>
-                <option value="heavy">Heavy Juggernaut Brow-Shield</option>
-                <option value="horns">Armorer Forged Horn Crown</option>
-                <option value="spikes">Supercommando Mauldalorian Spikes</option>
+                <option value="heavy">Heavy Brow-Shield</option>
+                <option value="horns">Armorer Horn Crown</option>
+                <option value="spikes">Supercommando Spikes</option>
                 <option value="cowl">Shadow Executioner Cowl</option>
                 <option value="dome">Concord Interceptor Dome</option>
               </select>
             </div>
             <div>
-              <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">SIGNATURE WEAPON SYSTEM</div>
-              <select id="forge-weapon-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
-                <option value="darksaber">Crackling Void Darksaber</option>
-                <option value="katana">Beskar Katana &amp; Wakizashi Daisho</option>
-                <option value="naginata">Electro-Plasma Naginata Polearm</option>
+              <div style="font-size:9px; color:var(--text-dim); margin-bottom:2px;">WEAPON SYSTEM</div>
+              <select id="forge-weapon-sel" onchange="CustomForge.updateConfig()">
+                <option value="darksaber">Void Darksaber</option>
+                <option value="katana">Beskar Katana &amp; Wakizashi</option>
+                <option value="naginata">Electro-Plasma Naginata</option>
                 <option value="amban">Amban Phase-Pulse Sniper</option>
                 <option value="rotary">Paz Heavy Rotary Cannon</option>
                 <option value="dual">Dual Westar-35 Pistols</option>
-                <option value="spear">Beskar Spear + Energy Buckler</option>
-                <option value="hammer">Forge Hammer &amp; Molten Ingot</option>
-                <option value="pyro">Flamethrower + Whistling Birds</option>
+                <option value="spear">Beskar Spear + Shield</option>
+                <option value="hammer">Forge Hammer &amp; Ingot</option>
+                <option value="pyro">Flamethrower + Birds</option>
                 <option value="blades">Dual Wrist Vibro-Blades</option>
                 <option value="eweb">Heavy Assault Blaster</option>
               </select>
             </div>
             <div>
-              <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">BACK &amp; FLIGHT RIG</div>
-              <select id="forge-back-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
-                <option value="both">Z-6 Jetpack + Flowing Cape</option>
-                <option value="sashimono">Samurai Sashimono War-Banner</option>
-                <option value="jetpack">Z-6 Combat Jetpack Only</option>
-                <option value="cape">Draped Bounty Cape Only</option>
-                <option value="fly">Twin Rocket Thruster Plumes</option>
-                <option value="katanas">Crossed Back Trophy Blades</option>
+              <div style="font-size:9px; color:var(--text-dim); margin-bottom:2px;">BACK RIG</div>
+              <select id="forge-back-sel" onchange="CustomForge.updateConfig()">
+                <option value="both">Jetpack + Flowing Cape</option>
+                <option value="sashimono">Samurai War-Banner</option>
+                <option value="jetpack">Z-6 Jetpack Only</option>
+                <option value="cape">Draped Cape Only</option>
+                <option value="fly">Twin Rocket Plumes</option>
+                <option value="katanas">Crossed Back Blades</option>
               </select>
             </div>
             <div>
-              <div style="font-size:10px; color:var(--text-dim); margin-bottom:3px;">SCENIC DISPLAY PLINTH</div>
-              <select id="forge-plinth-sel" style="width:100%;" onchange="CustomForge.updateConfig()">
-                <option value="boulder">Jagged Basalt Tactical Outcrop</option>
-                <option value="spire">Tall Obsidian Spire Monolith</option>
-                <option value="lava">Nevarro Molten Lava River</option>
-                <option value="anvil">Sacred Great Forge Anvil</option>
-                <option value="smoke">Billowing Thermal Smoke</option>
-                <option value="ruins">Sundari Ruins &amp; Droid Trophy</option>
+              <div style="font-size:9px; color:var(--text-dim); margin-bottom:2px;">SCENIC PLINTH</div>
+              <select id="forge-plinth-sel" onchange="CustomForge.updateConfig()">
+                <option value="boulder">Basalt Rock Outcrop</option>
+                <option value="spire">Tall Obsidian Spire</option>
+                <option value="lava">Nevarro Lava River</option>
+                <option value="anvil">Sacred Forge Anvil</option>
+                <option value="smoke">Thermal Smoke Cloud</option>
+                <option value="ruins">Sundari Ruins &amp; Droid</option>
               </select>
             </div>
           </div>
@@ -683,12 +754,12 @@
         <!-- 5-ZONE ENDLESS HEX COLOR CODE + COLOR WHEEL STUDIO -->
         <div class="control-group" id="hex-studio-zones"></div>
 
-        <div class="btn-row" style="margin-top:4px;">
-          <button class="btn btn-silver" style="flex:1; padding:12px; font-size:13px;" onclick="CustomForge.forgeAndCommission(false)">
-            🔨 FORGE TO COVERT RACKS
+        <div class="btn-row">
+          <button class="btn btn-silver" style="flex:1; padding:10px;" onclick="CustomForge.forgeAndCommission(false)">
+            🔨 FORGE TO OWNED MANDOS
           </button>
-          <button class="btn btn-gold" style="flex:1; padding:12px; font-size:13px;" onclick="CustomForge.forgeAndCommission(true)">
-            💰 FORGE &amp; SEND STRAIGHT TO AUCTION
+          <button class="btn btn-gold" style="flex:1; padding:10px;" onclick="CustomForge.forgeAndCommission(true)">
+            💰 FORGE &amp; AUCTION NOW
           </button>
         </div>
       </div>
@@ -701,21 +772,21 @@
   <section id="tab-boxes" class="tab-pane">
     <div class="section-bar">
       <div>
-        <div class="section-title">3. GREAT FORGE BESKAR CRATES &amp; TIBANNA SUPPLY DEPOT</div>
-        <div class="section-sub">Unbox Heroic-Scale 128³ Mandalorian Miniatures (`#0001–#1000`) with dynamic poses and rare Samurai Beskar armor in 1x / 5x / 10x batches.</div>
+        <div class="section-title">3. GREAT FORGE BESKAR CRATES &amp; SUPPLY DEPOT</div>
+        <div class="section-sub">Unbox Heroic-Scale 128³ Mandalorian Miniatures (`#0001–#1000`) in 1x / 5x / 10x batches.</div>
       </div>
-      <div class="btn-row">
-        <button class="btn btn-silver" onclick="Game.buyFuel(500)">⚡ +500 Supply (◈125)</button>
-        <button class="btn btn-silver" onclick="Game.buyFuel(2500)">⚡ +2,500 Supply (◈625)</button>
-        <button class="btn btn-silver" onclick="Game.buyFuel(10000)">⚡ +10,000 Supply (◈2,500)</button>
+      <div class="btn-row" style="width:auto;">
+        <button class="btn btn-silver" onclick="Game.buyFuel(500)">⚡ +500 Sup (◈125)</button>
+        <button class="btn btn-silver" onclick="Game.buyFuel(2500)">⚡ +2.5K Sup (◈625)</button>
+        <button class="btn btn-silver" onclick="Game.buyFuel(10000)">⚡ +10K Sup (◈2,500)</button>
       </div>
     </div>
     <div class="card-grid" id="warbox-list"></div>
 
-    <div class="section-bar" style="margin-top:16px;">
+    <div class="section-bar" style="margin-top:14px;">
       <div>
         <div class="section-title">COVERT ARMORER &amp; TACTICIAN RECRUITMENT PODS</div>
-        <div class="section-sub">Recruit specialized Mandalorian Commanders for your Covert Racks.</div>
+        <div class="section-sub">Recruit specialized Mandalorian Commanders for your Owned Mandos.</div>
       </div>
     </div>
     <div class="card-grid" id="pilotbox-list"></div>
@@ -728,54 +799,52 @@
     <div class="section-bar">
       <div>
         <div class="section-title">4A. 🎯 1-LANE BARGAIN SNIPE AUCTION (10.0s LIVE + 3.0s COOLDOWN // +◈1 BIDS)</div>
-        <div class="section-sub">Heavily discounted single-lot feed! As long as any time remains (&gt;0.0s), you can out-snipe anyone for +◈1. Features a 3.0s intermission between lots so you always see the outcome!</div>
+        <div class="section-sub">Snipe discounted lots for +◈1 whenever time remains (&gt;0.0s), then flip them below!</div>
       </div>
     </div>
 
     <div class="snipe-spotlight" id="buyer-spotlight-card">
-      <div class="unit-thumb-wrap" style="height:165px;" onclick="Inspector.open('BUYER', 0)">
+      <div class="unit-thumb-wrap" style="height:130px;" onclick="Inspector.open('BUYER', 0)">
         <img class="unit-thumb" id="buyer-thumb" src="" alt="Bargain Lot" />
         <span class="tier-tag" id="buyer-tier-tag">T1</span>
         <span class="dex-tag" id="buyer-dex-tag">#0001</span>
-        <span class="inspect-hint">🔍 512² 3D</span>
+        <span class="inspect-hint">🔍 3D</span>
       </div>
-      <div style="display:flex; flex-direction:column; gap:9px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-          <div class="unit-title" style="font-size:16px;" id="buyer-unit-title">Loading Lot...</div>
-          <span id="buyer-timer-badge" style="background:#1e293b; border:1px solid #fff; color:#fff; padding:5px 12px; font-weight:900; font-size:13px; font-family:'Courier New',monospace;">
+      <div style="display:flex; flex-direction:column; gap:6px; min-width:0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
+          <div class="unit-title" style="font-size:13px;" id="buyer-unit-title">Loading Lot...</div>
+          <span id="buyer-timer-badge" style="background:#1e293b; border:1px solid #fff; color:#fff; padding:3px 8px; font-weight:900; font-size:11px; font-family:'Courier New',monospace;">
             ⏱️ 10.0s
           </span>
         </div>
 
         <div class="intermission-banner" id="buyer-verdict-banner">
           <span id="buyer-verdict-text">LOT CLOSED</span>
-          <span id="buyer-verdict-countdown" style="font-family:'Courier New',monospace;">NEXT LOT IN 3.0s</span>
+          <span id="buyer-verdict-countdown" style="font-family:'Courier New',monospace;">NEXT IN 3.0s</span>
         </div>
 
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:8px; background:#07080c; border:1px solid var(--border); padding:10px;">
-          <div>Guide Valuation: <b class="val-gold" id="buyer-true-val">◈0</b></div>
-          <div>Current Bid: <b class="val-silver" id="buyer-cur-bid">◈0</b></div>
-          <div>Est. Flip Profit: <b class="val-emerald" id="buyer-flip-profit">+◈0</b></div>
-          <div>High Bidder: <b id="buyer-high-bidder">Scrapper</b></div>
+        <div style="display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:4px; background:#07080c; border:1px solid var(--border); padding:6px; font-size:10px;">
+          <div>Val: <b class="val-gold" id="buyer-true-val">◈0</b></div>
+          <div>Bid: <b class="val-silver" id="buyer-cur-bid">◈0</b></div>
+          <div>Profit: <b class="val-emerald" id="buyer-flip-profit">+◈0</b></div>
+          <div>Lead: <b id="buyer-high-bidder">Scrapper</b></div>
         </div>
 
         <div class="btn-row">
-          <button class="btn btn-emerald" id="buyer-bid-btn" style="font-size:13px; padding:11px 20px; flex:1;" onclick="Game.bidOnBuyerAuction()">
+          <button class="btn btn-emerald" id="buyer-bid-btn" style="font-size:11px; padding:9px 10px; flex:1;" onclick="Game.bidOnBuyerAuction()">
             ⚡ SNIPE BID +◈1
           </button>
-          <button class="btn btn-silver" style="padding:11px 14px;" onclick="Inspector.open('BUYER', 0)">🔍 Inspect 3D</button>
+          <button class="btn btn-silver" style="padding:9px 10px;" onclick="Inspector.open('BUYER', 0)">🔍 3D</button>
         </div>
       </div>
     </div>
 
     <div class="section-bar">
       <div>
-        <div class="section-title">4B. 💰 YOUR 5-LANE SYNDICATE SELLER AUCTIONS (SELL STANDARD &amp; CUSTOM MINIS // 2x–20x BID WARS!)</div>
-        <div class="section-sub">List up to 5 of your own miniatures (including Custom Masterworks)! 20.0s timer | 40% opening bid | 10% NPC bid chance/tick | 1.5% chance for 2x–20x [BID WAR] Spike! | &lt;=1.0s overtime resets to 2.0s.</div>
+        <div class="section-title">4B. 💰 YOUR 5-LANE SYNDICATE SELLER AUCTIONS (2x–20x BID WARS!)</div>
+        <div class="section-sub">List up to 5 Owned Mandos! 20.0s timer | 40% start | 1.5% chance for 2x–20x [BID WAR] Spike!</div>
       </div>
-      <div class="btn-row">
-        <button class="btn btn-gold" onclick="Game.autoFillSellerLanes()">🔨 Auto-List Unvaulted Idle Units</button>
-      </div>
+      <button class="btn btn-gold" onclick="Game.autoFillSellerLanes()">🔨 Auto-List Idle Mandos</button>
     </div>
     <div class="card-grid" id="seller-auction-list"></div>
   </section>
@@ -787,58 +856,54 @@
     <div class="section-bar">
       <div>
         <div class="section-title">5A. ⚔️ 1v1 / 3v3 / 5v5 TABLETOP WARGAME ARENA</div>
-        <div class="section-sub">2D6 Dice Combat + 5 Tactical Orders + 3-Way Counter Triangle (+45% DMG). Win 55% of enemy army value + 45% base chance to capture an enemy miniature!</div>
+        <div class="section-sub">2D6 Dice Combat + 5 Tactical Orders + Counter Triangle (+45% DMG) + 45% unit capture!</div>
       </div>
-      <div class="btn-row">
-        <button class="btn btn-silver" onclick="Arena.startMatch(1)">⚔️ Start 1v1 Duel</button>
-        <button class="btn btn-gold" onclick="Arena.startMatch(3)">⚔️ Start 3v3 Skirmish</button>
-        <button class="btn btn-crimson" onclick="Arena.startMatch(5)">⚔️ Start 5v5 Grand Battle</button>
+      <div class="btn-row" style="width:auto;">
+        <button class="btn btn-silver" onclick="Arena.startMatch(1)">⚔️ 1v1</button>
+        <button class="btn btn-gold" onclick="Arena.startMatch(3)">⚔️ 3v3</button>
+        <button class="btn btn-crimson" onclick="Arena.startMatch(5)">⚔️ 5v5</button>
       </div>
     </div>
 
     <div class="arena-grid">
       <div class="arena-side">
-        <div class="section-title" style="margin-bottom:8px;">🛡️ YOUR COVERT STRIKE TEAM</div>
+        <div class="section-title" style="margin-bottom:6px;">🛡️ YOUR STRIKE TEAM</div>
         <div id="arena-player-team"></div>
       </div>
 
       <div class="arena-center">
-        <div style="font-size:12px; font-weight:800; color:var(--gold); text-align:center;" id="arena-status-banner">
-          Select 1v1, 3v3, or 5v5 above to deploy your strongest Covert miniatures!
+        <div style="font-size:11px; font-weight:800; color:var(--gold); text-align:center;" id="arena-status-banner">
+          Tap 1v1, 3v3, or 5v5 above to deploy your strongest Owned Mandos!
         </div>
         <div class="dice-tray">
           <div class="die-box" id="die-1">6</div>
           <div class="die-box" id="die-2">6</div>
         </div>
-        <div style="font-size:11px; color:var(--text-dim); text-align:center;">
-          <b>Counter Triangle (+45% DMG):</b><br/>
-          Group A (Spear/Samurai/Heavy/Armorer) &gt; Group B (Darksaber/Gunslinger/Jetpack) &gt; Group C (Sniper/WhistlingBird/Assassin/Remnant) &gt; Group A
-        </div>
-        <div class="btn-row" style="justify-content:center; width:100%;">
-          <button class="btn btn-crimson" onclick="Arena.issueOrder('CHARGE')">🗡️ Jetpack Charge (+30%)</button>
-          <button class="btn btn-silver" onclick="Arena.issueOrder('VOLLEY')">🔫 Blaster Volley (Pierce)</button>
-          <button class="btn btn-purple" onclick="Arena.issueOrder('ARCANE')">🐉 Whistling Birds (Splash)</button>
-          <button class="btn btn-gold" onclick="Arena.issueOrder('WALL')">🛡️ Beskar Shield Wall</button>
-          <button class="btn btn-emerald" onclick="Arena.issueOrder('RALLY')">🚩 Darksaber Rally (+HP)</button>
+        <div class="btn-row" style="justify-content:center;">
+          <button class="btn btn-crimson" onclick="Arena.issueOrder('CHARGE')">🗡️ Charge</button>
+          <button class="btn btn-silver" onclick="Arena.issueOrder('VOLLEY')">🔫 Volley</button>
+          <button class="btn btn-purple" onclick="Arena.issueOrder('ARCANE')">🐉 Birds</button>
+          <button class="btn btn-gold" onclick="Arena.issueOrder('WALL')">🛡️ Wall</button>
+          <button class="btn btn-emerald" onclick="Arena.issueOrder('RALLY')">🚩 Rally</button>
         </div>
         <div class="combat-log" id="arena-log"></div>
       </div>
 
       <div class="arena-side">
-        <div class="section-title" style="margin-bottom:8px; color:var(--crimson);">🎯 IMPERIAL REMNANT &amp; SYNDICATE HOST</div>
+        <div class="section-title" style="margin-bottom:6px; color:var(--crimson);">🎯 REMNANT HOST</div>
         <div id="arena-enemy-team"></div>
       </div>
     </div>
 
     <!-- OUTER RIM SECTOR PATROLS -->
-    <div class="section-bar" style="margin-top:18px;">
+    <div class="section-bar" style="margin-top:14px;">
       <div>
-        <div class="section-title">5B. 🎯 OUTER RIM SECTOR PATROLS (PASSIVE BOUNTY DISPATCH)</div>
-        <div class="section-sub">Assign Covert Hunters to patrol iconic Mandalorian sectors for recurring Imperial Credit payouts.</div>
+        <div class="section-title">5B. 🎯 OUTER RIM SECTOR PATROLS</div>
+        <div class="section-sub">Assign Owned Mandos to patrol sectors for recurring Imperial Credit payouts.</div>
       </div>
-      <div class="btn-row">
-        <button class="btn btn-emerald" onclick="Game.assignAllIdleToPatrol()">🚀 Dispatch All Ready Hunters</button>
-        <button class="btn btn-crimson" onclick="Game.recallAllPatrols()">🛑 Recall All Hunters</button>
+      <div class="btn-row" style="width:auto;">
+        <button class="btn btn-emerald" onclick="Game.assignAllIdleToPatrol()">🚀 Dispatch All</button>
+        <button class="btn btn-crimson" onclick="Game.recallAllPatrols()">🛑 Recall All</button>
       </div>
     </div>
     <div class="card-grid" id="sector-list"></div>
@@ -850,35 +915,34 @@
   <section id="tab-command" class="tab-pane">
     <div class="section-bar">
       <div>
-        <div class="section-title">6. COVERT HIGH COMMAND: AUTOMATIONS &amp; GUILD COMMISSIONS</div>
-        <div class="section-sub">Toggle Covert Automations, fulfill 6 rotating Guild Client Commissions (Credits + Free Voxel Miniature), and claim 150 Creed Milestones.</div>
+        <div class="section-title">6. HIGH COMMAND: AUTOMATIONS &amp; GUILD COMMISSIONS</div>
+        <div class="section-sub">Toggle Automations, fulfill 6 Guild Commissions, and claim 150 Creed Milestones.</div>
       </div>
-      <div class="btn-row">
+      <div class="btn-row" style="width:auto;">
         <button class="btn" id="tog-automarch" onclick="Game.toggleAuto('autoMarch')">🤖 Auto-March: OFF</button>
-        <button class="btn" id="tog-autorepair" onclick="Game.toggleAuto('autoRepair')">🔧 Auto-Repair (&lt;45%): OFF</button>
-        <button class="btn" id="tog-autosupply" onclick="Game.toggleAuto('autoSupply')">⚡ Auto-Supply (&lt;500): OFF</button>
+        <button class="btn" id="tog-autorepair" onclick="Game.toggleAuto('autoRepair')">🔧 Auto-Repair: OFF</button>
+        <button class="btn" id="tog-autosupply" onclick="Game.toggleAuto('autoSupply')">⚡ Auto-Supply: OFF</button>
       </div>
     </div>
 
-    <div class="section-title" style="margin: 10px 0 8px;">📜 6 ROTATING GUILD CLIENT COMMISSIONS (PAYS CREDITS + FREE MINIATURE)</div>
+    <div class="section-title" style="margin: 8px 0 6px;">📜 6 ROTATING GUILD COMMISSIONS (CREDITS + FREE MANDO)</div>
     <div class="card-grid" id="commission-list"></div>
 
-    <div class="section-bar" style="margin-top:16px;">
+    <div class="section-bar" style="margin-top:14px;">
       <div>
-        <div class="section-title">🏆 THE 150 TRIALS OF THE MANDALORIAN CREED (MILESTONES)</div>
-        <div class="section-sub">Organized into 6 Thematic Books of 25 Trials each. Claim completed trials for Imperial Credits &amp; Beskar Supply caches.</div>
+        <div class="section-title">🏆 THE 150 TRIALS OF THE MANDALORIAN CREED</div>
       </div>
-      <div class="btn-row">
-        <select id="mile-book-filter" onchange="UI.renderMilestones()">
-          <option value="ALL">All 6 Books (150 Trials)</option>
-          <option value="0">Book I: Way of the Foundling (1-25)</option>
-          <option value="1">Book II: Secrets of the Great Forge (26-50)</option>
-          <option value="2">Book III: Blood of the Arena (51-75)</option>
-          <option value="3">Book IV: Guild Ledger &amp; Fortune (76-100)</option>
-          <option value="4">Book V: Syndicate Auctioneer &amp; Crates (101-125)</option>
-          <option value="5">Book VI: Legend of the Mand'alor (126-150)</option>
+      <div class="btn-row" style="width:auto;">
+        <select id="mile-book-filter" style="width:auto;" onchange="UI.renderMilestones()">
+          <option value="ALL">All 6 Books (150)</option>
+          <option value="0">Book I: Foundling (1-25)</option>
+          <option value="1">Book II: Great Forge (26-50)</option>
+          <option value="2">Book III: Arena Blood (51-75)</option>
+          <option value="3">Book IV: Guild Fortune (76-100)</option>
+          <option value="4">Book V: Auctioneer (101-125)</option>
+          <option value="5">Book VI: Mand'alor (126-150)</option>
         </select>
-        <button class="btn btn-gold" onclick="Game.claimAllMilestones()">✨ Claim All Ready Trials</button>
+        <button class="btn btn-gold" onclick="Game.claimAllMilestones()">✨ Claim All Ready</button>
       </div>
     </div>
     <div class="card-grid" id="milestone-list"></div>
@@ -886,33 +950,33 @@
 
 </main>
 
-<!-- 512x512 60 FPS 3D VOXEL INSPECTOR MODAL (ISOLATED SNAPSHOT BUFFER) -->
+<!-- 512x512 60 FPS 3D VOXEL INSPECTOR MODAL -->
 <div class="modal-backdrop" id="inspect-modal">
   <div class="modal-box">
     <div>
       <canvas id="inspect-canvas" width="512" height="512"></canvas>
-      <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:11px; color:var(--text-dim);">
-        <span>🖱️ Drag to Orbit 92-Voxel-Tall Heroic Sculpt</span>
-        <span id="inspect-vox-stats">128³ Isolated Snapshot Kernel</span>
+      <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:10px; color:var(--text-dim);">
+        <span>🖱️ Drag to Orbit 3D Sculpt</span>
+        <span id="inspect-vox-stats">128³ Isolated Snapshot</span>
       </div>
     </div>
-    <div style="display:flex; flex-direction:column; justify-content:space-between; gap:10px;">
+    <div style="display:flex; flex-direction:column; justify-content:space-between; gap:8px; min-width:0;">
       <div>
-        <div class="section-title" id="insp-name" style="font-size:18px;">Miniature Name</div>
-        <div id="insp-sub" style="font-size:12px; color:var(--gold); margin:4px 0 10px;">Class &amp; Finish</div>
-        <div id="insp-details" style="font-size:12px; line-height:1.6; background:var(--bg-deep); padding:10px; border:1px solid var(--border);"></div>
+        <div class="section-title" id="insp-name" style="font-size:15px;">Miniature Name</div>
+        <div id="insp-sub" style="font-size:11px; color:var(--gold); margin:3px 0 8px;">Class &amp; Finish</div>
+        <div id="insp-details" style="font-size:11px; line-height:1.5; background:var(--bg-deep); padding:8px; border:1px solid var(--border);"></div>
       </div>
       <div style="display:flex; flex-direction:column; gap:6px;">
         <div class="btn-row">
-          <button class="btn btn-silver" onclick="Inspector.toggleSpin()">🔄 Toggle Auto-Turntable</button>
-          <button class="btn btn-gold" onclick="Inspector.zoom(0.35)">➕ Zoom In</button>
-          <button class="btn btn-gold" onclick="Inspector.zoom(-0.35)">➖ Zoom Out</button>
-          <button class="btn" onclick="Inspector.resetCam()">🎯 Reset Camera</button>
+          <button class="btn btn-silver" style="flex:1;" onclick="Inspector.toggleSpin()">🔄 Spin</button>
+          <button class="btn btn-gold" style="flex:1;" onclick="Inspector.zoom(0.35)">➕ Zoom</button>
+          <button class="btn btn-gold" style="flex:1;" onclick="Inspector.zoom(-0.35)">➖ Out</button>
+          <button class="btn" style="flex:1;" onclick="Inspector.resetCam()">🎯 Reset</button>
         </div>
-        <div style="background:var(--bg-deep); padding:8px; border:1px solid var(--border); font-size:11px;">
-          <div><b>Base36 Collector Code:</b> <code id="insp-code" style="color:#fff; word-break:break-all;">WF-000</code></div>
+        <div style="background:var(--bg-deep); padding:6px; border:1px solid var(--border); font-size:10px;">
+          <b>Trade Code:</b> <code id="insp-code" style="color:#fff; word-break:break-all;">WF-000</code>
         </div>
-        <button class="btn btn-crimson" style="padding:10px;" onclick="Inspector.close()">✖ Close 3D Inspector</button>
+        <button class="btn btn-crimson" style="padding:9px;" onclick="Inspector.close()">✖ Close 3D Inspector</button>
       </div>
     </div>
   </div>
@@ -920,37 +984,37 @@
 
 <!-- BASE36 TRADE CODE MODAL -->
 <div class="modal-backdrop" id="code-modal">
-  <div class="modal-box" style="grid-template-columns: 1fr; max-width: 520px;">
+  <div class="modal-box" style="grid-template-columns: minmax(0, 1fr); max-width: 480px;">
     <div>
       <div class="section-title">📡 BASE36 TRADE CODE TRANSCEIVER</div>
-      <div class="section-sub" style="margin:6px 0 12px;">
-        Import any Collector Miniature Code (<code>WF-XXX</code>), Custom Forge Code (<code>WFC-...</code>), or Commander Code (<code>CMD-XXXX</code>).
+      <div class="section-sub" style="margin:6px 0 10px;">
+        Import any Collector Code (<code>WF-XXX</code>), Custom Forge Code (<code>WFC-...</code>), or Commander Code (<code>CMD-XXXX</code>).
       </div>
-      <div style="display:flex; gap:8px; margin-bottom:12px;">
-        <input type="text" id="trade-code-input" placeholder="Paste WF-..., WFC-..., or CMD-... code here" style="flex:1; font-size:13px;" />
-        <button class="btn btn-emerald" onclick="Game.importTradeCode()">📥 Import Code</button>
+      <div style="display:flex; gap:6px; margin-bottom:10px;">
+        <input type="text" id="trade-code-input" placeholder="Paste WF-..., WFC-..., or CMD-..." style="flex:1;" />
+        <button class="btn btn-emerald" onclick="Game.importTradeCode()">📥 Import</button>
       </div>
-      <button class="btn btn-crimson" onclick="document.getElementById('code-modal').classList.remove('open')">Close Transceiver</button>
+      <button class="btn btn-crimson" style="width:100%;" onclick="document.getElementById('code-modal').classList.remove('open')">Close</button>
     </div>
   </div>
 </div>
 
 <!-- SAVE / LOAD / BACKUP MODAL -->
 <div class="modal-backdrop" id="save-modal">
-  <div class="modal-box" style="grid-template-columns: 1fr; max-width: 560px;">
+  <div class="modal-box" style="grid-template-columns: minmax(0, 1fr); max-width: 520px;">
     <div>
       <div class="section-title">💾 COVERT COMMAND SAVE &amp; DATA VAULT</div>
-      <div class="section-sub" style="margin:6px 0 12px;">
-        Your progress auto-saves to browser storage every 5 seconds. You can also force a manual save, export a portable Save String for backup, or reset your campaign.
+      <div class="section-sub" style="margin:6px 0 10px;">
+        Auto-saves to browser storage every 5 seconds. You can also manual save, export a backup string, or reset.
       </div>
-      <div class="btn-row" style="margin-bottom:12px;">
-        <button class="btn btn-emerald" style="flex:1; padding:10px;" onclick="SaveSystem.saveToLocal(true)">💾 Force Manual Save Now</button>
-        <button class="btn btn-silver" style="flex:1; padding:10px;" onclick="SaveSystem.exportSaveString()">📤 Export Save String</button>
-        <button class="btn btn-gold" style="flex:1; padding:10px;" onclick="SaveSystem.importSaveString()">📥 Load Save String</button>
+      <div class="btn-row" style="margin-bottom:10px;">
+        <button class="btn btn-emerald" style="flex:1;" onclick="SaveSystem.saveToLocal(true)">💾 Save Now</button>
+        <button class="btn btn-silver" style="flex:1;" onclick="SaveSystem.exportSaveString()">📤 Export String</button>
+        <button class="btn btn-gold" style="flex:1;" onclick="SaveSystem.importSaveString()">📥 Load String</button>
       </div>
-      <textarea id="save-string-box" rows="4" placeholder="Click 'Export Save String' to copy your backup code, or paste a backup code here and click 'Load Save String'..." style="width:100%; background:#050608; color:#fff; border:1px solid var(--border); padding:8px; font-family:monospace; font-size:11px; margin-bottom:12px;"></textarea>
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <button class="btn btn-crimson" onclick="SaveSystem.hardReset()">⚠️ Wipe Save &amp; Reset Game</button>
+      <textarea id="save-string-box" rows="4" placeholder="Export or paste backup Save String here..." style="width:100%; background:#050608; color:#fff; border:1px solid var(--border); padding:8px; font-family:monospace; font-size:10px; margin-bottom:10px;"></textarea>
+      <div style="display:flex; justify-content:space-between; gap:8px;">
+        <button class="btn btn-crimson" onclick="SaveSystem.hardReset()">⚠️ Wipe Save</button>
         <button class="btn btn-silver" onclick="document.getElementById('save-modal').classList.remove('open')">✖ Close</button>
       </div>
     </div>
@@ -1046,7 +1110,6 @@ function hexToRgbArray(hex, fallback = [200, 210, 225]) {
 
 /* ============================================================================
    2. SINGLE SHARED 128³ VOXEL KERNEL + ISOLATED SNAPSHOT RENDERER
-      (Fixes both iOS Memory Crashes AND the 3D Inspector Auction Hijack Bug!)
    ============================================================================ */
 class VoxelWarforgeEngine {
   constructor() {
@@ -1126,18 +1189,18 @@ class VoxelWarforgeEngine {
     const cCape  = hexes ? hexToRgbArray(hexes[3], fac.cape)       : fac.cape;
     const cGlow  = hexes ? hexToRgbArray(hexes[4], tData.emissive) : tData.emissive;
 
-    fillRamp(1, 15, 34, 38, 46, 1, 0);                        // Plinth Rim
-    fillRamp(16, 16, 76, 70, 64, 2, 0);                       // Terrain Stone / Boulder
-    fillRamp(32, 16, cPrim[0], cPrim[1], cPrim[2], 6, 0);     // Zone A: Primary Beskar
-    fillRamp(48, 16, cSec[0], cSec[1], cSec[2], 7, 0);        // Zone B: Secondary Pauldrons/Sode
-    fillRamp(64, 16, 20, 23, 30, 5, 0);                       // Flightsuit & T-Visor Black
-    fillRamp(80, 16, 62, 70, 82, 7, 0);                       // Weapon Gunmetal
-    fillRamp(96, 16, cHeart[0], cHeart[1], cHeart[2], 8, 0);  // Zone C: Kar'ta Beskar & Horns
-    fillRamp(112, 16, 114, 72, 42, 6, 0);                     // Leather / Fur Mantle
-    fillRamp(128, 16, cGlow[0], cGlow[1], cGlow[2], 10, 1);   // Zone E: Plasma / Darksaber Glow
-    fillRamp(144, 16, cCape[0], cCape[1], cCape[2], 4, 0);    // Zone D: Cape / Sashimono Banner
-    fillRamp(160, 16, 255, 105, 25, 10, 1);                   // Lava / Thruster Fire
-    fillRamp(176, 16, 165, 175, 188, 3, 0);                   // Thermal Smoke
+    fillRamp(1, 15, 34, 38, 46, 1, 0);
+    fillRamp(16, 16, 76, 70, 64, 2, 0);
+    fillRamp(32, 16, cPrim[0], cPrim[1], cPrim[2], 6, 0);
+    fillRamp(48, 16, cSec[0], cSec[1], cSec[2], 7, 0);
+    fillRamp(64, 16, 20, 23, 30, 5, 0);
+    fillRamp(80, 16, 62, 70, 82, 7, 0);
+    fillRamp(96, 16, cHeart[0], cHeart[1], cHeart[2], 8, 0);
+    fillRamp(112, 16, 114, 72, 42, 6, 0);
+    fillRamp(128, 16, cGlow[0], cGlow[1], cGlow[2], 10, 1);
+    fillRamp(144, 16, cCape[0], cCape[1], cCape[2], 4, 0);
+    fillRamp(160, 16, 255, 105, 25, 10, 1);
+    fillRamp(176, 16, 165, 175, 188, 3, 0);
   }
 
   setVoxel(x, y, z, colIdx) {
@@ -1366,7 +1429,6 @@ class VoxelWarforgeEngine {
       this.drawRod(68, 15, 48, 68, 56, 48, 4.0, 160);
     }
 
-    // 1. ARTICULATED LEGS, BOOTS, KNEE POLEYNS & GREAVES
     const lKnee = {
       x: Math.round((lFoot.x + pelvis.x - 8) * 0.5),
       y: Math.round((lFoot.y + pelvis.y) * 0.5),
@@ -1389,7 +1451,6 @@ class VoxelWarforgeEngine {
     this.fillShellBox(lKnee.x - 4, lKnee.y - 2, lKnee.z, lKnee.x + 4, lKnee.y + 3, lKnee.z + 5, 48, 10);
     this.fillShellBox(rKnee.x - 4, rKnee.y - 2, rKnee.z, rKnee.x + 4, rKnee.y + 3, rKnee.z + 5, 48, 10);
 
-    // 2. PELVIS, BELT & SAMURAI KUSAZURI TASSET SKIRT
     const py = pelvis.y;
     const pz = pelvis.z;
     this.fillShellBox(pelvis.x - 13, py, pz - 6, pelvis.x + 13, py + 7, pz + 6, 64, 10);
@@ -1413,7 +1474,6 @@ class VoxelWarforgeEngine {
     this.fillShellBox(pelvis.x - 14, beltY, pz - 7, pelvis.x + 14, beltY + 4, pz + 8, 112, 12);
     this.fillShellBox(pelvis.x - 4, beltY, pz + 8, pelvis.x + 4, beltY + 4, pz + 10, 98, 10);
 
-    // 3. TORSO CUIRASS & KAR'TA BESKAR IRON HEART
     const ty0 = beltY + 4;
     const ty1 = shoulder.y;
     const tx = shoulder.x;
@@ -1429,7 +1489,6 @@ class VoxelWarforgeEngine {
       this.fillEllipsoid(tx, ty1 - 1, tz, 18, 5, 11, 112, 12);
     }
 
-    // 4. BACK RIGS: CAPE, JETPACK, SAMURAI SASHIMONO WAR-BANNER, OR CROSSED KATANAS
     if (backType === 'cape' || backType === 'both') {
       for (let cy = by + 6; cy <= ty1 - 1; cy++) {
         const t = (ty1 - cy) / Math.max(1, ty1 - by);
@@ -1462,7 +1521,6 @@ class VoxelWarforgeEngine {
       this.drawRod(tx + 16, ty0 + 4, tz - 10, tx - 18, ty1 + 14, tz - 10, 1.6, 98);
     }
 
-    // 5. PAULDRONS (INCLUDING SAMURAI O-YOROI TIERED SODE) & ARTICULATED ARMS
     if (armorType === 'samurai') {
       for (let s = 0; s < 4; s++) {
         const sy = ty1 - 10 + s * 3;
@@ -1485,7 +1543,6 @@ class VoxelWarforgeEngine {
     this.fillShellBox(rHand.x - 4, rHand.y - 3, rHand.z - 5, rHand.x + 4, rHand.y + 5, rHand.z + 4, 34, 12);
     this.fillShellBox(lHand.x - 3, lHand.y + 4, lHand.z - 3, lHand.x + 3, lHand.y + 7, lHand.z + 3, 98, 8);
 
-    // 6. 10 DISTINCT HELMET & VISOR SCULPTS (INCLUDING SAMURAI KABUTO & ONI WAR-HELM)
     const hy0 = ty1 + 1;
     this.fillShellCylinder(tx, ty1 - 1, tz, 5.5, 4, 64, 8);
     this.fillShellCylinder(tx, hy0 + 2, tz, 10.2, 10, 32, 14);
@@ -1539,7 +1596,6 @@ class VoxelWarforgeEngine {
       this.fillShellBox(tx + 7, hy0 + 20, tz - 1, tx + 12, hy0 + 22, tz + 3, 98, 8);
     }
 
-    // 7. 11 SIGNATURE WEAPONS
     const wxR = rHand.x, wyR = rHand.y, wzR = rHand.z;
     const wxL = lHand.x, wyL = lHand.y, wzL = lHand.z;
 
@@ -1855,11 +1911,11 @@ const TradeCodec = {
    4. TAB 2: CUSTOM FORGE & ENDLESS HEX PAINT STUDIO CONTROLLER
    ============================================================================ */
 const ZONE_TITLES = [
-  'Zone A: Primary Beskar Armor Plates',
-  'Zone B: Pauldrons, Sode & Knee Poleyns',
-  'Zone C: Kar\'ta Beskar, Horns & Trim',
-  'Zone D: Cape, Sashimono Banner & Cloth',
-  'Zone E: Darksaber / Plasma / Visor Glow'
+  'Zone A: Primary Beskar Armor',
+  'Zone B: Pauldrons, Sode & Knees',
+  'Zone C: Kar\'ta Beskar & Horns',
+  'Zone D: Cape & Sashimono Banner',
+  'Zone E: Darksaber & Plasma Glow'
 ];
 
 const CustomForge = {
@@ -1894,7 +1950,7 @@ const CustomForge = {
     for (let i = 0; i < TIERS.length; i++) {
       const craftCost = Math.round(TIERS[i].val * 0.9);
       const supCost = 15 * (i + 1);
-      tHtml.push(`<option value="${i}">${TIERS[i].code} ${TIERS[i].name} (Forge: ◈${craftCost.toLocaleString()} + ${supCost} Sup)</option>`);
+      tHtml.push(`<option value="${i}">${TIERS[i].code} ${TIERS[i].name} (◈${craftCost.toLocaleString()})</option>`);
     }
     tSel.innerHTML = tHtml.join('');
 
@@ -1908,7 +1964,7 @@ const CustomForge = {
         swHtml.push(`<div class="color-swatch" style="background:${hx};" title="${hx}" onclick="CustomForge.setHexColor(${z}, '${hx}')"></div>`);
       }
       zHtml.push(`
-        <div style="margin-bottom:${z < 4 ? '10px' : '0'}; padding-bottom:${z < 4 ? '8px' : '0'}; border-bottom:${z < 4 ? '1px solid #1e2433' : 'none'};">
+        <div style="margin-bottom:${z < 4 ? '8px' : '0'}; padding-bottom:${z < 4 ? '6px' : '0'}; border-bottom:${z < 4 ? '1px solid #1e2433' : 'none'};">
           <div class="control-label">
             <span>${ZONE_TITLES[z]}</span>
             <code id="hex-badge-${z}" style="color:var(--gold);">${initHex}</code>
@@ -1972,7 +2028,7 @@ const CustomForge = {
 
     const craftCost = Math.round(TIERS[tier].val * 0.9);
     const supCost = 15 * (tier + 1);
-    document.getElementById('forge-cost-label').textContent = `Forge Cost: ◈${craftCost.toLocaleString()} + ${supCost} Supply`;
+    document.getElementById('forge-cost-label').textContent = `Cost: ◈${craftCost.toLocaleString()} + ${supCost} Sup`;
 
     this.snapshot = VoxelEngine.bakeUnitToSnapshot(this.previewUnit);
   },
@@ -2024,12 +2080,12 @@ const CustomForge = {
     const craftCost = Math.round(TIERS[tier].val * 0.9);
     const supCost = 15 * (tier + 1);
 
-    if (State.funds < craftCost) return UI.toast(`Need ◈${craftCost.toLocaleString()} Imperial Credits to forge!`);
-    if (State.fuelReserve < supCost) return UI.toast(`Need ${supCost} Beskar & Tibanna Supply to forge!`);
+    if (State.funds < craftCost) return UI.toast(`Need ◈${craftCost.toLocaleString()} Credits to forge!`);
+    if (State.fuelReserve < supCost) return UI.toast(`Need ${supCost} Supply to forge!`);
 
     if (sendDirectlyToAuction) {
       const freeLane = State.sellerLanes.findIndex(x => x === null);
-      if (freeLane === -1) return UI.toast('All 5 Seller Auction lanes are full! Forge to Racks instead.');
+      if (freeLane === -1) return UI.toast('All 5 Seller Auction lanes are full! Forge to Owned Mandos instead.');
     }
 
     State.funds -= craftCost;
@@ -2076,7 +2132,7 @@ const CustomForge = {
     const banner = document.getElementById('forge-last-roll-banner');
     banner.innerHTML = `
       <div>
-        <span style="color:${grade.color}; font-weight:900; font-size:14px;">🔨 FORGED: ${grade.name.toUpperCase()} (${mult}x VALUE BONUS!)</span><br/>
+        <span style="color:${grade.color}; font-weight:900;">🔨 FORGED: ${grade.name.toUpperCase()} (${mult}x VALUE BONUS!)</span><br/>
         <span>Base ${tData.code} Val: ◈${tData.val.toLocaleString()} ➔ Appraised Custom Valuation: <b class="val-gold">◈${appraisedVal.toLocaleString()}</b></span>
       </div>
     `;
@@ -2087,7 +2143,7 @@ const CustomForge = {
       Game.sendUnitToSellerAuction(newUnit.id);
       UI.switchTab('tab-auctions');
     } else {
-      UI.toast(`🎨 Forged ${grade.name} (${mult}x)! Appraised at ◈${appraisedVal.toLocaleString()}!`);
+      UI.toast(`🎨 Forged ${grade.name} (${mult}x) to Owned Mandos! Val: ◈${appraisedVal.toLocaleString()}`);
       UI.renderAllActive();
     }
     SaveSystem.saveToLocal(false);
@@ -2150,11 +2206,11 @@ const Game = {
       State.tech.supplyLvl = 35;
       State.tech.combatLvl = Math.max(State.tech.combatLvl, 25);
       State.tech.salvageLvl = Math.max(State.tech.salvageLvl, 25);
-      if (btn) btn.textContent = '⚡ GOD MODE: ON (MASTERWORK 100%)';
-      UI.toast('⚡ GOD MODE ACTIVATED! +◈10,000,000 Credits, +100,000 Supply & 100% Masterwork Forge Rolls!');
+      if (btn) btn.textContent = '⚡ GOD: ON';
+      UI.toast('⚡ GOD MODE ON! +◈10M Credits, +100K Supply & 100% Masterwork Rolls!');
     } else {
-      if (btn) btn.textContent = '⚡ GOD MODE: OFF';
-      UI.toast('God Mode toggled OFF (Resources kept).');
+      if (btn) btn.textContent = '⚡ GOD: OFF';
+      UI.toast('God Mode toggled OFF.');
     }
     UI.renderAllActive();
     SaveSystem.saveToLocal(false);
@@ -2273,7 +2329,7 @@ const Game = {
     const idx = State.fleet.findIndex(x => x.id === unitId);
     if (idx === -1) return;
     const u = State.fleet[idx];
-    if (u.vaulted) return UI.toast('Unlock miniature from Vault before auctioning!');
+    if (u.vaulted) return UI.toast('Unlock Mando from Vault before auctioning!');
 
     const freeLane = State.sellerLanes.findIndex(x => x === null);
     if (freeLane === -1) return UI.toast('All 5 Seller Auction lanes are currently full!');
@@ -2292,12 +2348,12 @@ const Game = {
       unit: u,
       timer: 20.0,
       currentBid: startBid,
-      highBidder: 'Guild Opening Reserve',
+      highBidder: 'Guild Reserve',
       bidCount: 1,
       spikeNotice: ''
     };
 
-    UI.toast(`Listed ${u.name} in Seller Lane #${freeLane + 1} (Opening Bid: ◈${startBid.toLocaleString()})!`);
+    UI.toast(`Listed ${u.name} in Seller Lane #${freeLane + 1}!`);
     UI.renderAllActive();
     SaveSystem.saveToLocal(false);
   },
@@ -2311,7 +2367,7 @@ const Game = {
       this.sendUnitToSellerAuction(candidate.id);
       listed++;
     }
-    if (listed === 0) UI.toast('No unvaulted idle units available (or all 5 lanes active).');
+    if (listed === 0) UI.toast('No unvaulted idle Mandos available (or all 5 lanes active).');
   },
 
   openWarbox(boxTier, count) {
@@ -2356,7 +2412,7 @@ const Game = {
     if (State.funds < cost) return UI.toast(`Need ◈${cost.toLocaleString()} Credits for Supply!`);
     State.funds -= cost;
     State.fuelReserve += amt;
-    UI.toast(`Purchased +${amt.toLocaleString()} Beskar & Tibanna Supply.`);
+    UI.toast(`Purchased +${amt.toLocaleString()} Supply.`);
     UI.renderHUD();
   },
 
@@ -2383,7 +2439,7 @@ const Game = {
         }
       }
     }
-    UI.toast(total > 0 ? `Repaired Covert Armor for ◈${total.toLocaleString()}.` : 'All hunters at 100% Integrity.');
+    UI.toast(total > 0 ? `Repaired Owned Mandos for ◈${total.toLocaleString()}.` : 'All Mandos at 100% HP.');
     UI.renderAllActive();
   },
 
@@ -2391,7 +2447,7 @@ const Game = {
     const u = State.fleet.find(x => x.id === id);
     if (!u) return;
     u.vaulted = !u.vaulted;
-    UI.toast(u.vaulted ? `🔒 Locked ${u.name} in Vault.` : `🔓 Unlocked ${u.name}.`);
+    UI.toast(u.vaulted ? `🔒 Locked ${u.name}.` : `🔓 Unlocked ${u.name}.`);
     UI.renderAllActive();
     SaveSystem.saveToLocal(false);
   },
@@ -2409,7 +2465,7 @@ const Game = {
     State.funds += salvage;
     State.stats.lifetimeCredits += salvage;
     State.fleet.splice(idx, 1);
-    UI.toast(`Salvaged miniature for ◈${salvage.toLocaleString()} Credits.`);
+    UI.toast(`Salvaged Mando for ◈${salvage.toLocaleString()} Credits.`);
     UI.renderAllActive();
     SaveSystem.saveToLocal(false);
   },
@@ -2465,7 +2521,7 @@ const Game = {
         count++;
       }
     }
-    UI.toast(`Dispatched ${count} Covert Hunters to Outer Rim Patrols.`);
+    UI.toast(`Dispatched ${count} Owned Mandos to Patrols.`);
     UI.renderAllActive();
   },
 
@@ -2474,7 +2530,7 @@ const Game = {
       State.fleet[i].sectorId = null;
       State.fleet[i].patrolProg = 0;
     }
-    UI.toast('All Covert Hunters recalled from patrol.');
+    UI.toast('All Owned Mandos recalled from patrol.');
     UI.renderAllActive();
   },
 
@@ -2498,14 +2554,14 @@ const Game = {
       return {
         id: 'C' + (NEXT_ID++), client, type: 'DIVISION', targetDiv,
         title: `${client}: Deploy ${ARCHETYPES[targetDiv].name}`,
-        desc: `Have at least 1 ${ARCHETYPES[targetDiv].name} in your Covert Racks.`,
+        desc: `Have at least 1 ${ARCHETYPES[targetDiv].name} in Owned Mandos.`,
         cashReward, rewardTier
       };
     } else if (type === 1) {
       return {
         id: 'C' + (NEXT_ID++), client, type: 'CLAN', targetClan,
         title: `${client}: ${FACTIONS[targetClan].name} Alliance`,
-        desc: `Own any miniature belonging to ${FACTIONS[targetClan].name}.`,
+        desc: `Own any Mando belonging to ${FACTIONS[targetClan].name}.`,
         cashReward, rewardTier
       };
     } else if (type === 2) {
@@ -2513,7 +2569,7 @@ const Game = {
       return {
         id: 'C' + (NEXT_ID++), client, type: 'ARENA_WIN', targetWins,
         title: `${client}: Remnant Arena Purge`,
-        desc: `Reach ${targetWins} total victories in the Tabletop Wargame Arena.`,
+        desc: `Reach ${targetWins} total victories in the Wargame Arena.`,
         cashReward, rewardTier
       };
     } else if (type === 3) {
@@ -2521,7 +2577,7 @@ const Game = {
       return {
         id: 'C' + (NEXT_ID++), client, type: 'AUCTION_SELL', targetSold,
         title: `${client}: Syndicate Collector Liquidation`,
-        desc: `Sell ${targetSold} total miniature(s) in your 5-Lane Seller Auction House.`,
+        desc: `Sell ${targetSold} total Mando(s) in your 5-Lane Seller Auctions.`,
         cashReward, rewardTier
       };
     } else if (type === 4) {
@@ -2529,14 +2585,14 @@ const Game = {
       return {
         id: 'C' + (NEXT_ID++), client, type: 'CUSTOM_FORGE', targetCustom,
         title: `${client}: Beskar Custom Commission`,
-        desc: `Forge & paint ${targetCustom} custom miniature(s) in Tab 2 (Custom Forge).`,
+        desc: `Forge & paint ${targetCustom} custom Mando(s) in Tab 2.`,
         cashReward, rewardTier
       };
     } else {
       return {
         id: 'C' + (NEXT_ID++), client, type: 'TIER_CHECK', minTier: 2,
         title: `${client}: Elite ${TIERS[2].code}+ Force Inspection`,
-        desc: `Field any miniature of ${TIERS[2].code} (${TIERS[2].name}) or higher.`,
+        desc: `Field any Mando of ${TIERS[2].code} (${TIERS[2].name}) or higher.`,
         cashReward, rewardTier
       };
     }
@@ -2656,11 +2712,11 @@ const Game = {
       const decoded = TradeCodec.decodeUnit(raw);
       if (!decoded) return UI.toast('Invalid WF-XXX / WFC-XXX Code!');
       const cost = Math.round(TIERS[decoded.tier].val * 0.5);
-      if (State.funds < cost) return UI.toast(`Need ◈${cost.toLocaleString()} Beskar Replication Fee!`);
+      if (State.funds < cost) return UI.toast(`Need ◈${cost.toLocaleString()} Replication Fee!`);
       State.funds -= cost;
       const u = this.createUnit(decoded, false);
       this.addUnitToFleet(u);
-      UI.toast(`Replicated ${u.name}!`);
+      UI.toast(`Replicated ${u.name} to Owned Mandos!`);
       document.getElementById('code-modal').classList.remove('open');
       UI.renderAllActive();
       SaveSystem.saveToLocal(false);
@@ -2718,7 +2774,7 @@ const SaveSystem = {
       localStorage.setItem(SAVE_KEY, this.serialize());
       if (showToast) UI.toast('💾 Game Saved to Browser Storage!');
     } catch (e) {
-      if (showToast) UI.toast('⚠️ Storage quota warning — use Export Save String.');
+      if (showToast) UI.toast('⚠️ Storage quota warning — use Export String.');
     }
   },
 
@@ -2746,7 +2802,7 @@ const SaveSystem = {
       });
 
       const gBtn = document.getElementById('hud-god-btn');
-      if (gBtn) gBtn.textContent = State.godMode ? '⚡ GOD MODE: ON (MASTERWORK 100%)' : '⚡ GOD MODE: OFF';
+      if (gBtn) gBtn.textContent = State.godMode ? '⚡ GOD: ON' : '⚡ GOD: OFF';
 
       if (showToast) UI.toast('📥 Save Loaded Successfully!');
       UI.renderAllActive();
@@ -2810,7 +2866,7 @@ const Arena = {
   },
 
   startMatch(count) {
-    if (State.fleet.length === 0) return UI.toast('Recruit, snipe, or forge at least 1 miniature first!');
+    if (State.fleet.length === 0) return UI.toast('Recruit, snipe, or forge at least 1 Mando first!');
     this.mode = count;
     this.active = true;
     this.logLines = [];
@@ -2843,7 +2899,7 @@ const Arena = {
     }
 
     this.turnIndex = 0;
-    this.log(`⚔️ [${count}v${count} TABLETOP SKIRMISH STARTED] Choose a Tactical Order!`);
+    this.log(`⚔️ [${count}v${count} SKIRMISH STARTED] Choose a Tactical Order!`);
     UI.renderArena();
   },
 
@@ -2883,7 +2939,7 @@ const Arena = {
       const heal = Math.round(actor.maxHp * 0.34 + dice.sum * 4);
       actor.curHp = Math.min(actor.maxHp, actor.curHp + heal);
       actor.fortified = true;
-      this.log(`🚩 [2D6=${dice.sum}] ${actor.name} sounds Darksaber Rally! +${heal} HP & Fortified.`);
+      this.log(`🚩 [2D6=${dice.sum}] ${actor.name} uses Rally! +${heal} HP & Fortified.`);
     } else {
       let mult = 1.0, ignoreSave = false;
       if (orderKey === 'CHARGE') mult = 1.30;
@@ -2895,13 +2951,13 @@ const Arena = {
       if (!ignoreSave && target.fortified) finalDmg = Math.round(finalDmg * 0.55);
       target.curHp = Math.max(0, target.curHp - finalDmg);
 
-      this.log(`🎲 [2D6=${dice.sum}] ${actor.name} uses ${orderKey} on ${target.name} for ${finalDmg} DMG!${countered ? ' [COUNTER +45%!]' : ''}`);
+      this.log(`🎲 [2D6=${dice.sum}] ${actor.name} hits ${target.name} for ${finalDmg} DMG!${countered ? ' [COUNTER +45%!]' : ''}`);
 
       if (orderKey === 'ARCANE' && aliveEnemies.length > 1) {
         const splashTarget = aliveEnemies[1];
         const splashDmg = Math.round(finalDmg * 0.45);
         splashTarget.curHp = Math.max(0, splashTarget.curHp - splashDmg);
-        this.log(`🐉 Whistling Birds splash hits ${splashTarget.name} for ${splashDmg} DMG!`);
+        this.log(`🐉 Whistling Birds splash ${splashTarget.name} for ${splashDmg} DMG!`);
       }
     }
 
@@ -2963,8 +3019,8 @@ const Arena = {
 
     if (alivePlayers.length === 0) {
       this.active = false;
-      this.log(`💀 DEFEAT! Your strike team retreated to the Covert.`);
-      UI.toast('Strike team defeated! Re-condition armor and strike again.');
+      this.log(`💀 DEFEAT! Your strike team retreated.`);
+      UI.toast('Strike team defeated! Repair armor and strike again.');
       UI.renderArena();
       return true;
     }
@@ -3009,14 +3065,13 @@ const Inspector = {
       ? `${tData.code} Custom Commission • ${u.artisanGrade} (${u.artisanMult}x)`
       : `${tData.code} ${tData.name} • ${tData.finish} • ${arch.name}`;
     document.getElementById('insp-code').textContent = TradeCodec.encodeUnit(u);
-    document.getElementById('inspect-vox-stats').textContent = `Isolated Snapshot: ${this.snapshot.surfCount.toLocaleString()} Surface Voxels`;
+    document.getElementById('inspect-vox-stats').textContent = `Isolated Snapshot: ${this.snapshot.surfCount.toLocaleString()} Voxels`;
 
     document.getElementById('insp-details').innerHTML = [
-      `<div><b>Edition Classification:</b> <span class="val-gold">${u.isCustom ? `${u.artisanGrade} (${u.artisanMult}x Multiplier)` : `Collector ${dexStr} / #1000`}</span></div>`,
-      `<div><b>Appraised Valuation:</b> <span class="val-gold">◈${u.value.toLocaleString()}</span></div>`,
-      `<div><b>Stance &amp; Elevation:</b> ${poseName}</div>`,
-      `<div><b>Beskar Armor Integrity:</b> ${u.hp} / ${u.maxHp} HP</div>`,
-      `<div><b>Combat Telemetry:</b> ${u.atk} ATK | Range ${u.range}m | Counter Group <b>${u.group}</b></div>`
+      `<div><b>Edition:</b> <span class="val-gold">${u.isCustom ? `${u.artisanGrade} (${u.artisanMult}x)` : `Collector ${dexStr} / #1000`}</span></div>`,
+      `<div><b>Valuation:</b> <span class="val-gold">◈${u.value.toLocaleString()}</span></div>`,
+      `<div><b>Pose:</b> ${poseName} | <b>HP:</b> ${u.hp}/${u.maxHp}</div>`,
+      `<div><b>Combat:</b> ${u.atk} ATK | Rng ${u.range}m | Group <b>${u.group}</b></div>`
     ].join('');
 
     document.getElementById('inspect-modal').classList.add('open');
@@ -3102,7 +3157,7 @@ const UI = {
     div.className = 'toast-msg';
     div.textContent = msg;
     wrap.appendChild(div);
-    setTimeout(() => div.remove(), 3200);
+    setTimeout(() => div.remove(), 3000);
   },
 
   openCodeModal() { document.getElementById('code-modal').classList.add('open'); },
@@ -3116,7 +3171,7 @@ const UI = {
     document.getElementById('hud-miles').textContent = `${Object.keys(State.claimedMilestones).length}/150`;
 
     const badgeText = State.buyerPhase === 'COOLDOWN'
-      ? `WAIT ${State.buyerTimer.toFixed(0)}s`
+      ? `${State.buyerTimer.toFixed(0)}s`
       : `${State.buyerTimer.toFixed(0)}s`;
     document.getElementById('auc-timer').textContent = badgeText;
     document.getElementById('rack-count').textContent = State.fleet.length;
@@ -3163,7 +3218,7 @@ const UI = {
     tierTag.style.color = t.color;
 
     document.getElementById('buyer-dex-tag').textContent = dexStr;
-    document.getElementById('buyer-unit-title').textContent = `${dexStr} ${u.name} (${t.finish})`;
+    document.getElementById('buyer-unit-title').textContent = `${dexStr} ${u.name}`;
     document.getElementById('buyer-true-val').textContent = `◈${u.value.toLocaleString()}`;
     document.getElementById('buyer-cur-bid').textContent = `◈${b.currentBid.toLocaleString()}`;
     document.getElementById('buyer-flip-profit').textContent = `+◈${estProfit.toLocaleString()}`;
@@ -3181,33 +3236,33 @@ const UI = {
     if (State.buyerPhase === 'ACTIVE') {
       card.classList.remove('phase-won', 'phase-lost');
       verdictBanner.classList.remove('show');
-      timerBadge.textContent = `⏱️ ${State.buyerTimer.toFixed(1)}s LIVE`;
+      timerBadge.textContent = `⏱️ ${State.buyerTimer.toFixed(1)}s`;
       timerBadge.style.background = State.buyerTimer <= 3.0 ? '#dc2626' : '#1e293b';
 
       bidBtn.disabled = false;
       if (b.highBidder === 'YOU') {
-        bidBtn.textContent = `✅ YOU LEAD AT ◈${b.currentBid.toLocaleString()} (CLICK TO RAISE +◈1)`;
+        bidBtn.textContent = `✅ LEAD: ◈${b.currentBid.toLocaleString()} (+◈1)`;
         bidBtn.className = 'btn btn-silver';
       } else {
-        bidBtn.textContent = `⚡ SNIPE BID +◈1 (TAKE LEAD FOR ◈${(b.currentBid + 1).toLocaleString()})`;
+        bidBtn.textContent = `⚡ SNIPE +◈1 (◈${(b.currentBid + 1).toLocaleString()})`;
         bidBtn.className = 'btn btn-emerald';
       }
     } else {
       card.classList.toggle('phase-won', State.buyerWonLast);
       card.classList.toggle('phase-lost', !State.buyerWonLast);
 
-      timerBadge.textContent = `⏸️ NEXT LOT IN ${State.buyerTimer.toFixed(1)}s`;
+      timerBadge.textContent = `⏸️ ${State.buyerTimer.toFixed(1)}s`;
       timerBadge.style.background = '#334155';
 
       verdictBanner.classList.add('show');
       verdictBanner.style.color = State.buyerWonLast ? 'var(--emerald)' : 'var(--crimson)';
       verdictBanner.style.background = State.buyerWonLast ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)';
       verdictText.textContent = State.buyerLastOutcome;
-      verdictCount.textContent = `NEW LOT IN ${State.buyerTimer.toFixed(1)}s...`;
+      verdictCount.textContent = `NEXT IN ${State.buyerTimer.toFixed(1)}s`;
 
       bidBtn.disabled = true;
       bidBtn.className = 'btn';
-      bidBtn.textContent = `⏳ PREPARING NEXT LOT (${State.buyerTimer.toFixed(1)}s)...`;
+      bidBtn.textContent = `⏳ NEXT LOT IN ${State.buyerTimer.toFixed(1)}s...`;
     }
   },
 
@@ -3217,10 +3272,10 @@ const UI = {
       const slot = State.sellerLanes[i];
       if (!slot) {
         sHtml.push(`
-          <div class="unit-card" style="border-style:dashed; justify-content:center; align-items:center; min-height:240px; text-align:center;">
+          <div class="unit-card" style="border-style:dashed; justify-content:center; align-items:center; min-height:190px; text-align:center;">
             <div class="unit-title" style="color:var(--text-dim);">Seller Lane #${i + 1} — Open</div>
-            <div style="font-size:11px; color:var(--text-dim); margin:6px 0;">
-              Click <b>"🔨 Auction Off"</b> on any miniature in Covert Racks (Tab 1) or Forge &amp; Auction in Tab 2!
+            <div style="font-size:10px; color:var(--text-dim); margin:4px 0;">
+              Tap <b>"🔨 Auction"</b> on any Mando in Owned Mandos (Tab 1)!
             </div>
           </div>
         `);
@@ -3240,13 +3295,13 @@ const UI = {
             </div>
             <div class="unit-title">${u.name}</div>
             <div class="unit-meta">
-              <span>Appraised: ◈${u.value.toLocaleString()}</span>
+              <span>Val: ◈${u.value.toLocaleString()}</span>
               <span>Bids: <b>${slot.bidCount}</b></span>
             </div>
-            <div style="background:var(--bg-panel); padding:7px; border:1px solid var(--border); font-size:11px;">
-              <div>Live Offer: <b class="val-gold" style="font-size:14px;">◈${slot.currentBid.toLocaleString()}</b> (${pctOfVal}%)</div>
-              <div>High Bidder: <b class="val-silver">${slot.highBidder}</b></div>
-              ${slot.spikeNotice ? `<div style="color:var(--amber); font-weight:900; margin-top:3px;">${slot.spikeNotice}</div>` : ''}
+            <div style="background:var(--bg-panel); padding:5px; border:1px solid var(--border); font-size:10px;">
+              <div>Offer: <b class="val-gold">◈${slot.currentBid.toLocaleString()}</b> (${pctOfVal}%)</div>
+              <div>Bidder: <b class="val-silver">${slot.highBidder}</b></div>
+              ${slot.spikeNotice ? `<div style="color:var(--amber); font-weight:900;">${slot.spikeNotice}</div>` : ''}
             </div>
           </div>
         `);
@@ -3284,20 +3339,20 @@ const UI = {
       const d = ARCHETYPES[u.division || 0];
       const hpPct = Math.round((u.hp / u.maxHp) * 100);
       const dexStr = TradeCodec.formatDex(u.dexNum, u.isCustom);
-      const badgeLabel = u.isCustom ? `${u.artisanMult}x ${u.artisanGrade}` : t.finish;
+      const badgeLabel = u.isCustom ? `${u.artisanMult}x` : t.finish;
 
-      const pilotOpts = ['<option value="">-- No Commander --</option>'];
+      const pilotOpts = ['<option value="">-- Commander --</option>'];
       for (let p = 0; p < State.pilots.length; p++) {
         const pil = State.pilots[p];
         const sel = u.pilotId === pil.id ? 'selected' : '';
-        pilotOpts.push(`<option value="${pil.id}" ${sel}>${pil.name} (+${pil.yieldBuff}% YLD)</option>`);
+        pilotOpts.push(`<option value="${pil.id}" ${sel}>${pil.name} (+${pil.yieldBuff}%)</option>`);
       }
 
-      const secOpts = ['<option value="">-- Idle in Covert --</option>'];
+      const secOpts = ['<option value="">-- Idle --</option>'];
       for (let s = 0; s < SECTORS.length; s++) {
         const sec = SECTORS[s];
         const sel = u.sectorId === sec.id ? 'selected' : '';
-        secOpts.push(`<option value="${sec.id}" ${sel}>Patrol: ${sec.name} (◈${sec.baseReward})</option>`);
+        secOpts.push(`<option value="${sec.id}" ${sel}>${sec.name} (◈${sec.baseReward})</option>`);
       }
 
       html.push(`
@@ -3307,39 +3362,39 @@ const UI = {
             <span class="tier-tag" style="color:${t.color};">${t.code}</span>
             <span class="finish-tag" style="${u.isCustom ? `color:${u.artisanColor || '#fff'};` : ''}">${badgeLabel}</span>
             <span class="dex-tag">${dexStr}</span>
-            <span class="inspect-hint">🔍 512² 3D</span>
+            <span class="inspect-hint">🔍 3D</span>
           </div>
           <div class="unit-title">${u.name}</div>
           <div class="unit-meta">
-            <span>${u.isCustom ? 'Custom Forge' : d.name}</span>
+            <span>${u.isCustom ? 'Custom' : d.key.split('_')[0]}</span>
             <span class="val-gold">◈${u.value.toLocaleString()}</span>
           </div>
           <div class="stat-row">
             <div>HP <b>${hpPct}%</b></div>
             <div>ATK <b>${u.atk}</b></div>
-            <div>Grp <b>${u.group} (${u.range}m)</b></div>
+            <div>Grp <b>${u.group}</b></div>
           </div>
           <div class="hp-bar-outer"><div class="hp-bar-inner" style="width:${hpPct}%;"></div></div>
           <select onchange="Game.assignPilot('${u.id}', this.value)">${pilotOpts.join('')}</select>
           <select onchange="Game.assignSector('${u.id}', this.value)">${secOpts.join('')}</select>
           <div class="btn-row">
-            <button class="btn btn-gold" style="flex:1;" onclick="Game.sendUnitToSellerAuction('${u.id}')">🔨 Auction Off</button>
-            <button class="btn btn-silver" onclick="Game.toggleVault('${u.id}')">${u.vaulted ? '🔒' : '🔓'}</button>
-            <button class="btn btn-emerald" onclick="Game.repairUnit('${u.id}')">🔧</button>
-            <button class="btn btn-crimson" onclick="Game.disbandUnit('${u.id}')">♻️</button>
+            <button class="btn btn-xs btn-gold" style="flex:1;" onclick="Game.sendUnitToSellerAuction('${u.id}')">🔨 Auction</button>
+            <button class="btn btn-xs btn-silver" onclick="Game.toggleVault('${u.id}')">${u.vaulted ? '🔒' : '🔓'}</button>
+            <button class="btn btn-xs btn-emerald" onclick="Game.repairUnit('${u.id}')">🔧</button>
+            <button class="btn btn-xs btn-crimson" onclick="Game.disbandUnit('${u.id}')">♻️</button>
           </div>
         </div>
       `);
     }
-    document.getElementById('rack-list').innerHTML = html.length ? html.join('') : '<div class="section-sub">No miniatures match current filter. Forge a Custom Hunter in Tab 2 or Snipe in Tab 4!</div>';
+    document.getElementById('rack-list').innerHTML = html.length ? html.join('') : '<div class="section-sub">No Owned Mandos match filter. Forge in Tab 2 or Snipe in Tab 4!</div>';
   },
 
   renderTech() {
     const items = [
-      { key: 'yieldLvl',   name: 'Guild Bounty Payout Yield',     desc: '+5% Imperial Credit Payout per level on Patrols & Arena Spoils.', cur: `+${State.tech.yieldLvl * 5}%` },
-      { key: 'supplyLvl',  name: 'Beskar & Tibanna Recycling',    desc: '-2% Upkeep Supply consumption per level (Max 70% at Lvl 35).',   cur: `-${Math.min(70, State.tech.supplyLvl * 2)}%` },
-      { key: 'combatLvl',  name: 'Mandalorian Supercommando Arms',desc: '+4% Tabletop Wargame Arena Attack Power per level.',             cur: `+${State.tech.combatLvl * 4}%` },
-      { key: 'salvageLvl', name: 'Grav-Charge Capture Nets',      desc: '+2% chance to capture defeated enemy miniatures in the Arena.',   cur: `${45 + State.tech.salvageLvl * 2}%` }
+      { key: 'yieldLvl',   name: 'Guild Payout Yield',      desc: '+5% Credit Payout/lvl on Patrols & Arena.', cur: `+${State.tech.yieldLvl * 5}%` },
+      { key: 'supplyLvl',  name: 'Beskar Supply Recycling', desc: '-2% Supply cost/lvl (Max 70% at Lvl 35).',  cur: `-${Math.min(70, State.tech.supplyLvl * 2)}%` },
+      { key: 'combatLvl',  name: 'Supercommando Weapons',   desc: '+4% Wargame Arena ATK Power/lvl.',          cur: `+${State.tech.combatLvl * 4}%` },
+      { key: 'salvageLvl', name: 'Grav-Charge Capture Nets',desc: '+2% Arena enemy Mando capture chance/lvl.', cur: `${45 + State.tech.salvageLvl * 2}%` }
     ];
     const html = [];
     for (let i = 0; i < items.length; i++) {
@@ -3349,9 +3404,9 @@ const UI = {
       html.push(`
         <div class="unit-card">
           <div class="unit-title">${it.name} (Lvl ${lvl})</div>
-          <div style="font-size:11px;color:var(--text-dim);">${it.desc}</div>
-          <div class="unit-meta"><span>Current Bonus: <b class="val-emerald">${it.cur}</b></span></div>
-          <button class="btn btn-gold" onclick="Game.upgradeTech('${it.key}')">⬆️ Upgrade (◈${cost.toLocaleString()})</button>
+          <div style="font-size:10px;color:var(--text-dim);">${it.desc}</div>
+          <div class="unit-meta"><span>Bonus: <b class="val-emerald">${it.cur}</b></span></div>
+          <button class="btn btn-gold" onclick="Game.upgradeTech('${it.key}')">⬆️ ◈${cost.toLocaleString()}</button>
         </div>
       `);
     }
@@ -3367,27 +3422,27 @@ const UI = {
         <div class="unit-card">
           <div class="unit-title">${p.name}</div>
           <div class="stat-row" style="grid-template-columns: repeat(2, 1fr);">
-            <div>YIELD <b class="val-gold">+${p.yieldBuff}%</b></div>
-            <div>SPEED <b class="val-silver">+${p.speedBuff}%</b></div>
-            <div>SUPPLY <b class="val-emerald">-${p.supplyBuff}%</b></div>
-            <div>ARMOR <b class="val-purple">+${p.armorBuff}%</b></div>
+            <div>YLD <b class="val-gold">+${p.yieldBuff}%</b></div>
+            <div>SPD <b class="val-silver">+${p.speedBuff}%</b></div>
+            <div>SUP <b class="val-emerald">-${p.supplyBuff}%</b></div>
+            <div>ARM <b class="val-purple">+${p.armorBuff}%</b></div>
           </div>
           <div class="unit-meta">
-            <span>Status: ${p.assignedUnitId ? 'Assigned to Hunter' : 'Ready in Covert'}</span>
+            <span>${p.assignedUnitId ? 'Assigned' : 'Ready'}</span>
             <code>${code}</code>
           </div>
         </div>
       `);
     }
-    document.getElementById('pilot-list').innerHTML = html.length ? html.join('') : '<div class="section-sub">No Commanders recruited yet. Recruit Armorers & Tacticians in Tab 3!</div>';
+    document.getElementById('pilot-list').innerHTML = html.length ? html.join('') : '<div class="section-sub">No Commanders yet. Recruit in Tab 3!</div>';
   },
 
   renderBoxes() {
     const boxes = [
-      { tier: 0, name: 'Foundling Munitions Crate', cost: 20,    tiers: 'T1 - T3 (#0001–#0300)', color: '#94a3b8' },
-      { tier: 1, name: 'Covert Beskar Warbox',      cost: 200,   tiers: 'T2 - T5 (#0101–#0500)', color: '#d8e0ec' },
-      { tier: 2, name: 'Imperial Remnant Vault Box',cost: 2000,  tiers: 'T4 - T8 (#0301–#0800)', color: '#a855f7' },
-      { tier: 3, name: 'Mythic Mand\'alor Reliquary',cost:15000, tiers: 'T6 - T10 (#0501–#1000)',color: '#f59e0b' }
+      { tier: 0, name: 'Foundling Crate',       cost: 20,    tiers: 'T1-T3 (#0001-#0300)', color: '#94a3b8' },
+      { tier: 1, name: 'Covert Beskar Warbox',  cost: 200,   tiers: 'T2-T5 (#0101-#0500)', color: '#d8e0ec' },
+      { tier: 2, name: 'Remnant Vault Box',     cost: 2000,  tiers: 'T4-T8 (#0301-#0800)', color: '#a855f7' },
+      { tier: 3, name: 'Mand\'alor Reliquary',  cost: 15000, tiers: 'T6-T10 (#0501-#1000)',color: '#f59e0b' }
     ];
     const html = [];
     for (let i = 0; i < boxes.length; i++) {
@@ -3395,11 +3450,11 @@ const UI = {
       html.push(`
         <div class="unit-card" style="border-color:${b.color};">
           <div class="unit-title" style="color:${b.color};">${b.name}</div>
-          <div class="unit-meta"><span>Collector Pool: <b>${b.tiers}</b></span></div>
-          <div class="btn-row" style="margin-top:6px;">
-            <button class="btn btn-gold" style="flex:1;" onclick="Game.openWarbox(${b.tier}, 1)">1x (◈${b.cost.toLocaleString()})</button>
-            <button class="btn btn-silver" style="flex:1;" onclick="Game.openWarbox(${b.tier}, 5)">5x (◈${(b.cost*5).toLocaleString()})</button>
-            <button class="btn btn-purple" style="flex:1;" onclick="Game.openWarbox(${b.tier}, 10)">10x (◈${(b.cost*10).toLocaleString()})</button>
+          <div class="unit-meta"><span>Pool: <b>${b.tiers}</b></span></div>
+          <div class="btn-row" style="margin-top:4px;">
+            <button class="btn btn-xs btn-gold" style="flex:1;" onclick="Game.openWarbox(${b.tier}, 1)">1x ◈${b.cost.toLocaleString()}</button>
+            <button class="btn btn-xs btn-silver" style="flex:1;" onclick="Game.openWarbox(${b.tier}, 5)">5x</button>
+            <button class="btn btn-xs btn-purple" style="flex:1;" onclick="Game.openWarbox(${b.tier}, 10)">10x</button>
           </div>
         </div>
       `);
@@ -3407,10 +3462,10 @@ const UI = {
     document.getElementById('warbox-list').innerHTML = html.join('');
 
     const pBoxes = [
-      { tier: 0, name: 'Initiate Armorer Pod', cost: 60,   desc: '+6% to +12% Covert Buffs' },
-      { tier: 1, name: 'Journeyman Tactician', cost: 350,  desc: '+12% to +20% Covert Buffs' },
-      { tier: 2, name: 'Master Forgesmith',    cost: 1800, desc: '+18% to +30% Covert Buffs' },
-      { tier: 3, name: 'Mand\'alor War-Council',cost:9500, desc: '+25% to +42% Covert Buffs' }
+      { tier: 0, name: 'Initiate Armorer',     cost: 60,   desc: '+6% to +12% Buffs' },
+      { tier: 1, name: 'Journeyman Tactician', cost: 350,  desc: '+12% to +20% Buffs' },
+      { tier: 2, name: 'Master Forgesmith',    cost: 1800, desc: '+18% to +30% Buffs' },
+      { tier: 3, name: 'Mand\'alor Council',   cost: 9500, desc: '+25% to +42% Buffs' }
     ];
     const pHtml = [];
     for (let i = 0; i < pBoxes.length; i++) {
@@ -3419,7 +3474,7 @@ const UI = {
         <div class="unit-card">
           <div class="unit-title">${pb.name}</div>
           <div class="unit-meta"><span>${pb.desc}</span></div>
-          <button class="btn btn-emerald" onclick="Game.recruitPilotBox(${pb.tier})">Recruit (◈${pb.cost.toLocaleString()})</button>
+          <button class="btn btn-emerald" onclick="Game.recruitPilotBox(${pb.tier})">Recruit ◈${pb.cost.toLocaleString()}</button>
         </div>
       `);
     }
@@ -3433,16 +3488,16 @@ const UI = {
       const hpPct = Math.round((u.curHp / u.maxHp) * 100);
       pHtml.push(`
         <div class="fighter-slot ${u.curHp <= 0 ? 'dead' : ''}">
-          <img src="${u.imgData}" style="width:48px;height:48px;image-rendering:pixelated;border:1px solid #334155;" />
-          <div style="flex:1;">
-            <div style="font-size:12px;font-weight:800;">${TradeCodec.formatDex(u.dexNum, u.isCustom)} ${u.name} ${u.fortified ? '🛡️' : ''}</div>
-            <div style="font-size:11px;color:var(--text-dim);">ATK ${u.atk} | Group ${u.group} | HP ${u.curHp}/${u.maxHp}</div>
-            <div class="hp-bar-outer" style="margin-top:4px;"><div class="hp-bar-inner" style="width:${hpPct}%;"></div></div>
+          <img src="${u.imgData}" style="width:42px;height:42px;image-rendering:pixelated;border:1px solid #334155;" />
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${u.name} ${u.fortified ? '🛡️' : ''}</div>
+            <div style="font-size:10px;color:var(--text-dim);">ATK ${u.atk} | Grp ${u.group} | HP ${u.curHp}/${u.maxHp}</div>
+            <div class="hp-bar-outer" style="margin-top:3px;"><div class="hp-bar-inner" style="width:${hpPct}%;"></div></div>
           </div>
         </div>
       `);
     }
-    document.getElementById('arena-player-team').innerHTML = pHtml.length ? pHtml.join('') : '<div class="section-sub">Click 1v1, 3v3, or 5v5 above to deploy.</div>';
+    document.getElementById('arena-player-team').innerHTML = pHtml.length ? pHtml.join('') : '<div class="section-sub">Tap 1v1, 3v3, or 5v5 above.</div>';
 
     const eHtml = [];
     for (let i = 0; i < Arena.enemyTeam.length; i++) {
@@ -3450,16 +3505,16 @@ const UI = {
       const hpPct = Math.round((u.curHp / u.maxHp) * 100);
       eHtml.push(`
         <div class="fighter-slot ${u.curHp <= 0 ? 'dead' : ''}">
-          <img src="${u.imgData}" style="width:48px;height:48px;image-rendering:pixelated;border:1px solid #334155;" />
-          <div style="flex:1;">
-            <div style="font-size:12px;font-weight:800;color:#fca5a5;">${TradeCodec.formatDex(u.dexNum)} ${u.name}</div>
-            <div style="font-size:11px;color:var(--text-dim);">ATK ${u.atk} | Group ${u.group} | HP ${u.curHp}/${u.maxHp}</div>
-            <div class="hp-bar-outer" style="margin-top:4px;"><div class="hp-bar-inner" style="width:${hpPct}%;background:var(--crimson);"></div></div>
+          <img src="${u.imgData}" style="width:42px;height:42px;image-rendering:pixelated;border:1px solid #334155;" />
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:11px;font-weight:800;color:#fca5a5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${u.name}</div>
+            <div style="font-size:10px;color:var(--text-dim);">ATK ${u.atk} | Grp ${u.group} | HP ${u.curHp}/${u.maxHp}</div>
+            <div class="hp-bar-outer" style="margin-top:3px;"><div class="hp-bar-inner" style="width:${hpPct}%;background:var(--crimson);"></div></div>
           </div>
         </div>
       `);
     }
-    document.getElementById('arena-enemy-team').innerHTML = eHtml.length ? eHtml.join('') : '<div class="section-sub">Awaiting Remnant deployment...</div>';
+    document.getElementById('arena-enemy-team').innerHTML = eHtml.length ? eHtml.join('') : '<div class="section-sub">Awaiting deployment...</div>';
   },
 
   renderPatrols() {
@@ -3471,14 +3526,13 @@ const UI = {
         <div class="unit-card">
           <div class="unit-title">🎯 ${s.name}</div>
           <div class="unit-meta">
-            <span>Min Tier: <b>${TIERS[s.minTier].code}</b></span>
+            <span>Min: <b>${TIERS[s.minTier].code}</b></span>
             <span>Cycle: <b>${s.cycleSec}s</b></span>
           </div>
-          <div style="font-size:11px;color:var(--text-dim);">${s.desc}</div>
           <div class="stat-row">
-            <div>Base <b class="val-gold">◈${s.baseReward}</b></div>
-            <div>Upkeep <b class="val-silver">${s.fuelCost} Sup</b></div>
-            <div>Hunters <b class="val-emerald">${assigned.length}</b></div>
+            <div>Pay <b class="val-gold">◈${s.baseReward}</b></div>
+            <div>Sup <b class="val-silver">${s.fuelCost}</b></div>
+            <div>Mandos <b class="val-emerald">${assigned.length}</b></div>
           </div>
         </div>
       `);
@@ -3489,9 +3543,9 @@ const UI = {
   renderCommand() {
     document.getElementById('tog-automarch').textContent = `🤖 Auto-March: ${State.autoMarch ? 'ON' : 'OFF'}`;
     document.getElementById('tog-automarch').className = `btn ${State.autoMarch ? 'btn-emerald' : ''}`;
-    document.getElementById('tog-autorepair').textContent = `🔧 Auto-Repair (<45%): ${State.autoRepair ? 'ON' : 'OFF'}`;
+    document.getElementById('tog-autorepair').textContent = `🔧 Auto-Repair: ${State.autoRepair ? 'ON' : 'OFF'}`;
     document.getElementById('tog-autorepair').className = `btn ${State.autoRepair ? 'btn-emerald' : ''}`;
-    document.getElementById('tog-autosupply').textContent = `⚡ Auto-Supply (<500): ${State.autoSupply ? 'ON' : 'OFF'}`;
+    document.getElementById('tog-autosupply').textContent = `⚡ Auto-Supply: ${State.autoSupply ? 'ON' : 'OFF'}`;
     document.getElementById('tog-autosupply').className = `btn ${State.autoSupply ? 'btn-emerald' : ''}`;
 
     const cHtml = [];
@@ -3501,13 +3555,13 @@ const UI = {
       cHtml.push(`
         <div class="unit-card" style="border-color:${ready ? 'var(--emerald)' : 'var(--border)'};">
           <div class="unit-title">${c.title}</div>
-          <div style="font-size:11px;color:var(--text-dim);">${c.desc}</div>
+          <div style="font-size:10px;color:var(--text-dim);">${c.desc}</div>
           <div class="unit-meta">
-            <span>Bounty: <b class="val-gold">◈${c.cashReward.toLocaleString()}</b></span>
-            <span>+ Free <b>${TIERS[c.rewardTier].code} Miniature</b></span>
+            <span><b class="val-gold">◈${c.cashReward.toLocaleString()}</b></span>
+            <span>+ Free <b>${TIERS[c.rewardTier].code}</b></span>
           </div>
           <button class="btn ${ready ? 'btn-emerald' : ''}" onclick="Game.claimCommission(${i})">
-            ${ready ? '✅ Complete Commission' : '⏳ In Progress'}
+            ${ready ? '✅ Complete' : '⏳ In Progress'}
           </button>
         </div>
       `);
@@ -3530,15 +3584,14 @@ const UI = {
 
       html.push(`
         <div class="unit-card" style="opacity:${claimed ? 0.55 : 1}; border-color:${done && !claimed ? 'var(--gold)' : 'var(--border)'};">
-          <div style="font-size:10px;color:var(--silver);font-weight:700;">${m.bookName}</div>
           <div class="unit-title">${m.title}</div>
           <div class="unit-meta">
-            <span>${Math.min(cur, m.target).toLocaleString()} / ${m.target.toLocaleString()} ${m.unitLabel}</span>
+            <span>${Math.min(cur, m.target).toLocaleString()}/${m.target.toLocaleString()}</span>
             <span class="val-gold">+◈${m.rewardCredits.toLocaleString()}</span>
           </div>
           <div class="hp-bar-outer"><div class="hp-bar-inner" style="width:${pct}%;background:${claimed ? 'var(--silver)' : 'var(--gold)'};"></div></div>
-          <button class="btn ${done && !claimed ? 'btn-gold' : ''}" ${(!done || claimed) ? 'disabled' : ''} onclick="Game.claimMilestone(${m.id})">
-            ${claimed ? '✓ Trial Claimed' : (done ? '🏆 Claim Reward' : 'Locked')}
+          <button class="btn btn-xs ${done && !claimed ? 'btn-gold' : ''}" ${(!done || claimed) ? 'disabled' : ''} onclick="Game.claimMilestone(${m.id})">
+            ${claimed ? '✓ Claimed' : (done ? '🏆 Claim' : 'Locked')}
           </button>
         </div>
       `);
@@ -3552,21 +3605,21 @@ const UI = {
    ============================================================================ */
 function populateFilterDropdowns() {
   const divSel = document.getElementById('filter-div');
-  const dHtml = ['<option value="ALL">All 10 Heroic Classes</option>'];
+  const dHtml = ['<option value="ALL">All 10 Classes</option>'];
   for (let i = 0; i < ARCHETYPES.length; i++) {
     dHtml.push(`<option value="${i}">${i}. ${ARCHETYPES[i].name}</option>`);
   }
   divSel.innerHTML = dHtml.join('');
 
   const tierSel = document.getElementById('filter-tier');
-  const tHtml = ['<option value="ALL">All 10 Rarity Tiers</option>'];
+  const tHtml = ['<option value="ALL">All 10 Tiers</option>'];
   for (let i = 0; i < TIERS.length; i++) {
-    tHtml.push(`<option value="${i}">${TIERS[i].code} - ${TIERS[i].name} (${TIERS[i].finish})</option>`);
+    tHtml.push(`<option value="${i}">${TIERS[i].code} - ${TIERS[i].name}</option>`);
   }
   tierSel.innerHTML = tHtml.join('');
 }
 
-const SYNDICATE_BIDDERS = ['Pyke Collector', 'Hutt Cartel Envoy', 'Crimson Dawn Broker', 'Corellian Museum', 'Nevarro Guildmaster', 'Coruscant Noble'];
+const SYNDICATE_BIDDERS = ['Pyke Collector', 'Hutt Envoy', 'Crimson Broker', 'Corellian Museum', 'Nevarro Guild', 'Coruscant Noble'];
 let autoSaveCounter = 0;
 
 function gameTick() {
@@ -3578,7 +3631,6 @@ function gameTick() {
     SaveSystem.saveToLocal(false);
   }
 
-  // 1. 1-Lane Bargain Buyer Auction State Machine ('ACTIVE' 10.0s -> 'COOLDOWN' 3.0s)
   if (State.buyerAuction) {
     const b = State.buyerAuction;
     if (State.buyerPhase === 'ACTIVE') {
@@ -3604,13 +3656,13 @@ function gameTick() {
           Game.addUnitToFleet(b.unit);
           State.stats.auctionsWon++;
           State.buyerWonLast = true;
-          State.buyerLastOutcome = `🏆 SNIPED BY YOU FOR ◈${b.currentBid.toLocaleString()}! (${dexStr} ADDED TO RACKS)`;
+          State.buyerLastOutcome = `🏆 SNIPED FOR ◈${b.currentBid.toLocaleString()}! (IN OWNED MANDOS)`;
           UI.toast(`🎯 Sniped ${dexStr} ${b.unit.name} for ◈${b.currentBid.toLocaleString()}!`);
           if (UI.activeTab === 'tab-racks') UI.renderRacks();
           SaveSystem.saveToLocal(false);
         } else {
           State.buyerWonLast = false;
-          State.buyerLastOutcome = `🔨 LOT CLOSED — SOLD TO ${b.highBidder.toUpperCase()} FOR ◈${b.currentBid.toLocaleString()}`;
+          State.buyerLastOutcome = `🔨 SOLD TO ${b.highBidder.toUpperCase()} (◈${b.currentBid.toLocaleString()})`;
         }
       }
     } else if (State.buyerPhase === 'COOLDOWN') {
@@ -3625,7 +3677,6 @@ function gameTick() {
     }
   }
 
-  // 2. 5-Lane Player Seller Auctions (20.0s timer, 40% start, 10% bid/tick, 1.5% 2x-20x BID WAR Spike, <=1.0s overtime -> 2.0s)
   let sellerChanged = false;
   for (let i = 0; i < 5; i++) {
     const s = State.sellerLanes[i];
@@ -3639,7 +3690,7 @@ function gameTick() {
         const spike = 2 + ((Math.random() * 19) | 0);
         mult = spike;
         s.spikeNotice = `🔥 ${spike}x [BID WAR] SPIKE!`;
-        UI.toast(`🔥 ${spike}x [BID WAR] SPIKE on your ${s.unit.name} in Lane #${i + 1}!`);
+        UI.toast(`🔥 ${spike}x [BID WAR] SPIKE on ${s.unit.name} in Lane #${i + 1}!`);
       }
       s.currentBid = Math.max(s.currentBid + 2, Math.round(s.currentBid * mult));
       s.highBidder = SYNDICATE_BIDDERS[(Math.random() * SYNDICATE_BIDDERS.length) | 0];
@@ -3647,7 +3698,7 @@ function gameTick() {
 
       if (s.timer <= 1.0) {
         s.timer = 2.0;
-        s.spikeNotice = '⏱️ OVERTIME BID WAR (2.0s)!';
+        s.spikeNotice = '⏱️ OVERTIME (2.0s)!';
       }
     }
 
@@ -3666,7 +3717,6 @@ function gameTick() {
     UI.renderSellerAuctions();
   }
 
-  // 3. High Command Automations
   if (State.autoSupply && State.fuelReserve < 500 && State.funds >= 125) {
     Game.buyFuel(500);
   }
@@ -3689,7 +3739,6 @@ function gameTick() {
     }
   }
 
-  // 4. Active Sector Patrols Loop
   const supplyDiscount = Math.min(0.70, State.tech.supplyLvl * 0.02);
   const yieldBonus = 1 + State.tech.yieldLvl * 0.05;
 
@@ -3730,7 +3779,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const loaded = SaveSystem.loadFromLocal();
   if (!loaded) {
-    // Seed 3 Iconic Starters including Samurai Ronin Kabuto Blademaster (#0164)
     Game.addUnitToFleet(Game.createUnit({ tier: 0, faction: 0, division: 0 }, false));
     Game.addUnitToFleet(Game.createUnit({ tier: 1, faction: 6, division: 3 }, false));
     Game.addUnitToFleet(Game.createUnit({ tier: 2, faction: 3, division: 4 }, false));
